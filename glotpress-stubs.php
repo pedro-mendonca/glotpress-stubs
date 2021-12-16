@@ -1923,53 +1923,89 @@ class GP_Thing
     }
     /**
      * Reloads the object data from the database, based on its id
+     *
+     * @return GP_Thing Thing object.
      */
     public function reload()
     {
     }
     /**
-     * Retrieves a single row from this table
-     *
-     * For parameters description see BPDB::prepare()
-     *
-     * @return mixed an object, containing the selected row or false on error
-     */
-    public function one()
-    {
-    }
-    /**
-     * Retrieves a single value from this table
-     *
-     * For parameters description see BPDB::prepare()
-     *
-     * @return scalar the result of the query or false on error
-     */
-    public function value()
-    {
-    }
-    public function prepare($args)
-    {
-    }
-    /**
-     * Retrieves multiple rows from this table
-     *
-     * For parameters description see `$wpdb->prepare()`.
+     * Retrieves one row from the database.
      *
      * @since 1.0.0
+     * @since 3.0.0 Added spread operator and require `$query` argument to be set.
      *
-     * @return mixed An object, containing the selected row or false on error.
+     * @see wpdb::get_row()
+     * @see wpdb::prepare()
+     *
+     * @param string $query   Query statement with optional sprintf()-like placeholders.
+     * @param mixed  ...$args Optional arguments to pass to the GP_Thing::prepare() function.
+     * @return GP_Thing|false Thing object on success, false on failure.
      */
-    public function many()
+    public function one($query, ...$args)
     {
     }
     /**
-     * [many_no_map description]
+     * Retrieves one variable from the database.
      *
      * @since 1.0.0
+     * @since 3.0.0 Added spread operator and require `$query` argument to be set.
      *
-     * @return mixed
+     * @see wpdb::get_var()
+     * @see wpdb::prepare()
+     *
+     * @param string $query   Query statement with optional sprintf()-like placeholders.
+     * @param mixed  ...$args Optional arguments to pass to the GP_Thing::prepare() function.
+     * @return string|null Database query result (as string), or false on failure.
      */
-    public function many_no_map()
+    public function value($query, ...$args)
+    {
+    }
+    /**
+     * Prepares a SQL query for safe execution. Uses sprintf()-like syntax.
+     *
+     * @since 1.0.0
+     * @since 3.0.0 Added spread operator and require `$query` argument to be set.
+     *
+     * @see wpdb::prepare()
+     *
+     * @param string $query   Query statement with optional sprintf()-like placeholders.
+     * @param mixed  ...$args Optional arguments to pass to the GP_Thing::prepare() function.
+     * @return string Sanitized query string, if there is a query to prepare.
+     */
+    public function prepare($query, ...$args)
+    {
+    }
+    /**
+     * Retrieves an entire result set from the database, mapped to GP_Thing.
+     *
+     * @since 1.0.0
+     * @since 3.0.0 Added spread operator and require `$query` argument to be set.
+     *
+     * @see wpdb::get_results()
+     * @see wpdb::prepare()
+     *
+     * @param string $query   Query statement with optional sprintf()-like placeholders.
+     * @param mixed  ...$args Optional arguments to pass to the GP_Thing::prepare() function.
+     * @return GP_Thing[] A list of GP_Thing objects.
+     */
+    public function many($query, ...$args)
+    {
+    }
+    /**
+     * Retrieves an entire result set from the database.
+     *
+     * @since 1.0.0
+     * @since 3.0.0 Added spread operator and require `$query` argument to be set.
+     *
+     * @see wpdb::get_results()
+     * @see wpdb::prepare()
+     *
+     * @param string $query   Query statement with optional sprintf()-like placeholders.
+     * @param mixed  ...$args Optional arguments to pass to the GP_Thing::prepare() function.
+     * @return object[] Database query results.
+     */
+    public function many_no_map($query, ...$args)
     {
     }
     /**
@@ -2056,12 +2092,12 @@ class GP_Thing
     {
     }
     /**
-     * [map description]
+     * Maps database results to their GP_Thing presentations.
      *
      * @since 1.0.0
      *
-     * @param mixed $results The results, mapped.
-     * @return mixed
+     * @param mixed $results The results from the database.
+     * @return GP_Thing[]|object[] If enabled, a list of objects mapped to GP_Thing.
      */
     public function map($results)
     {
@@ -2070,10 +2106,16 @@ class GP_Thing
      * Performs a database query.
      *
      * @since 1.0.0
+     * @since 3.0.0 Added spread operator and require `$query` argument to be set.
      *
-     * @return mixed
+     * @see wpdb::query()
+     * @see wpdb::prepare()
+     *
+     * @param string $query   Database query.
+     * @param mixed  ...$args Optional arguments to pass to the prepare method.
+     * @return int|bool Number of rows affected/selected or false on error.
      */
-    public function query()
+    public function query($query, ...$args)
     {
     }
     /**
@@ -2102,6 +2144,14 @@ class GP_Thing
     public function update($data, $where = \null)
     {
     }
+    /**
+     * Retrieves an existing thing.
+     *
+     * @since 1.0.0
+     *
+     * @param GP_Thing|int $thing_or_id ID of a thing or GP_Thing object.
+     * @return GP_Thing|false Thing object on success, false on failure.
+     */
     public function get($thing_or_id)
     {
     }
@@ -2141,7 +2191,7 @@ class GP_Thing
      *
      * @param array $where An array of conditions to use to for a SQL "where" clause, if not passed, no rows will be deleted.
      */
-    public function delete_many($where = \null)
+    public function delete_many(array $where)
     {
     }
     /**
@@ -2183,6 +2233,14 @@ class GP_Thing
     public function get_db_field_formats($args)
     {
     }
+    /**
+     * Coerces data to being a thing object.
+     *
+     * @since 1.0.0
+     *
+     * @param array|object $thing Data about the thing retrieved from the database.
+     * @return GP_Thing|false Thing object on success, false on failure.
+     */
     public function coerce($thing)
     {
     }
@@ -2218,6 +2276,24 @@ class GP_Thing
     public function after_delete()
     {
     }
+    /**
+     * Builds SQL conditions from a PHP value.
+     *
+     * Examples:
+     *   Input: `null`
+     *   Output: `IS NULL`
+     *
+     *   Input: `'foo'`
+     *   Output: `= 'foo'`
+     *
+     *   Input: `1` or `'1'`
+     *   Output: `= 1`
+     *
+     * @since 1.0.0
+     *
+     * @param mixed $php_value The PHP value to convert to conditions.
+     * @return string SQL conditions.
+     */
     public function sql_condition_from_php_value($php_value)
     {
     }
@@ -2417,6 +2493,14 @@ class GP_Glossary_Entry extends \GP_Thing
     public function by_glossary_id($glossary_id)
     {
     }
+    /**
+     * Retrieves the last modified date of a entry in a glossary.
+     *
+     * @since 1.0.0
+     *
+     * @param GP_Glossary $glossary The glossary to retrieve the last modified date.
+     * @return string The last modified date on success, empty string on failure.
+     */
     public function last_modified($glossary)
     {
     }
@@ -3052,6 +3136,13 @@ class GP_Translation_Set extends \GP_Thing
     public function percent_translated()
     {
     }
+    /**
+     * Retrieves the last modified date of a translation in this translation set.
+     *
+     * @since 1.0.0
+     *
+     * @return string|false The last modified date on success, false on failure.
+     */
     public function last_modified()
     {
     }
@@ -3326,6 +3417,14 @@ class GP_Translation extends \GP_Thing
     public function translations()
     {
     }
+    /**
+     * Retrieves the last modified date of a translation in a translation set.
+     *
+     * @since 1.0.0
+     *
+     * @param GP_Translation_Set $translation_set The translation set to retrieve the last modified date.
+     * @return string|false The last modified date on success, false on failure.
+     */
     public function last_modified($translation_set)
     {
     }
@@ -3811,6 +3910,16 @@ class GP_Locale
     public function index_for_number($number)
     {
     }
+    /**
+     * When converting the object to a string, the combined name is returned.
+     *
+     * @since 3.0.0
+     *
+     * @return string Combined name of locale.
+     */
+    public function __toString()
+    {
+    }
 }
 class GP_Locales
 {
@@ -3838,7 +3947,7 @@ class GP_Locales
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 3.0.0-alpha
+ * Version: 3.0.0-alpha.2
  * Author: the GlotPress team
  * Author URI: https://glotpress.blog
  * License: GPLv2 or later
@@ -3860,7 +3969,7 @@ class GP_Locales
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '3.0.0-alpha');
+\define('GP_VERSION', '3.0.0-alpha.2');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
 \define('GP_ROUTING', \true);
@@ -4268,8 +4377,11 @@ function gp_populate_notices()
  *      $result[1][1] = "Sixth"
  *
  * Or some other random result.
+ *
+ * @param array ...$args Array arguments.
+ * @return array|false Array on success, false on failure.
  */
-function gp_array_zip()
+function gp_array_zip(...$args)
 {
 }
 function gp_array_any($callback, $array, $arg = \null)
@@ -4538,74 +4650,6 @@ function gp_endswith($haystack, $needle)
 {
 }
 function gp_in($needle, $haystack)
-{
-}
-/**
- * Compat function to mimic mb_strtolower().
- *
- * Falls back to `strtolower()` if `mb_strtolower()` doesn't exists.
- *
- * @since 1.0.0
- *
- * @param string      $str      The string being lowercased.
- * @param string|null $encoding Optional. Character encoding to use. Default null.
- * @return int String length of `$str`.
- */
-function gp_strtolower($str, $encoding = \null)
-{
-}
-/**
- * Compat function to mimic mb_strlen().
- *
- * Without a `function_exists()` check because WordPress includes
- * a compat function for `mb_strlen()`.
- *
- * @since 1.0.0
- *
- * @see _mb_strlen()
- *
- * @param string      $str      The string to retrieve the character length from.
- * @param string|null $encoding Optional. Character encoding to use. Default null.
- * @return int String length of `$str`.
- */
-function gp_strlen($str, $encoding = \null)
-{
-}
-/**
- * Compat function to mimic mb_stripos().
- *
- * Falls back to `stripos()` if `mb_stripos()` doesn't exists.
- *
- * @since 1.0.0
- *
- * @param string      $haystack The string from which to get the position of the first occurrence of needle.
- * @param string      $needle   The string to find in haystack.
- * @param int         $offset   The position in haystack to start searching.
- * @param string|null $encoding Optional. Character encoding to use. Default null.
- * @return int|false The numeric position of the first occurrence of needle in the haystack string,
- *                   or false if needle is not found.
- */
-function gp_stripos($haystack, $needle, $offset = 0, $encoding = \null)
-{
-}
-/**
- * Compat function to mimic mb_substr().
- *
- * Without a `function_exists()` check because WordPress includes
- * a compat function for `mb_substr()`.
- *
- * @since 1.0.0
- *
- * @see _mb_substr()
- *
- * @param string      $str      The string to extract the substring from.
- * @param int         $start    Position to being extraction from in `$str`.
- * @param int|null    $length   Optional. Maximum number of characters to extract from `$str`.
- *                              Default null.
- * @param string|null $encoding Optional. Character encoding to use. Default null.
- * @return string Extracted substring.
- */
-function gp_substr($str, $start, $length, $encoding = \null)
 {
 }
 /**
@@ -5190,17 +5234,17 @@ function gp_url_path($url = \null)
 {
 }
 /**
- * Joins paths, and takes care of slashes between them
+ * Joins paths, and takes care of slashes between them.
  *
  * Example: gp_url_join( '/project', array( 'wp', 'dev) ) -> '/project/wp/dev'
  *
  * The function will keep leading and trailing slashes of the whole URL, but won't
  * allow more than consecutive slash inside.
  *
- * @param mixed components... arbitrary number of string or path components
- * @return string URL, built of all the components, separated with /
+ * @param mixed ...$components Arbitrary number of string or path components.
+ * @return string URL, built of all the components, separated with /.
  */
-function gp_url_join()
+function gp_url_join(...$components)
 {
 }
 /**
