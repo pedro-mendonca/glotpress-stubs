@@ -3,7 +3,7 @@
 GlotPress function and class declaration stubs for static analysis. 
 
 [![Packagist version](https://img.shields.io/packagist/v/pedro-mendonca/glotpress-stubs?label=Packagist)](https://packagist.org/packages/pedro-mendonca/glotpress-stubs)
-[![Packagist stats](https://img.shields.io/packagist/dt/pedro-mendnoca/glotpress-stubs?label=Downloads)](https://packagist.org/packages/pedro-mendonca/glotpress-stubs/statss)
+[![Packagist stats](https://img.shields.io/packagist/dt/pedro-mendonca/glotpress-stubs?label=Downloads)](https://packagist.org/packages/pedro-mendonca/glotpress-stubs/stats)
 [![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/pedro-mendonca/glotpress-stubs?label=PHP&logo=PHP&logoColor=white)](https://packagist.org/packages/pedro-mendonca/glotpress-stubs)
 [![License](https://img.shields.io/github/license/pedro-mendonca/glotpress-stubs?label=License)](https://github.com/pedro-mendonca/glotpress-stubs/blob/main/LICENSE)
 [![Sponsor](https://img.shields.io/badge/GitHub-🤍%20Sponsor-ea4aaa?logo=github)](https://github.com/sponsors/pedro-mendonca)
