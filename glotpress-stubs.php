@@ -162,41 +162,6 @@ class GP_CLI_Wipe_Permissions extends \WP_CLI_Command
     {
     }
 }
-class GP_CLI
-{
-    public $short_options = '';
-    public $long_options = array();
-    public $options = array();
-    public $program_name = '';
-    public $usage = '';
-    public $args;
-    public $project;
-    public $locale;
-    public $translation_set;
-    public function __construct()
-    {
-    }
-    public function usage()
-    {
-    }
-    public function to_stderr($text, $no_new_line = \false)
-    {
-    }
-    public function error($message, $exit_code = 1)
-    {
-    }
-}
-class GP_Translation_Set_Script extends \GP_CLI
-{
-    var $short_options = 'p:l:t:';
-    var $usage = "-p <project-path> -l <locale> [-t <translation-set-slug>]";
-    public function run()
-    {
-    }
-    public function action_on_translation_set($translation_set)
-    {
-    }
-}
 /**
  * GlotPress Format base class. It is supposed to be inherited.
  */
@@ -234,26 +199,156 @@ abstract class GP_Format
     {
     }
 }
+/**
+ * GlotPress Format Android XML class
+ *
+ * @since 1.0.0
+ *
+ * @package GlotPress
+ */
+/**
+ * Format class used to support Android XML file format.
+ *
+ * @since 1.0.0
+ */
 class GP_Format_Android extends \GP_Format
 {
+    /**
+     * Name of file format, used in file format dropdowns.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
     public $name = 'Android XML (.xml)';
+    /**
+     * File extension of the file format, used to autodetect formats and when creating the output file names.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
     public $extension = 'xml';
+    /**
+     * Storage for the export file contents while it is being generated.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
     public $exported = '';
+    /**
+     * Generates a string the contains the $entries to export in the Android XML file format.
+     *
+     * @since 1.0.0
+     *
+     * @param GP_Project         $project         The project the strings are being exported for, not used
+     *                                            in this format but part of the scaffold of the parent object.
+     * @param GP_Locale          $locale          The locale object the strings are being exported for, not used
+     *                                            in this format but part of the scaffold of the parent object.
+     * @param GP_Translation_Set $translation_set The locale object the strings are being
+     *                                            exported for. not used in this format but part
+     *                                            of the scaffold of the parent object.
+     * @param GP_Translation     $entries         The entries to export.
+     *
+     * @return string The exported Android XML string.
+     */
     public function print_exported_file($project, $locale, $translation_set, $entries)
     {
     }
+    /**
+     * Reads a set of original strings from an Android XML file.
+     *
+     * @since 1.0.0
+     *
+     * @param string $file_name The name of the uploaded Android XML file.
+     *
+     * @return Translations|bool The extracted originals on success, false on failure.
+     */
     public function read_originals_from_file($file_name)
     {
     }
+    /**
+     * Generates a translation entry object to be added to the results for the "read_originals_from_file()" function.
+     *
+     * @since 1.0.0
+     *
+     * @param obj    $string  The string entry object to use.
+     * @param string $context The context string to use.
+     *
+     * @return obj A translation entry object.
+     */
+    private function generate_entry($string, $context)
+    {
+    }
+    /**
+     * Extracts the xliff information from a string.
+     *
+     * @since 1.0.0
+     *
+     * @param string $string The string to process.
+     *
+     * @return array|bool An array containing the extracted information from the xliff tags (there may be multiple) on success, false on failure.
+     */
+    private function extract_xliff_info($string)
+    {
+    }
+    /**
+     * Save a line to the exported class variable.  Supports prepending of tabs and appending
+     * a newline to the string.
+     *
+     * @since 1.0.0
+     *
+     * @param string $string       The string to process.
+     * @param int    $prepend_tabs The number of tab characters to prepend to the output.
+     */
     private function line($string, $prepend_tabs = 0)
     {
     }
+    /**
+     * Output the strings array entries to the exported class variable.
+     *
+     * @since 1.0.0
+     *
+     * @param obj $entries The entries to store.
+     */
     private function string_arrays($entries)
     {
     }
+    /**
+     * Compare two context strings for a uasort callback.
+     *
+     * @since 1.0.0
+     *
+     * @param string $a The first string to compare.
+     * @param string $b The second string to compare.
+     *
+     * @return int Returns the result of the comparison.
+     */
     private function cmp_context($a, $b)
     {
     }
+    /**
+     * Preserve a Unicode sequence (like \u1234) by adding another backslash.
+     *
+     * @since 3.0
+     *
+     * @param string $string The string to process.
+     *
+     * @return string Returns the string with double-escaped Unicode sequences.
+     */
+    private function preserve_escaped_unicode($string)
+    {
+    }
+    /**
+     * Unescapes a string with c style slashes.
+     *
+     * @since 1.0.0
+     *
+     * @param string $string The string to unescape.
+     *
+     * @return string Returns the unescaped string.
+     */
     private function unescape($string)
     {
     }
@@ -419,6 +514,77 @@ class GP_Format_Jed1x extends \GP_Format_JSON
      *
      * @param string $file_name The name of the JSON file to parse.
      * @return array|false The encoded value or false on failure.
+     */
+    protected function decode_json_file($file_name)
+    {
+    }
+}
+/**
+ * GlotPress Format NGX Translate class
+ *
+ * @since 3.0.0
+ *
+ * @package GlotPress
+ */
+/**
+ * Format class used to support NGX Translate JSON file format.
+ *
+ * @since 3.0.0
+ */
+class GP_Format_NGX extends \GP_Format
+{
+    /**
+     * Name of file format, used in file format dropdowns.
+     *
+     * @since 3.0.0
+     *
+     * @var string
+     */
+    public $name = 'NGX-Translate (.json)';
+    /**
+     * File extension of the file format, used to autodetect formats and when creating the output file names.
+     *
+     * @since 3.0.0
+     *
+     * @var string
+     */
+    public $extension = 'ngx.json';
+    /**
+     * Generates a string the contains the $entries to export in the JSON file format.
+     *
+     * @since 3.0.0
+     *
+     * @param GP_Project         $project         The project the strings are being exported for, not used
+     *                                            in this format but part of the scaffold of the parent object.
+     * @param GP_Locale          $locale          The locale object the strings are being exported for. not used
+     *                                            in this format but part of the scaffold of the parent object.
+     * @param GP_Translation_Set $translation_set The locale object the strings are being
+     *                                            exported for. not used in this format but part
+     *                                            of the scaffold of the parent object.
+     * @param GP_Translation     $entries         The entries to export.
+     * @return string The exported JSON string.
+     */
+    public function print_exported_file($project, $locale, $translation_set, $entries)
+    {
+    }
+    /**
+     * Reads a set of original strings from a JSON file.
+     *
+     * @since 3.0.0
+     *
+     * @param string $file_name The name of the uploaded JSON file.
+     * @return Translations|bool The extracted originals on success, false on failure.
+     */
+    public function read_originals_from_file($file_name)
+    {
+    }
+    /**
+     * Decode a JSON file.
+     *
+     * @since 3.0.0
+     *
+     * @param string $file_name The name of the JSON file to decode.
+     * @return decode JSON file as an array.
      */
     protected function decode_json_file($file_name)
     {
@@ -692,23 +858,96 @@ class GP_Format_ResX extends \GP_Format
     {
     }
 }
+/**
+ * GlotPress Format Mac OSX / iOS Strings Translate class
+ *
+ * @since 1.0.0
+ *
+ * @package GlotPress
+ */
+/**
+ * Format class used to support Mac OS X / iOS Translate strings file format.
+ *
+ * @since 1.0.0
+ */
 class GP_Format_Strings extends \GP_Format
 {
+    /**
+     * Name of file format, used in file format dropdowns.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
     public $name = 'Mac OS X / iOS Strings File (.strings)';
+    /**
+     * File extension of the file format, used to autodetect formats and when creating the output file names.
+     *
+     * @since 1.0.0
+     *
+     * @var string
+     */
     public $extension = 'strings';
-    public $exported = '';
+    /**
+     * Generates a string the contains the $entries to export in the strings file format.
+     *
+     * @since 1.0.0
+     *
+     * @param GP_Project         $project         The project the strings are being exported for, not used
+     *                                            in this format but part of the scaffold of the parent object.
+     * @param GP_Locale          $locale          The locale object the strings are being exported for. not used
+     *                                            in this format but part of the scaffold of the parent object.
+     * @param GP_Translation_Set $translation_set The locale object the strings are being
+     *                                            exported for. not used in this format but part
+     *                                            of the scaffold of the parent object.
+     * @param GP_Translation     $entries         The entries to export.
+     * @return string The exported strings string.
+     */
     public function print_exported_file($project, $locale, $translation_set, $entries)
     {
     }
+    /**
+     * Reads a set of original strings from a strings file.
+     *
+     * @since 1.0.0
+     *
+     * @param string $file_name The name of the uploaded strings file.
+     * @return Translations|bool The extracted originals on success, false on failure.
+     */
     public function read_originals_from_file($file_name)
     {
     }
+    /**
+     * Sorts the translation entries based on the context attribute.
+     *
+     * @since 1.0.0
+     *
+     * @param string $a First string to compare.
+     * @param string $b Second string to compare.
+     * @return int +1 or -1 based on the order to sort.
+     */
     private function sort_entries($a, $b)
     {
     }
+    /**
+     * Strips any escaping from a string.
+     *
+     * @since 1.0.0
+     *
+     * @param string $string The string to strip escapes from.
+     * @return string The unescaped string.
+     */
     private function unescape($string)
     {
     }
+    /**
+     * Adds escaping to a string.
+     *
+     * @since 1.0.0
+     *
+     * @param string $string The string to add escapes to.
+     * @return string The escaped string.
+     */
     private function escape($string)
     {
     }
@@ -1009,16 +1248,6 @@ class GP_Route
     {
     }
     /**
-     * Retrieves unvalidated referer from '_wp_http_referer' or HTTP referer.
-     *
-     * @since 2.0.0
-     *
-     * @return string|false Referer URL on success, false on failure.
-     */
-    private function get_raw_referer()
-    {
-    }
-    /**
      * Sets HTTP headers for content download.
      *
      * @param string $filename      The name of the file.
@@ -1033,10 +1262,10 @@ class GP_Route
     /**
      * Loads a template.
      *
-     * @param string $template template name to load
-     * @param array $args Associative array with arguements, which will be exported in the template PHP file
+     * @param string      $template  Template name to load.
+     * @param array       $args      Associative array with arguements, which will be exported in the template PHP file.
      * @param bool|string $honor_api If this is true or 'api' and the route is processing an API request
-     * 		the template name will be suffixed with .api. The actual file loaded will be template.api.php
+     *                               the template name will be suffixed with .api. The actual file loaded will be template.api.php.
      */
     public function tmpl($template, $args = array(), $honor_api = \true)
     {
@@ -1596,6 +1825,16 @@ class GP_Route_Translation extends \GP_Route_Main
     public function set_status($project_path, $locale_slug, $translation_set_slug)
     {
     }
+    /**
+     * Edits a single translation.
+     *
+     * @since 1.0.0
+     *
+     * @param string   $project_path         The path of the project.
+     * @param string   $locale_slug          The locale slug.
+     * @param string   $translation_set_slug The slug of the translation set.
+     * @param callable $edit_function        The edit function to call on the translation.
+     */
     private function edit_single_translation($project_path, $locale_slug, $translation_set_slug, $edit_function)
     {
     }
@@ -1692,6 +1931,7 @@ class GP_Thing
      * Retrieves a single row from this table
      *
      * For parameters description see BPDB::prepare()
+     *
      * @return mixed an object, containing the selected row or false on error
      */
     public function one()
@@ -1701,6 +1941,7 @@ class GP_Thing
      * Retrieves a single value from this table
      *
      * For parameters description see BPDB::prepare()
+     *
      * @return scalar the result of the query or false on error
      */
     public function value()
@@ -1864,6 +2105,14 @@ class GP_Thing
     public function get($thing_or_id)
     {
     }
+    /**
+     * Saves an existing thing.
+     *
+     * @since 1.0.0
+     *
+     * @param mixed $args Values to update.
+     * @return bool|null Null and false on failure, true on success.
+     */
     public function save($args = \null)
     {
     }
@@ -1895,7 +2144,12 @@ class GP_Thing
     public function delete_many($where = \null)
     {
     }
-    public function set_fields($db_object)
+    /**
+     * Sets fields of the current GP_Thing object.
+     *
+     * @param array $fields Fields for a GP_Thing object.
+     */
+    public function set_fields($fields)
     {
     }
     /**
@@ -1905,6 +2159,7 @@ class GP_Thing
      * @todo Include default type handling. For example dates 0000-00-00 should be set to null
      *
      * @since 1.0.0
+     * @since 3.0.0 Normalizes int fields to be integers.
      *
      * @param array $args Arguments for a GP_Thing object.
      * @return array Normalized arguments for a GP_Thing object.
@@ -1915,7 +2170,6 @@ class GP_Thing
     /**
      * Prepares for enetering the database an array with
      * key-value pairs, preresenting a GP_Thing object.
-     *
      */
     public function prepare_fields_for_save($args)
     {
@@ -1948,9 +2202,10 @@ class GP_Thing
      *
      * This is a placeholder function which should be implemented in the child classes.
      *
+     * @param GP_Thing $thing_before Object before the update.
      * @return bool
      */
-    public function after_save()
+    public function after_save($thing_before)
     {
     }
     /**
@@ -2216,7 +2471,7 @@ class GP_Glossary extends \GP_Thing
      * Get the glossary by set/project.
      * If there's no glossary for this specific project, get the nearest parent glossary
      *
-     * @param GP_Project $project
+     * @param GP_Project         $project
      * @param GP_Translation_Set $translation_set
      *
      * @return GP_Glossary|bool
@@ -2386,10 +2641,12 @@ class GP_Original extends \GP_Thing
      * Executes after saving an original.
      *
      * @since 2.0.0
+     * @since 3.0.0 Added the `$original_before` parameter.
      *
+     * @param GP_Original $original_before Original before the update.
      * @return bool
      */
-    public function after_save()
+    public function after_save($original_before)
     {
     }
     /**
@@ -2481,10 +2738,12 @@ class GP_Project extends \GP_Thing
      * Executes after saving a project.
      *
      * @since 1.0.0
+     * @since 3.0.0 Added the `$project_before` parameter.
      *
+     * @param GP_Project $project_before Project before the update.
      * @return bool
      */
-    public function after_save()
+    public function after_save($project_before)
     {
     }
     /**
@@ -2511,13 +2770,13 @@ class GP_Project extends \GP_Thing
     }
     // Helpers
     /**
-     * Updates this project's and its chidlren's paths, according to its current slug.
+     * Updates this project's and its children's paths, according to its current slug.
      */
     public function update_path()
     {
     }
     /**
-     * Regenrate the paths of all projects from its parents slugs
+     * Regenerate the paths of all projects from its parents slugs
      */
     public function regenerate_paths($parent_project_id = \null)
     {
@@ -2530,7 +2789,7 @@ class GP_Project extends \GP_Thing
     }
     /**
      * Gives an array of project objects starting from the current project
-     * then its parent, its parent and up to the root
+     * then its parent, its parent and up to the root.
      *
      * @todo Cache the results. Invalidation is tricky, because on each project update we need to invalidate the cache
      * for all of its children.
@@ -2554,7 +2813,7 @@ class GP_Project extends \GP_Thing
     }
     /**
      * Gives an array of project objects starting from the current project children
-     * then its grand children etc
+     * then its grand children etc.
      *
      * @return array
      */
@@ -2591,7 +2850,7 @@ class GP_Translation_Set extends \GP_Thing
 {
     var $table_basename = 'gp_translation_sets';
     var $field_names = array('id', 'name', 'slug', 'project_id', 'locale');
-    var $non_db_field_names = array('current_count', 'untranslated_count', 'waiting_count', 'fuzzy_count', 'percent_translated', 'wp_locale', 'last_modified');
+    var $non_db_field_names = array('current_count', 'untranslated_count', 'waiting_count', 'fuzzy_count', 'all_count', 'warnings_count', 'percent_translated', 'wp_locale', 'last_modified');
     var $int_fields = array('id', 'project_id');
     var $non_updatable_attributes = array('id');
     /**
@@ -2806,6 +3065,37 @@ class GP_Translation_Set extends \GP_Thing
     public function delete()
     {
     }
+    /**
+     * Executes after creating a translation set.
+     *
+     * @since 3.0.0
+     *
+     * @return bool
+     */
+    public function after_create()
+    {
+    }
+    /**
+     * Executes after saving a translation set.
+     *
+     * @since 3.0.0
+     *
+     * @param GP_Translation_Set $translation_set_before Translation set before the update.
+     * @return bool
+     */
+    public function after_save($translation_set_before)
+    {
+    }
+    /**
+     * Executes after deleting a translation set.
+     *
+     * @since 3.0.0
+     *
+     * @return bool
+     */
+    public function after_delete()
+    {
+    }
 }
 /**
  * Things: GP_Translation class
@@ -2981,9 +3271,6 @@ class GP_Translation extends \GP_Thing
     public function prepare_fields_for_save($args)
     {
     }
-    public function fix_translation($translation)
-    {
-    }
     /**
      * Sets restriction rules for fields.
      *
@@ -2994,7 +3281,12 @@ class GP_Translation extends \GP_Thing
     public function restrict_fields($rules)
     {
     }
-    public function set_fields($db_object)
+    /**
+     * Sets fields of the current GP_Thing object.
+     *
+     * @param array $fields Fields for a GP_Thing object.
+     */
+    public function set_fields($fields)
     {
     }
     public function for_export($project, $translation_set, $filters = \null)
@@ -3052,10 +3344,12 @@ class GP_Translation extends \GP_Thing
      * Executes after saving a translation.
      *
      * @since 1.0.0
+     * @since 3.0.0 Added the `$original_before` parameter.
      *
+     * @param GP_Translation $translation_before Translation before the update.
      * @return bool
      */
-    public function after_save()
+    public function after_save($translation_before)
     {
     }
     /**
@@ -3101,7 +3395,12 @@ class GP_Validator_Permission extends \GP_Permission
     public function restrict_fields($rules)
     {
     }
-    public function set_fields($db_object)
+    /**
+     * Sets fields of the current GP_Thing object.
+     *
+     * @param array $fields Fields for a GP_Thing object.
+     */
+    public function set_fields($fields)
     {
     }
     public function prepare_fields_for_save($args)
@@ -3236,7 +3535,7 @@ class GP_Translation_Warnings
      * @since 1.0.0
      * @access public
      *
-     * @var array
+     * @var callable[]
      */
     public $callbacks = array();
     /**
@@ -3282,7 +3581,7 @@ class GP_Translation_Warnings
      *
      * @param string    $singular     The singular form of an original string.
      * @param string    $plural       The plural form of an original string.
-     * @param array     $translations An array of translations for an original.
+     * @param string[]  $translations An array of translations for an original.
      * @param GP_Locale $locale       The locale of the translations.
      * @return array|null Null if no issues have been found, otherwise an array
      *                    with warnings.
@@ -3324,7 +3623,7 @@ class GP_Builtin_Translation_Warnings
      *
      * @var array
      */
-    public $length_exclude_languages = array('art-xemoji', 'ja', 'zh', 'zh-hk', 'zh-cn', 'zh-sg', 'zh-tw');
+    public $length_exclude_languages = array('art-xemoji', 'ja', 'ko', 'zh', 'zh-hk', 'zh-cn', 'zh-sg', 'zh-tw');
     /**
      * Checks whether lengths of source and translation differ too much.
      *
@@ -3461,6 +3760,22 @@ class GP_Locale
     public $google_code = \null;
     public $preferred_sans_serif_font_family = \null;
     public $facebook_locale = \null;
+    /**
+     * The variant root for this locale.
+     *
+     * @since 3.0.0
+     *
+     * @var string
+     */
+    public $variant_root = \null;
+    /**
+     * The variants of this locale.
+     *
+     * @since 3.0.0
+     *
+     * @var array
+     */
+    public $variants = \null;
     // TODO: days, months, decimals, quotes
     private $_index_for_number;
     public function __construct($args = array())
@@ -3523,7 +3838,7 @@ class GP_Locales
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 2.3.1
+ * Version: 3.0.0-alpha
  * Author: the GlotPress team
  * Author URI: https://glotpress.blog
  * License: GPLv2 or later
@@ -3545,14 +3860,15 @@ class GP_Locales
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '2.3.1');
+\define('GP_VERSION', '3.0.0-alpha');
 \define('GP_DB_VERSION', '980');
+\define('GP_CACHE_VERSION', '3.0');
 \define('GP_ROUTING', \true);
 \define('GP_PLUGIN_FILE', __FILE__);
 \define('GP_PATH', __DIR__ . '/');
 \define('GP_INC', 'gp-includes/');
-\define('GP_WP_REQUIRED_VERSION', '4.4');
-\define('GP_PHP_REQUIRED_VERSION', '5.3');
+\define('GP_WP_REQUIRED_VERSION', '4.6');
+\define('GP_PHP_REQUIRED_VERSION', '7.2');
 /**
  * Displays an admin notice on the plugins page that GlotPress has been disabled and why..
  *
@@ -3723,45 +4039,6 @@ function gp_cli_register()
 {
 }
 /**
- * create_function wrappers
- */
-/**
- * Creates a function, which returns $value
- *
- * @param mixed $value
- */
-function returner($value)
-{
-}
-/**
- * Creates a function, which prints $value
- *
- * @param mixed $value
- */
-function echoer($value)
-{
-}
-/**
- * Creates a function, which accepts $args and returns the expression in $expression.
- *
- * Items from the optional array $locals can be used as local variables in the function.
- * In case of collision a formal arguments and a key in $locals, the latter will be prefixed
- * with ext_
- *
- * @param string $args String with the function arguments
- * @param string $expression String with an expression -- the result of the function
- * @param array $locals The items in this array will be extracted in the function as local variables.
- */
-function lambda($args, $expression, $locals = array())
-{
-}
-/**
- * Returns a function, which returns the string "odd" or the string "even" alternatively.
- */
-function gp_parity_factory()
-{
-}
-/**
  * Install/Upgrade routines for the database.
  *
  * @package GlotPress
@@ -3838,8 +4115,6 @@ function gp_update_meta($object_id = 0, $meta_key, $meta_value, $type, $global =
  *
  * @since 1.0.0
  *
- * @internal
- *
  * @param int    $object_id  ID of the object metadata is for.
  * @param string $meta_key   Metadata key.
  * @param mixed  $meta_value The value to store.
@@ -3852,21 +4127,21 @@ function gp_delete_meta($object_id = 0, $meta_key, $meta_value, $type, $global =
 {
 }
 /**
- * Retrieves a value from $_POST
+ * Retrieves a value from $_POST.
  *
- * @param string $key name of post value
- * @param mixed $default value to return if $_POST[$key] doesn't exist. Default is ''
- * @return mixed $_POST[$key] if exists or $default
+ * @param string       $key     Name of post value.
+ * @param string|array $default Optional. Value to return if `$_POST[ $key ]` doesn't exist. Default empty.
+ * @return string|array Value of `$_POST[ $key ]` if exists or `$default`.
  */
 function gp_post($key, $default = '')
 {
 }
 /**
- * Retrieves a value from $_GET
+ * Retrieves a value from $_GET.
  *
- * @param string $key name of get value
- * @param mixed $default value to return if $_GET[$key] doesn't exist. Default is ''
- * @return mixed $_GET[$key] if exists or $default
+ * @param string       $key     Name of get value.
+ * @param string|array $default Optional. Value to return if `$_GET[ $key ]` doesn't exist. Default empty.
+ * @return string|array Value of `$_GET[ $key ]` if exists or `$default`.
  */
 function gp_get($key, $default = '')
 {
@@ -3902,9 +4177,9 @@ function gp_route_nonce_url($url, $action)
 /**
  * Retrieves a value from $array
  *
- * @param array $array
+ * @param array  $array
  * @param string $key name of array value
- * @param mixed $default value to return if $array[$key] doesn't exist. Default is ''
+ * @param mixed  $default value to return if $array[$key] doesn't exist. Default is ''
  * @return mixed $array[$key] if exists or $default
  */
 function gp_array_get($array, $key, $default = '')
@@ -3956,7 +4231,43 @@ function gp_populate_notices()
  * each of the argument arrays. The returned array is truncated in length to the length
  * of the shortest argument array.
  *
- * The function works only with numerical arrays.
+ * Previously this function was documented as:
+ *
+ *      The function works only with numerical arrays.
+ *
+ * However this was incorrect, this function would only return an array of arrays with
+ * numeric basic indexes, but would process any array whether it was numeric or reference
+ * based, using the order in which the array was created as the index value to return.
+ *
+ * For example:
+ *
+ *      $first_array[] = "First"
+ *      $first_array[] = "Second"
+ *      $first_array[] = "Third"
+ *
+ *      $second_array[0]    = "Fourth"
+ *      $second_array[test] = "Fifth"
+ *      $second_array[1]    = "Sixth"
+ *
+ *      $result = gp_array_zip( $first_array, $second_array );
+ *
+ * Would produce:
+ *
+ *      $result[0][0] = "First"
+ *      $result[0][1] = "Fourth"
+ *      $result[1][0] = "Second"
+ *      $result[1][1] = "Fifth"
+ *      $result[2][0] = "Third"
+ *      $result[2][1] = "Sixth"
+ *
+ * Instead of either failing (which is probably what should have happened) or something like:
+ *
+ *      $result[0][0] = "First"
+ *      $result[0][1] = "Fourth"
+ *      $result[1][0] = "Second"
+ *      $result[1][1] = "Sixth"
+ *
+ * Or some other random result.
  */
 function gp_array_zip()
 {
@@ -3977,7 +4288,7 @@ function gp_object_has_var($object, $var_name)
  * Has this translation been updated since the passed timestamp?
  *
  * @param GP_Translation_Set $translation_set Translation to check
- * @param int $timestamp Optional; unix timestamp to compare against. Defaults to HTTP_IF_MODIFIED_SINCE if set.
+ * @param int                $timestamp Optional; unix timestamp to compare against. Defaults to HTTP_IF_MODIFIED_SINCE if set.
  * @return bool
  */
 function gp_has_translation_been_updated($translation_set, $timestamp = 0)
@@ -4088,8 +4399,11 @@ function gp_is_between_exclusive($value, $start, $end)
  * Acts the same as core PHP setcookie() but its arguments are run through the gp_set_cookie filter.
  *
  * If the filter returns false, setcookie() isn't called.
+ *
+ * @param string $name    The name of the cookie.
+ * @param mixed  ...$args Additional arguments to be passed to setcookie().
  */
-function gp_set_cookie()
+function gp_set_cookie($name, ...$args)
 {
 }
 /**
@@ -4345,9 +4659,6 @@ function gp_levenshtein($str1, $str2, $length1, $length2)
 function gp_sanitize_slug($slug)
 {
 }
-function gp_urldecode_deep($value)
-{
-}
 /**
  * Makes all key/value pairs in $vars global variables
  */
@@ -4398,113 +4709,276 @@ function gp_abort_main_wp_query($sql, \WP_Query $wp_query)
 function gp_delete_user_permissions($user_id)
 {
 }
+/**
+ * Link Template Functions
+ *
+ * @package GlotPress
+ * @subpackage Template
+ */
+/**
+ * Creates a HTML link.
+ *
+ * @since 1.0.0
+ *
+ * @param string $url   The URL to link to.
+ * @param string $text  The text to use for the link.
+ * @param array  $attrs Optional. Additional attributes to use
+ *                      to determine the classes for the link.
+ * @return string The HTML link.
+ */
 function gp_link_get($url, $text, $attrs = array())
 {
 }
-function gp_link()
+/**
+ * Creates a HTML link.
+ *
+ * @since 1.0.0
+ *
+ * @see gp_link_get()
+ *
+ * @param string $url   The URL to link to.
+ * @param string $text  The text to use for the link.
+ * @param array  $attrs Optional. Additional attributes to use
+ *                      to determine the classes for the link.
+ */
+function gp_link($url, $text, $attrs = array())
 {
 }
+/**
+ * Creates a HTML link with a confirmation request.
+ *
+ * Uses the `window.confirm()` method to display a modal dialog for confirmation.
+ *
+ * @since 1.0.0
+ *
+ * @param string $url   The URL to link to.
+ * @param string $text  The text to use for the link.
+ * @param array  $attrs Optional. Additional attributes to use
+ *                      to determine the classes for the link.
+ * @return string The HTML link.
+ */
 function gp_link_with_ays_get($url, $text, $attrs = array())
 {
 }
-function gp_link_with_ays()
+/**
+ * Creates a HTML link with a confirmation request.
+ *
+ * Uses the `window.confirm()` method to display a modal dialog for confirmation.
+ *
+ * @since 1.0.0
+ *
+ * @see gp_link_with_ays_get()
+ *
+ * @param string $url   The URL to link to.
+ * @param string $text  The text to use for the link.
+ * @param array  $attrs Optional. Additional attributes to use
+ *                      to determine the classes for the link.
+ */
+function gp_link_with_ays($url, $text, $attrs = array())
 {
 }
+/**
+ * Creates a HTML link to the page of a project.
+ *
+ * @since 1.0.0
+ *
+ * @param GP_Project|string $project_or_path The project to link to.
+ * @param string            $text            The text to use for the link.
+ * @param array             $attrs           Optional. Additional attributes to use
+ *                                           to determine the classes for the link.
+ * @return string The HTML link.
+ */
 function gp_link_project_get($project_or_path, $text, $attrs = array())
 {
 }
-function gp_link_project()
+/**
+ * Outputs a HTML link to the page of a project.
+ *
+ * @since 1.0.0
+ *
+ * @see gp_link_project_get()
+ *
+ * @param GP_Project|string $project_or_path The project to link to.
+ * @param string            $text            The text to use for the link.
+ * @param array             $attrs           Optional. Additional attributes to use
+ *                                           to determine the classes for the link.
+ */
+function gp_link_project($project_or_path, $text, $attrs = array())
 {
 }
-function gp_link_project_edit_get($project, $text = \null, $attrs = array())
+/**
+ * Creates a HTML link to the edit page for projects.
+ *
+ * @since 1.0.0
+ *
+ * @param GP_Project $project The project to link to.
+ * @param string     $text    Optional. The text to use for the link. Default 'Edit'.
+ * @param array      $attrs   Optional. Additional attributes to use to determine the classes for the link.
+ * @return string The HTML link.
+ */
+function gp_link_project_edit_get($project, $text = '', $attrs = array())
 {
 }
-function gp_link_project_edit()
+/**
+ * Outputs a HTML link to the edit page for projects.
+ *
+ * @since 1.0.0
+ *
+ * @see gp_link_project_edit_get()
+ *
+ * @param GP_Project $project The project to link to.
+ * @param string     $text    Optional. The text to use for the link. Default 'Edit'.
+ * @param array      $attrs   Optional. Additional attributes to use to determine the classes for the link.
+ */
+function gp_link_project_edit($project, $text = '', $attrs = array())
 {
 }
-function gp_link_project_delete_get($project, $text = \false, $attrs = array())
+/**
+ * Creates a HTML link to the delete page for projects.
+ *
+ * @since 1.0.0
+ *
+ * @param GP_Project $project The project to link to.
+ * @param string     $text    Optional. The text to use for the link. Default 'Delete'.
+ * @param array      $attrs   Optional. Additional attributes to use to determine the classes for the link.
+ * @return string The HTML link.
+ */
+function gp_link_project_delete_get($project, $text = '', $attrs = array())
 {
 }
-function gp_link_project_delete()
+/**
+ * Outputs a HTML link to the delete page for projects.
+ *
+ * @since 1.0.0
+ *
+ * @see gp_link_project_delete_get()
+ *
+ * @param GP_Project $project The project to link to.
+ * @param string     $text    Optional. The text to use for the link.
+ * @param array      $attrs   Optional. Additional attributes to use to determine the classes for the link.
+ */
+function gp_link_project_delete($project, $text = '', $attrs = array())
 {
 }
+/**
+ * Creates a HTML link to the home page of GlotPress.
+ *
+ * @since 1.0.0
+ *
+ * @return string The HTML link.
+ */
 function gp_link_home_get()
 {
 }
+/**
+ * Outputs a HTML link to the home page of GlotPress.
+ *
+ * @since 1.0.0
+ *
+ * @see gp_link_home_get()
+ */
 function gp_link_home()
-{
-}
-function gp_link_set_edit_get($set, $project, $text = \false, $attrs = array())
-{
-}
-function gp_link_set_edit()
 {
 }
 /**
  * Creates a HTML link to the delete page for translations sets.
  *
- * Does the heavy lifting for gp_link_set_delete().
+ * @since 1.0.0
+ *
+ * @param GP_Translation_Set $set     The translation set to link to.
+ * @param GP_Project         $project The project the translation set belongs to.
+ * @param string             $text    Optional. The text to use for the link. Default 'Edit'.
+ * @param array              $attrs   Optional. Additional attributes to use to determine the classes for the link.
+ * @return string The HTML link.
+ */
+function gp_link_set_edit_get($set, $project, $text = '', $attrs = array())
+{
+}
+/**
+ * Outputs a HTML link to the edit page for translations sets.
+ *
+ * @since 1.0.0
+ *
+ * @see gp_link_set_edit_get()
+ *
+ * @param GP_Translation_Set $set     The translation set to link to.
+ * @param GP_Project         $project The project the translation set belongs to.
+ * @param string             $text    Optional. The text to use for the link. Default 'Edit'.
+ * @param array              $attrs   Optional. Additional attributes to use to determine the classes for the link.
+ */
+function gp_link_set_edit($set, $project, $text = '', $attrs = array())
+{
+}
+/**
+ * Creates a HTML link to the delete page for translations sets.
  *
  * @since 2.0.0
  *
  * @param GP_Translation_Set $set     The translation set to link to.
  * @param GP_Project         $project The project the translation set belongs to.
- * @param string             $text    The text to use for the link.
- * @param array              $attrs   Additional attributes to use to determine the classes for the link.
- *
- * @return string $link
+ * @param string             $text    Optional. The text to use for the link. Default 'Delete'.
+ * @param array              $attrs   Optional. Additional attributes to use to determine the classes for the link.
+ * @return string The HTML link.
  */
-function gp_link_set_delete_get($set, $project, $text = \false, $attrs = array())
+function gp_link_set_delete_get($set, $project, $text = '', $attrs = array())
 {
 }
 /**
  * Outputs a HTML link to the delete page for translations sets.
  *
- * Does the heavy lifting for gp_link_set_delete().
- *
  * @since 2.0.0
+ *
+ * @see gp_link_set_delete_get()
  *
  * @param GP_Translation_Set $set     The translation set to link to.
  * @param GP_Project         $project The project the translation set belongs to.
- * @param string             $text    The text to use for the link.
- * @param array              $attrs   Additional attributes to use to determine the classes for the link.
+ * @param string             $text    Optional. The text to use for the link. Default 'Delete'.
+ * @param array              $attrs   Optional. Additional attributes to use to determine the classes for the link.
  */
-function gp_link_set_delete($set, $project, $text = \false, $attrs = array())
+function gp_link_set_delete($set, $project, $text = '', $attrs = array())
 {
 }
 /**
- * Creates a HTML link to the delete page for translations sets.
- *
- * Does the heavy lifting for gp_link_glossary_delete.
+ * Creates a HTML link to the edit page for glossaries.
  *
  * @since 1.0.0
  *
  * @param GP_Glossary        $glossary The glossary to link to.
  * @param GP_Translation_Set $set      The translation set the glossary is for.
- * @param string             $text     The text to use for the link.
- * @param array              $attrs    Additional attributes to use to determine the classes for the link.
+ * @param string             $text     Optional. The text to use for the link. Default 'Edit'.
+ * @param array              $attrs    Optional. Additional attributes to use to determine the classes for the link.
  * @return string The HTML link.
  */
-function gp_link_glossary_edit_get($glossary, $set, $text = \false, $attrs = array())
-{
-}
-function gp_link_glossary_edit()
+function gp_link_glossary_edit_get($glossary, $set, $text = '', $attrs = array())
 {
 }
 /**
- * Creates a HTML link to the delete page for translations sets.
+ * Outputs a HTML link to the edit page for glossaries.
  *
- * Does the heavy lifting for gp_link_glossary_delete.
+ * @since 1.0.0
+ *
+ * @see gp_link_glossary_edit_get()
+ *
+ * @param GP_Glossary        $glossary The glossary to link to.
+ * @param GP_Translation_Set $set      The translation set the glossary is for.
+ * @param string             $text     Optional. The text to use for the link. Default 'Edit'.
+ * @param array              $attrs    Optional. Additional attributes to use to determine the classes for the link.
+ */
+function gp_link_glossary_edit($glossary, $set, $text = '', $attrs = array())
+{
+}
+/**
+ * Creates a HTML link to the delete page for glossaries.
  *
  * @since 2.0.0
  *
  * @param GP_Glossary        $glossary The glossary to link to.
  * @param GP_Translation_Set $set      The translation set the glossary is for.
- * @param string             $text     The text to use for the link.
- * @param array              $attrs    Additional attributes to use to determine the classes for the link.
+ * @param string             $text     Optional. The text to use for the link. Default 'Delete'.
+ * @param array              $attrs    Optional. Additional attributes to use to determine the classes for the link.
  * @return string The HTML link.
  */
-function gp_link_glossary_delete_get($glossary, $set, $text = \false, $attrs = array())
+function gp_link_glossary_delete_get($glossary, $set, $text = '', $attrs = array())
 {
 }
 /**
@@ -4512,12 +4986,14 @@ function gp_link_glossary_delete_get($glossary, $set, $text = \false, $attrs = a
  *
  * @since 2.0.0
  *
+ * @see gp_link_glossary_delete_get()
+ *
  * @param GP_Glossary        $glossary The glossary to link to.
  * @param GP_Translation_Set $set      The translation set the glossary is for.
- * @param string             $text     The text to use for the link.
- * @param array              $attrs    Additional attributes to use to determine the classes for the link.
+ * @param string             $text     Optional. The text to use for the link. Default 'Delete'.
+ * @param array              $attrs    Optional. Additional attributes to use to determine the classes for the link.
  */
-function gp_link_glossary_delete($glossary, $set, $text = \false, $attrs = array())
+function gp_link_glossary_delete($glossary, $set, $text = '', $attrs = array())
 {
 }
 /**
@@ -4533,7 +5009,17 @@ function gp_link_user($user)
 function gp_tmpl_load($template, $args = array(), $template_path = \null)
 {
 }
-function gp_tmpl_get_output()
+/**
+ * Retrieves content of a template via output buffering.
+ *
+ * @since 1.0.0
+ *
+ * @see gp_tmpl_load()
+ *
+ * @param mixed ...$args Arguments to be passed to gp_tmpl_load().
+ * @return string|false
+ */
+function gp_tmpl_get_output(...$args)
 {
 }
 function gp_tmpl_header($args = array())
@@ -4630,8 +5116,8 @@ function gp_locales_dropdown($name_and_id, $selected_slug = \null, $attrs = arra
  * @param string $name_and_id         Name and ID of the select element.
  * @param string $selected_project_id The project id to mark as the currently selected.
  * @param array  $attrs               Extra attributes.
- * @param array  $exclude             An array of locales to exclude from the list.
- * @param array  $exclude_no_parent   Exclude the "No Parent" option from the list of locales.
+ * @param array  $exclude             An array of project IDs to exclude from the list.
+ * @param array  $exclude_no_parent   Exclude the "No Parent" option from the list of projects.
  *
  * @return string HTML markup for a select element.
  */
@@ -4730,12 +5216,12 @@ function gp_url_add_path_and_query($base, $path, $query)
 {
 }
 /**
- * Converts an absolute URL to the corresponding SSL URL if the GlotPress
- * settings allow SSL
+ * Retrieves the URL for the GlotPress root page.
+ *
+ * @since 1.0.0
+ *
+ * @return string GlotPress root page URL.
  */
-function gp_url_ssl($url)
-{
-}
 function gp_url_public_root()
 {
 }
@@ -4765,9 +5251,11 @@ function gp_url_current()
 /**
  * Get the URL for a project
  *
- * @param bool|string|object $project_or_path Project path or object
- * @param string|array $path Addition path to append to the base path
- * @param array $query associative array of query arguments (optional)
+ * A leading double-slash will avoid prepending /projects/ to the path.
+ *
+ * @param GP_Project|string $project_or_path Project path or object.
+ * @param string|array      $path            Addition path to append to the base path.
+ * @param array             $query           Optional. Associative array of query arguments.
  *
  * @return string
  */
@@ -4788,6 +5276,15 @@ function gp_plugin_url($path = '')
 \define('GP_TESTS_PATH', \GP_PATH . 't/');
 \define('GP_TMPL_PATH', \GP_PATH . 'gp-templates/');
 /**
+ * Filter a glossary description.
+ *
+ * @since 3.0.0
+ *
+ * @param string      $description Glossary description.
+ * @param GP_Glossary $project     The current glossary.
+ */
+$glossary_description = \apply_filters('gp_glossary_description', $glossary->description, $glossary);
+/**
  * Defines helper functions used by GlotPress.
  *
  * @package GlotPress
@@ -4804,7 +5301,38 @@ function gp_plugin_url($path = '')
 function prepare_original($text)
 {
 }
-function map_glossary_entries_to_translations_originals($translations, $glossary)
+/**
+ * Prepares a translation string to be printed out in a translation row by adding an 'extra' return/newline if
+ * it starts with one.
+ *
+ * @since 3.0.0
+ *
+ * @param string $text A single style handle to enqueue or an array or style handles to enqueue.
+ * @return string The prepared string for output.
+ */
+function gp_prepare_translation_textarea($text)
+{
+}
+/**
+ * Sort a set of glossary entries by length for use in map_glossary_entries_to_translation_originals().
+ *
+ * @param array $glossary_entries An array of glossary entries to sort.
+ *
+ * @return array The sorted entries.
+ */
+function gp_sort_glossary_entries_terms($glossary_entries)
+{
+}
+/**
+ * Add markup to a translation original to identify the glossary terms.
+ *
+ * @param GP_Translation $translation            A GP Translation object.
+ * @param GP_Glossary    $glossary               A GP Glossary object.
+ * @param array          $glossary_entries_terms A list of terms to highligh.
+ *
+ * @return obj The marked up translation entry.
+ */
+function map_glossary_entries_to_translation_originals($translation, $glossary, $glossary_entries_terms = \null)
 {
 }
 function textareas($entry, $permissions, $index = 0)
@@ -4817,6 +5345,27 @@ function references($project, $entry)
 {
 }
 /**
+ * Output the bulk actions toolbar in the translations page.
+ *
+ * @param string $bulk_action     The URL to submit the form to.
+ * @param string $can_write       Can the current user write translations to the database.
+ * @param string $translation_set The current translation set.
+ * @param string $location        The location of this toolbar, used to make id's unique for each instance on a page.
+ */
+function gp_translations_bulk_actions_toolbar($bulk_action, $can_write, $translation_set, $location = 'top')
+{
+}
+/**
+ * Filter a project description.
+ *
+ * @since 1.0.0
+ *
+ * @param string     $description Project description.
+ * @param GP_Project $project     The current project.
+ */
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+$project_description = \apply_filters('gp_project_description', $project->description, $project);
+/**
  * The user settings block
  *
  * A single table that contains all of the user settings, which is included as part of gp-templates/settings.php.
@@ -4826,23 +5375,71 @@ function references($project, $entry)
  * @package GlotPress
  * @since 2.0.0
  */
-$per_page = (int) \get_user_option('gp_per_page');
+$gp_per_page = (int) \get_user_option('gp_per_page');
+/**
+ * Template for the meta section of the editor row in a translation set display
+ *
+ * @package    GlotPress
+ * @subpackage Templates
+ */
+$more_links = array();
+/**
+ * Allows to modify the more links in the translation editor.
+ *
+ * @since 2.3.0
+ *
+ * @param array $more_links The links to be output.
+ * @param GP_Project $project Project object.
+ * @param GP_Locale $locale Locale object.
+ * @param GP_Translation_Set $translation_set Translation Set object.
+ * @param GP_Translation $translation Translation object.
+ */
+$more_links = \apply_filters('gp_translation_row_template_more_links', $more_links, $project, $locale, $translation_set, $translation);
+/**
+ * Template for the editor part of a single translation row in a translation set display
+ *
+ * @package    GlotPress
+ * @subpackage Templates
+ */
+/**
+ * Filter to update colspan of editor. Decrease to add an extra column
+ * with action 'gp_translation_row_editor_columns'.
+ *
+ * @since 3.0.0
+ *
+ * @param int $colspan The colspan of editor column.
+ */
+$colspan = \apply_filters('gp_translation_row_editor_colspan', $can_approve ? 5 : 4);
+/**
+ * Template for the preview part of a single translation row in a translation set display
+ *
+ * @package    GlotPress
+ * @subpackage Templates
+ */
+$priority_char = array('-2' => array('&times;', 'transparent', '#ccc'), '-1' => array('&darr;', 'transparent', 'blue'), '0' => array('', 'transparent', 'white'), '1' => array('&uarr;', 'transparent', 'green'));
 /**
  * Template for a single translation row in a translation set display
  *
  * @package GlotPress
  * @subpackage Templates
  */
-$priority_char = array('-2' => array('&times;', 'transparent', '#ccc'), '-1' => array('&darr;', 'transparent', 'blue'), '0' => array('', 'transparent', 'white'), '1' => array('&uarr;', 'transparent', 'green'));
+$user = \wp_get_current_user();
 /**
- * Allows to modify the more links in the translation editor.
+ * Check to see if a term or user login has been added to the filter or one of the other filter options, if so,
+ * we don't want to match the standard filter links.
  *
- * @since 2.3.0
- *
- * @param array              $more_links      The links to be output.
- * @param GP_Project         $project         Project object.
- * @param GP_Locale          $locale          Locale object.
- * @param GP_Translation_Set $translation_set Translation Set object.
- * @param GP_Translation     $t               Translation object.
+ * Note: Don't check for the warnings filter here otherwise we won't be able to use this value during the check
+ * to see if the warnings filter link entry is the currently selected filter.
  */
-$more_links = \apply_filters('gp_translation_row_template_more_links', $more_links, $project, $locale, $translation_set, $t);
+$additional_filters = \array_key_exists('term', $filters_and_sort) || \array_key_exists('user_login', $filters_and_sort) || \array_key_exists('with_comment', $filters_and_sort) || \array_key_exists('case_sensitive', $filters_and_sort) || \array_key_exists('with_plural', $filters_and_sort) || \array_key_exists('with_context', $filters_and_sort);
+/**
+ * Filter footer links in translations.
+ *
+ * @since 1.0.0
+ *
+ * @param array              $footer_links    Default links.
+ * @param GP_Project         $project         The current project.
+ * @param GP_Locale          $locale          The current locale.
+ * @param GP_Translation_Set $translation_set The current translation set.
+ */
+$footer_links = \apply_filters('gp_translations_footer_links', $footer_links, $project, $locale, $translation_set);
