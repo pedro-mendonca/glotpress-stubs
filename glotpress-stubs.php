@@ -2710,6 +2710,16 @@ class GP_Original extends \GP_Thing
     public function get_matching_originals_in_other_projects()
     {
     }
+    /**
+     * Deletes an original and all of its translations.
+     *
+     * @since 3.0.0
+     *
+     * @return bool
+     */
+    public function delete()
+    {
+    }
     // Triggers
     /**
      * Executes after creating an original.
@@ -2786,12 +2796,12 @@ class GP_Project extends \GP_Thing
     {
     }
     /**
-     * Fetches the project by id or object.
+     * Fetches the project by ID or object.
      *
      * @since 2.3.0
      *
-     * @param int|object $thing_or_id A project or the id.
-     * @return GP_Project The project
+     * @param int|object $thing_or_id A project or the ID.
+     * @return GP_Project|false The project on success or false on failure.
      */
     public function get($thing_or_id)
     {
@@ -3147,7 +3157,7 @@ class GP_Translation_Set extends \GP_Thing
     {
     }
     /**
-     * Deletes a translation set and all of it's translations and glossaries.
+     * Deletes a translation set and all of its translations and glossaries.
      *
      * @since 2.0.0
      *
@@ -3947,7 +3957,7 @@ class GP_Locales
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 3.0.0-alpha.2
+ * Version: 3.0.0-alpha.3
  * Author: the GlotPress team
  * Author URI: https://glotpress.blog
  * License: GPLv2 or later
@@ -3969,7 +3979,7 @@ class GP_Locales
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '3.0.0-alpha.2');
+\define('GP_VERSION', '3.0.0-alpha.3');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
 \define('GP_ROUTING', \true);
