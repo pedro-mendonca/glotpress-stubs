@@ -1322,6 +1322,7 @@ class GP_Router
     {
     }
 }
+// phpcs:ignore WordPress.Files.FileName.NotHyphenatedLowercase
 /**
  * Routes: GP_Route_Main class
  *
@@ -2335,10 +2336,6 @@ class GP_Thing
     {
     }
     public function apply_default_conditions($conditions_str)
-    {
-    }
-    // set memory limits.
-    public function set_memory_limit($new_limit)
     {
     }
 }
@@ -3734,6 +3731,33 @@ class GP_Builtin_Translation_Warnings
      */
     public $length_exclude_languages = array('art-xemoji', 'ja', 'ko', 'zh', 'zh-hk', 'zh-cn', 'zh-sg', 'zh-tw');
     /**
+     * List of domains with allowed changes to their own subdomains
+     *
+     * @since 3.0.0
+     * @access public
+     *
+     * @var array
+     */
+    public $allowed_domain_changes = array(
+        // Allow links to wordpress.org to be changed to a subdomain.
+        'wordpress.org' => '[^.]+\\.wordpress\\.org',
+        // Allow links to wordpress.com to be changed to a subdomain.
+        'wordpress.com' => '[^.]+\\.wordpress\\.com',
+        // Allow links to gravatar.org to be changed to a subdomain.
+        'en.gravatar.com' => '[^.]+\\.gravatar\\.com',
+        // Allow links to wikipedia.org to be changed to a subdomain.
+        'en.wikipedia.org' => '[^.]+\\.wikipedia\\.org',
+    );
+    /**
+     * List of languages without italics
+     *
+     * @since 3.0.0
+     * @access public
+     *
+     * @var array
+     */
+    public $languages_without_italics = array('ja', 'ko', 'zh', 'zh-hk', 'zh-cn', 'zh-sg', 'zh-tw');
+    /**
      * Checks whether lengths of source and translation differ too much.
      *
      * @since 1.0.0
@@ -3750,6 +3774,8 @@ class GP_Builtin_Translation_Warnings
     /**
      * Checks whether HTML tags are missing or have been added.
      *
+     * @todo Validate if the HTML is in the same order in function of the language. Validate nesting of HTML is same.
+     *
      * @since 1.0.0
      * @access public
      *
@@ -3763,6 +3789,12 @@ class GP_Builtin_Translation_Warnings
     }
     /**
      * Checks whether PHP placeholders are missing or have been added.
+     *
+     * The default regular expression:
+     * bcdefgosuxEFGX are standard printf placeholders.
+     * % is included to allow/expect %%.
+     * l is included for wp_sprintf_l()'s custom %l format.
+     * @ is included for Swift (as used for iOS mobile app) %@ string format.
      *
      * @since 1.0.0
      * @access public
@@ -3845,11 +3877,100 @@ class GP_Builtin_Translation_Warnings
     {
     }
     /**
+     * Adds a warning for changing plain-text URLs.
+     *
+     * This allows for the scheme to change, and for some domains to change to a subdomain.
+     *
+     * @since 3.0.0
+     * @access public
+     *
+     * @param string $original    The original string.
+     * @param string $translation The translated string.
+     * @return string|true True if check is OK, otherwise warning message.
+     */
+    public function warning_mismatching_urls($original, $translation)
+    {
+    }
+    /**
+     * Adds a warning for adding unexpected percent signs in a sprintf-like string.
+     *
+     * This is to catch translations for originals like this:
+     *  - Original: `<a href="%s">100 percent</a>`
+     *  - Submitted translation: `<a href="%s">100%</a>`
+     *  - Proper translation: `<a href="%s">100%%</a>`
+     *
+     * @since 3.0.0
+     * @access public
+     *
+     * @param string $original    The original string.
+     * @param string $translation The translated string.
+     * @return bool|string
+     */
+    public function warning_unexpected_sprintf_token($original, $translation)
+    {
+    }
+    /**
      * Registers all methods starting with `warning_` as built-in warnings.
      *
      * @param GP_Translation_Warnings $translation_warnings Instance of GP_Translation_Warnings.
      */
     public function add_all($translation_warnings)
+    {
+    }
+    /**
+     * Adds a warning for changing placeholders.
+     *
+     * This only supports placeholders in the format of '###[A-Za-z_-]+###'.
+     *
+     * @todo Check that the number of each type of placeholders are the same in the original and in the translation
+     *
+     * @since 3.0.0
+     * @access public
+     *
+     * @param string $original    The original string.
+     * @param string $translation The translated string.
+     * @return string|true
+     */
+    public function warning_named_placeholders(string $original, string $translation)
+    {
+    }
+    /**
+     * Returns the values from the href and the src
+     *
+     * @since 3.0.0
+     * @access private
+     *
+     * @param array $content The original array.
+     * @return array
+     */
+    private function get_values_from_href_src(array $content) : array
+    {
+    }
+    /**
+     * Checks if the HTML tags are in correct order
+     *
+     * Warns about HTML tags translations in incorrect order. For example:
+     * - Original: <a></a>
+     * - Translation: </a><a>
+     *
+     * @param array $original_parts     The original HTML tags.
+     * @param array $translation_parts  The translation HTML tags.
+     * @return string|true True if check is OK, otherwise warning message.
+     */
+    private function check_valid_html(array $original_parts, array $translation_parts)
+    {
+    }
+    /**
+     * Checks whether links that are not URL or placeholders are equal or not
+     *
+     * @since 3.0.0
+     * @access private
+     *
+     * @param string $original_links    The original links.
+     * @param string $translation_links The translated links.
+     * @return  array|true True if check is OK, otherwise warning message.
+     */
+    private function links_without_url_and_placeholders_are_equal(string $original_links, string $translation_links)
     {
     }
 }
@@ -3957,7 +4078,7 @@ class GP_Locales
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 3.0.0-alpha.3
+ * Version: 3.0.0-alpha.4
  * Author: the GlotPress team
  * Author URI: https://glotpress.blog
  * License: GPLv2 or later
@@ -3979,7 +4100,7 @@ class GP_Locales
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '3.0.0-alpha.3');
+\define('GP_VERSION', '3.0.0-alpha.4');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
 \define('GP_ROUTING', \true);
@@ -4518,6 +4639,18 @@ function gp_is_between_exclusive($value, $start, $end)
 {
 }
 /**
+ * Checks if the passed value is one of the values in the list.
+ *
+ * @since 3.0.0
+ *
+ * @param string $value The value you want to check.
+ * @param array  $list  The list of values you want to check against.
+ * @return bool
+ */
+function gp_is_one_of($value, $list)
+{
+}
+/**
  * Acts the same as core PHP setcookie() but its arguments are run through the gp_set_cookie filter.
  *
  * If the filter returns false, setcookie() isn't called.
@@ -4579,6 +4712,16 @@ function gp_wp_profile_options_update($user_id)
  * @return array An array of sort by field types.
  */
 function gp_get_sort_by_fields()
+{
+}
+/**
+ * Sets the maximum memory limit available for translations imports.
+ *
+ * @since 3.0.0
+ *
+ * @return string The maximum memory limit.
+ */
+function gp_set_translations_import_max_memory_limit()
 {
 }
 /**
