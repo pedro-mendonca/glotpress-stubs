@@ -1,0 +1,35 @@
+{
+  "name": "pedro-mendonca/glotpress-stubs",
+  "description": "GlotPress function and class declaration stubs for static analysis. ",
+  "keywords": [
+    "glotpress",
+    "wordpress",
+    "static analysis",
+    "phpstan"
+  ],
+  "homepage": "https://github.com/pedro-mendonca/glotpress-stubs",
+  "license": "MIT",
+  "require": {
+    "php-stubs/wordpress-stubs": "^5.8"
+  },
+  "require-dev": {
+    "php": ">=7.1",
+    "php-stubs/generator": "^0.8.0"
+  },
+  "minimum-stability": "stable",
+  "scripts": {
+    "generate": "generate-stubs source --out=glotpress-stubs.php",
+    "install-src": "git clone git@github.com:GlotPress/GlotPress-WP.git source",
+    "zip": [
+      "composer install --no-dev",
+      "composer archive --file=glotpress-stubs --format=zip",
+      "composer install"
+    ]
+  },
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/pedro-mendonca"
+    }
+  ]
+}
