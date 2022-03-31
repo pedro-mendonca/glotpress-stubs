@@ -4068,7 +4068,7 @@ class GP_Locales
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 3.0.0-beta.1
+ * Version: 3.0.0-rc.1
  * Author: the GlotPress team
  * Author URI: https://glotpress.blog
  * License: GPLv2 or later
@@ -4090,7 +4090,7 @@ class GP_Locales
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '3.0.0-beta.1');
+\define('GP_VERSION', '3.0.0-rc.1');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
 \define('GP_ROUTING', \true);
@@ -4638,6 +4638,28 @@ function gp_is_between_exclusive($value, $start, $end)
  * @return bool
  */
 function gp_is_one_of($value, $list)
+{
+}
+/**
+ * Checks if the passed value has only ASCII characters.
+ *
+ * @since 3.0.0
+ *
+ * @param string $value The value you want to check.
+ * @return bool
+ */
+function gp_is_ascii_string($value)
+{
+}
+/**
+ * Checks if the passed value starts and ends with a word character.
+ *
+ * @since 3.0.0
+ *
+ * @param string $value The value you want to check.
+ * @return bool
+ */
+function gp_is_starting_and_ending_with_a_word_character($value)
 {
 }
 /**
