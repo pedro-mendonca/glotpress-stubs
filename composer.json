@@ -14,7 +14,7 @@
   },
   "require-dev": {
     "php": ">=7.1",
-    "php-stubs/generator": "^0.8.0"
+    "php-stubs/generator": "^0.8.1"
   },
   "minimum-stability": "stable",
   "scripts": {
