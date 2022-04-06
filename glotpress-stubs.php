@@ -3533,7 +3533,7 @@ class GP_Validator_Permission extends \GP_Permission
  *
  * Uses magic methods in the format of [field]_[rule].
  *
- * The below is a list of all magic methods called to ensure Scrutinizer recognizes them.
+ * The below is a list of all magic methods called.
  * Note that once a method has been defined from one file it will not be redefine in subsequent file sections.
  *
  * From gp_includes/things/administrative-permissions.php:
@@ -4068,7 +4068,10 @@ class GP_Locales
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 3.0.0-rc.2
+ * Version: 3.0.0-rc.3
+ * Requires at least: 4.6
+ * Tested up to: 5.9
+ * Requires PHP: 7.2
  * Author: the GlotPress team
  * Author URI: https://glotpress.blog
  * License: GPLv2 or later
@@ -4090,7 +4093,7 @@ class GP_Locales
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '3.0.0-rc.2');
+\define('GP_VERSION', '3.0.0-rc.3');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
 \define('GP_ROUTING', \true);
