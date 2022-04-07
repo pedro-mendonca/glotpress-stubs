@@ -4068,7 +4068,7 @@ class GP_Locales
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 3.0.0-rc.3
+ * Version: 3.0.0-rc.4
  * Requires at least: 4.6
  * Tested up to: 5.9
  * Requires PHP: 7.2
@@ -4093,7 +4093,7 @@ class GP_Locales
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '3.0.0-rc.3');
+\define('GP_VERSION', '3.0.0-rc.4');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
 \define('GP_ROUTING', \true);
@@ -5526,13 +5526,13 @@ function gp_prepare_translation_textarea($text)
 {
 }
 /**
- * Sort a set of glossary entries by length for use in map_glossary_entries_to_translation_originals().
+ * Adds suffixes for use in map_glossary_entries_to_translation_originals().
  *
  * @param array $glossary_entries An array of glossary entries to sort.
  *
- * @return array The sorted entries.
+ * @return array The suffixed entries.
  */
-function gp_sort_glossary_entries_terms($glossary_entries)
+function gp_glossary_add_suffixes($glossary_entries)
 {
 }
 /**
@@ -5540,11 +5540,10 @@ function gp_sort_glossary_entries_terms($glossary_entries)
  *
  * @param GP_Translation $translation            A GP Translation object.
  * @param GP_Glossary    $glossary               A GP Glossary object.
- * @param array          $glossary_entries_terms A list of terms to highligh.
  *
  * @return obj The marked up translation entry.
  */
-function map_glossary_entries_to_translation_originals($translation, $glossary, $glossary_entries_terms = \null)
+function map_glossary_entries_to_translation_originals($translation, $glossary)
 {
 }
 function textareas($entry, $permissions, $index = 0)
