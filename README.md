@@ -14,7 +14,7 @@ Stubs are generated directly from the [source](https://github.com/GlotPress/Glot
 
 ### Requirements
 
-- PHP >=7.1
+- PHP >=7.2
 
 ### Installation
 
