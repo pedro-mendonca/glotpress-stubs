@@ -4068,7 +4068,7 @@ class GP_Locales
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 3.0.0-rc.4
+ * Version: 3.0.0
  * Requires at least: 4.6
  * Tested up to: 5.9
  * Requires PHP: 7.2
@@ -4093,7 +4093,7 @@ class GP_Locales
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '3.0.0-rc.4');
+\define('GP_VERSION', '3.0.0');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
 \define('GP_ROUTING', \true);
