@@ -18,8 +18,8 @@
   },
   "minimum-stability": "stable",
   "scripts": {
-    "generate": "generate-stubs source --out=glotpress-stubs.php",
-    "install-src": "git clone git@github.com:GlotPress/GlotPress-WP.git source",
+    "generate": "generate-stubs --force source --out=glotpress-stubs.php",
+    "install-src": "git clone git@github.com:GlotPress/GlotPress.git source",
     "zip": [
       "composer install --no-dev",
       "composer archive --file=glotpress-stubs --format=zip",
