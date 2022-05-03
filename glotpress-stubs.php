@@ -4068,10 +4068,10 @@ class GP_Locales
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 3.0.0
+ * Version: 4.0.0-alpha.1
  * Requires at least: 4.6
  * Tested up to: 5.9
- * Requires PHP: 7.2
+ * Requires PHP: 7.4
  * Author: the GlotPress team
  * Author URI: https://glotpress.blog
  * License: GPLv2 or later
@@ -4093,7 +4093,7 @@ class GP_Locales
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '3.0.0');
+\define('GP_VERSION', '4.0.0-alpha.1');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
 \define('GP_ROUTING', \true);
@@ -4101,7 +4101,7 @@ class GP_Locales
 \define('GP_PATH', __DIR__ . '/');
 \define('GP_INC', 'gp-includes/');
 \define('GP_WP_REQUIRED_VERSION', '4.6');
-\define('GP_PHP_REQUIRED_VERSION', '7.2');
+\define('GP_PHP_REQUIRED_VERSION', '7.4');
 /**
  * Displays an admin notice on the plugins page that GlotPress has been disabled and why..
  *
