@@ -2987,6 +2987,12 @@ class GP_Translation_Set extends \GP_Thing
      */
     public $waiting_count;
     /**
+     * Number of changed requested translations.
+     *
+     * @var int
+     */
+    public $changesrequested_count;
+    /**
      * Number of fuzzy translations.
      *
      * @var int
@@ -3083,6 +3089,14 @@ class GP_Translation_Set extends \GP_Thing
      * @return int Number of waiting translations.
      */
     public function waiting_count()
+    {
+    }
+    /**
+     * Retrieves the number of waiting translations.
+     *
+     * @return int Number of waiting translations.
+     */
+    public function changesrequested_count()
     {
     }
     /**
@@ -3343,7 +3357,7 @@ class GP_Translation extends \GP_Thing
      * @var array $statuses
      * @static
      */
-    public static $statuses = array('current', 'waiting', 'rejected', 'fuzzy', 'old');
+    public static $statuses = array('current', 'waiting', 'rejected', 'fuzzy', 'old', 'changesrequested');
     /**
      * Number of supported translations per original.
      *
@@ -3973,6 +3987,20 @@ class GP_Builtin_Translation_Warnings
     private function links_without_url_and_placeholders_are_equal(string $original_links, string $translation_links)
     {
     }
+    /**
+     * Adds a warning for added or removed spaces at the beginning or at the end of the translation.
+     *
+     * @since 4.0.0
+     * @access public
+     *
+     * @param string $original    The original string.
+     * @param string $translation The translated string.
+     *
+     * @return string|true True if check is OK, otherwise warning message.
+     */
+    public function warning_unexpected_start_end_space(string $original, string $translation)
+    {
+    }
 }
 class GP_Locale
 {
@@ -3990,6 +4018,8 @@ class GP_Locale
     public $google_code = \null;
     public $preferred_sans_serif_font_family = \null;
     public $facebook_locale = \null;
+    public $alphabet = 'latin';
+    public $word_count_type = 'words';
     /**
      *
      * @since 3.0.0
@@ -4068,7 +4098,7 @@ class GP_Locales
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 4.0.0-alpha.1
+ * Version: 4.0.0-alpha.2
  * Requires at least: 4.6
  * Tested up to: 5.9
  * Requires PHP: 7.4
@@ -4093,7 +4123,7 @@ class GP_Locales
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '4.0.0-alpha.1');
+\define('GP_VERSION', '4.0.0-alpha.2');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
 \define('GP_ROUTING', \true);
