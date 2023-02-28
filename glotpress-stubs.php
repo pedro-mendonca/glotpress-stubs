@@ -269,90 +269,6 @@ class GP_Format_Android extends \GP_Format
     {
     }
     /**
-     * Generates a translation entry object to be added to the results for the "read_originals_from_file()" function.
-     *
-     * @since 1.0.0
-     *
-     * @param obj    $string  The string entry object to use.
-     * @param string $context The context string to use.
-     *
-     * @return obj A translation entry object.
-     */
-    private function generate_entry($string, $context)
-    {
-    }
-    /**
-     * Extracts the xliff information from a string.
-     *
-     * @since 1.0.0
-     *
-     * @param string $string The string to process.
-     *
-     * @return array|bool An array containing the extracted information from the xliff tags (there may be multiple) on success, false on failure.
-     */
-    private function extract_xliff_info($string)
-    {
-    }
-    /**
-     * Save a line to the exported class variable.  Supports prepending of tabs and appending
-     * a newline to the string.
-     *
-     * @since 1.0.0
-     *
-     * @param string $string       The string to process.
-     * @param int    $prepend_tabs The number of tab characters to prepend to the output.
-     */
-    private function line($string, $prepend_tabs = 0)
-    {
-    }
-    /**
-     * Output the strings array entries to the exported class variable.
-     *
-     * @since 1.0.0
-     *
-     * @param obj $entries The entries to store.
-     */
-    private function string_arrays($entries)
-    {
-    }
-    /**
-     * Compare two context strings for a uasort callback.
-     *
-     * @since 1.0.0
-     *
-     * @param string $a The first string to compare.
-     * @param string $b The second string to compare.
-     *
-     * @return int Returns the result of the comparison.
-     */
-    private function cmp_context($a, $b)
-    {
-    }
-    /**
-     * Preserve a Unicode sequence (like \u1234) by adding another backslash.
-     *
-     * @since 3.0
-     *
-     * @param string $string The string to process.
-     *
-     * @return string Returns the string with double-escaped Unicode sequences.
-     */
-    private function preserve_escaped_unicode($string)
-    {
-    }
-    /**
-     * Unescapes a string with c style slashes.
-     *
-     * @since 1.0.0
-     *
-     * @param string $string The string to unescape.
-     *
-     * @return string Returns the unescaped string.
-     */
-    private function unescape($string)
-    {
-    }
-    /**
      * Escapes a string with c style slashes and html entities as required.
      *
      * @since 1.0.0
@@ -673,86 +589,6 @@ class GP_Format_Properties extends \GP_Format
     {
     }
     /**
-     * Encodes a PHP string in UTF8 format to a unicode escaped string (multi-byte characters are encoded in the \uXXXX format).
-     *
-     * @since 2.0.0
-     *
-     * @param $string string The string to encode.
-     *
-     * @return string
-     */
-    private function utf8_uni_encode($string)
-    {
-    }
-    /**
-     * Encodes a PHP string in ascii format to a unicode escaped string (multi-byte characters are encoded in the \uXXXX format).
-     *
-     * @since 2.0.0
-     *
-     * @param string $string The string to encode.
-     *
-     * @return string
-     */
-    private function ascii_uni_encode($string)
-    {
-    }
-    /**
-     * Decodes a unicode escaped string to a PHP string.
-     *
-     * @param string $string The string to decode.
-     *
-     * @since 2.0.0
-     *
-     * @return string
-     */
-    private function uni_decode($string)
-    {
-    }
-    /**
-     * Part of uni_decode(), this is the call back function that does the heavy lifting of converting a \uXXXX
-     * value to a UTF-8 encoded character sequence.
-     *
-     * @since 2.0.0
-     *
-     * @param array $matches The array of matches from preg_replace_callback().
-     *
-     * @return string
-     */
-    private function uni_decode_callback($matches)
-    {
-    }
-    /**
-     * Part of utf8_uni_encode(), this returns the character value of a UTF-8 encoded string.
-     *
-     * From http://php.net/manual/en/function.ord.php#109812
-     *
-     * @since 2.0.0
-     *
-     * @param string $string The UTF-8 string to process.
-     * @param int    $offset The offset of the string to return the character value of.
-     *
-     * @return int|bool
-     */
-    private function ordutf8($string, &$offset)
-    {
-    }
-    /**
-     * Splits a properties file line on the = or : character.
-     *
-     * Skips escaped values (\= or \:) in the key and matches the first unescaped instance.
-     *
-     * @since 2.0.0
-     *
-     * @param string $line  The line to split.
-     * @param string $key   The key part of the properties file string if found.
-     * @param string $value The value part of the properties file string if found.
-     *
-     * @return bool Returns true if the line was split successfully, false otherwise.
-     */
-    private function split_properties_line($line, &$key, &$value)
-    {
-    }
-    /**
      * Reads a set of translations from a properties file.
      *
      * @since 2.0.0
@@ -777,55 +613,6 @@ class GP_Format_Properties extends \GP_Format
     public function read_originals_from_file($file_name)
     {
     }
-    /**
-     * The callback to sort the entries by, used above in print_exported_file().
-     *
-     * @since 2.0.0
-     *
-     * @param Translations $a The first translation to compare.
-     * @param Translations $b The second translation to compare.
-     *
-     * @return int
-     */
-    private function sort_entries($a, $b)
-    {
-    }
-    /**
-     * Unescape a string to be used as a value in the properties file.
-     *
-     * @since 2.0.0
-     *
-     * @param string $string The string to unescape.
-     *
-     * @return string
-     */
-    private function unescape($string)
-    {
-    }
-    /**
-     * Escape a string to be used as a value in the properties file.
-     *
-     * @since 2.0.0
-     *
-     * @param string $string The string to escape.
-     *
-     * @return string
-     */
-    private function escape($string)
-    {
-    }
-    /**
-     * Escape a string to be used as a key name in the properties file.
-     *
-     * @since 2.0.0
-     *
-     * @param string $string The string to escape.
-     *
-     * @return string
-     */
-    private function escape_key($string)
-    {
-    }
 }
 class GP_Format_ResX extends \GP_Format
 {
@@ -837,24 +624,6 @@ class GP_Format_ResX extends \GP_Format
     {
     }
     public function read_originals_from_file($file_name)
-    {
-    }
-    private function line($string, $prepend_tabs = 0)
-    {
-    }
-    private function res_header($name, $value)
-    {
-    }
-    private function unescape($string)
-    {
-    }
-    private function escape($string)
-    {
-    }
-    private function add_schema_info()
-    {
-    }
-    private function add_schema_declaration()
     {
     }
 }
@@ -915,40 +684,6 @@ class GP_Format_Strings extends \GP_Format
      * @return Translations|bool The extracted originals on success, false on failure.
      */
     public function read_originals_from_file($file_name)
-    {
-    }
-    /**
-     * Sorts the translation entries based on the context attribute.
-     *
-     * @since 1.0.0
-     *
-     * @param string $a First string to compare.
-     * @param string $b Second string to compare.
-     * @return int +1 or -1 based on the order to sort.
-     */
-    private function sort_entries($a, $b)
-    {
-    }
-    /**
-     * Strips any escaping from a string.
-     *
-     * @since 1.0.0
-     *
-     * @param string $string The string to strip escapes from.
-     * @return string The unescaped string.
-     */
-    private function unescape($string)
-    {
-    }
-    /**
-     * Adds escaping to a string.
-     *
-     * @since 1.0.0
-     *
-     * @param string $string The string to add escapes to.
-     * @return string The escaped string.
-     */
-    private function escape($string)
     {
     }
 }
@@ -1235,19 +970,6 @@ class GP_Route
     {
     }
     /**
-     * Retrieves referer from '_wp_http_referer' or HTTP referer.
-     *
-     * Unlike `wp_get_referer()`, it doesn't check if the referer is
-     * the same as the current request URL.
-     *
-     * @since 2.0.0
-     *
-     * @return false|string False on failure. Referer URL on success.
-     */
-    private function get_http_referer()
-    {
-    }
-    /**
      * Sets HTTP headers for content download.
      *
      * @param string $filename      The name of the file.
@@ -1286,7 +1008,6 @@ class GP_Route
 class GP_Router
 {
     public $api_prefix = 'api';
-    private $urls = array();
     public function __construct($urls = array())
     {
     }
@@ -1313,9 +1034,6 @@ class GP_Router
     {
     }
     public function remove($re, $method = 'get')
-    {
-    }
-    private function default_routes()
     {
     }
     public function route()
@@ -1373,12 +1091,6 @@ class GP_Route_Glossary_Entry extends \GP_Route_Main
     public function import_glossary_entries_post($project_path, $locale_slug, $translation_set_slug)
     {
     }
-    private function print_export_file($locale_slug, $entries)
-    {
-    }
-    private function read_glossary_entries_from_file($file, $glossary_id, $locale_slug)
-    {
-    }
 }
 /**
  * Routes: GP_Route_Glossary class
@@ -1426,30 +1138,6 @@ class GP_Route_Glossary extends \GP_Route_Main
     public function delete_post($glossary_id)
     {
     }
-    /**
-     * Checks to see if the current user can edit a glossary or not.  If they cannot it redirects back to the project page.
-     *
-     * @since 1.0.0
-     *
-     * @param GP_Glossary $glossary The glossary object to check.
-     *
-     * @return bool
-     */
-    private function cannot_edit_glossary_and_redirect($glossary)
-    {
-    }
-    /**
-     * Checks to see if the current user can delete a glossary or not.  If they cannot it redirects back to the project page.
-     *
-     * @since 2.0.0
-     *
-     * @param GP_Glossary $glossary The glossary object to check.
-     *
-     * @return bool
-     */
-    private function cannot_delete_glossary_and_redirect($glossary)
-    {
-    }
 }
 /**
  * Routes: GP_Route_Index class
@@ -1489,15 +1177,6 @@ class GP_Route_Locale extends \GP_Route_Main
     public function single($locale_slug, $current_set_slug = 'default')
     {
     }
-    private function set_data($set, $project, $set_data = \null)
-    {
-    }
-    private function sort_locales($a, $b)
-    {
-    }
-    private function sort_sets_by_project_id($a, $b)
-    {
-    }
 }
 /**
  * Routes: GP_Route_Original class
@@ -1531,8 +1210,6 @@ class GP_Route_Original extends \GP_Route_Main
  */
 class GP_Route_Profile extends \GP_Route_Main
 {
-    // For caching purposes
-    private $projects = array();
     /**
      * Displays the profile page, requires a user to be logged in.
      */
@@ -1545,47 +1222,6 @@ class GP_Route_Profile extends \GP_Route_Main
      * @param string $user A user nicename.
      */
     public function profile_view($user = '')
-    {
-    }
-    /**
-     * Gets an array of recent translation sets the user has worked on.
-     *
-     * @param WP_User $user   A user object.
-     * @param int     $amount Number of recent translations to return.
-     *
-     * @return array $translation_sets An array of translation set objects
-     */
-    private function get_recent_translation_sets($user, $amount = 5)
-    {
-    }
-    /**
-     * Gets an array of locales the user has contributed to.
-     *
-     * @param WP_User $user   A user object.
-     *
-     * @return array $locales An array of locale objects
-     */
-    private function locales_known($user)
-    {
-    }
-    /**
-     * Retrieve a users permissions.
-     *
-     * @param WP_User $user The user object.
-     *
-     * @return array Array of permissions
-     */
-    private function get_permissions($user)
-    {
-    }
-    /**
-     * Gets an object representing the project id, project url and translation set name of the supplied set.
-     *
-     * @param GP_Translation_set $set   A translation set object.
-     *
-     * @return object
-     */
-    private function get_translation_set($set)
     {
     }
 }
@@ -1760,17 +1396,6 @@ class GP_Route_Translation_Set extends \GP_Route_Main
     public function delete_get($set_id)
     {
     }
-    /**
-     * Determines whether the current user can edit a translation set.
-     *
-     * @param GP_Translation_Set $set The translation set to edit.
-     */
-    private function cannot_edit_set_and_redirect($set)
-    {
-    }
-    private function get_set_project_and_locale_from_set_id_or_404($set_id)
-    {
-    }
 }
 /**
  * Routes: GP_Route_Translation class
@@ -1804,58 +1429,10 @@ class GP_Route_Translation extends \GP_Route_Main
     public function bulk_post($project_path, $locale_slug, $translation_set_slug)
     {
     }
-    private function _bulk_approve($bulk)
-    {
-    }
-    /**
-     * Processes the bulk action to set translations to fuzzy.
-     *
-     * @since 2.3.0
-     *
-     * @param array $bulk The bulk data to process.
-     */
-    private function _bulk_fuzzy($bulk)
-    {
-    }
-    private function _bulk_set_priority($project, $bulk)
-    {
-    }
     public function discard_warning($project_path, $locale_slug, $translation_set_slug)
     {
     }
     public function set_status($project_path, $locale_slug, $translation_set_slug)
-    {
-    }
-    /**
-     * Edits a single translation.
-     *
-     * @since 1.0.0
-     *
-     * @param string   $project_path         The path of the project.
-     * @param string   $locale_slug          The locale slug.
-     * @param string   $translation_set_slug The slug of the translation set.
-     * @param callable $edit_function        The edit function to call on the translation.
-     */
-    private function edit_single_translation($project_path, $locale_slug, $translation_set_slug, $edit_function)
-    {
-    }
-    /**
-     * Discard a warning.
-     *
-     * @since 1.0.0
-     *
-     * @param GP_Project         $project         The project.
-     * @param GP_Locale          $locale          The GlotPress locale.
-     * @param GP_Translation_Set $translation_set The translation set.
-     * @param GP_Translation     $translation     The translation object.
-     */
-    private function discard_warning_edit_function($project, $locale, $translation_set, $translation)
-    {
-    }
-    private function set_status_edit_function($project, $locale, $translation_set, $translation)
-    {
-    }
-    private function can_approve_translation_or_forbidden($translation)
     {
     }
     /**
@@ -2067,18 +1644,6 @@ class GP_Thing
      * @return mixed
      */
     public function find_no_map($conditions, $order = \null)
-    {
-    }
-    /**
-     * [_no_map description]
-     *
-     * @since 1.0.0
-     *
-     * @param string $name Method name.
-     * @param mixed  $args Method-dependent arguments.
-     * @return mixed
-     */
-    private function _no_map($name, $args)
     {
     }
     /**
@@ -2472,12 +2037,6 @@ class GP_Glossary_Entry extends \GP_Thing
     {
     }
     /**
-     * Sets up the part of speech captions.
-     */
-    private function setup_pos()
-    {
-    }
-    /**
      * Sets restriction rules for fields.
      *
      * @since 1.0.0
@@ -2523,13 +2082,6 @@ class GP_Glossary extends \GP_Thing
     public $id;
     public $translation_set_id;
     public $description;
-    /**
-     * Caches the array of Glossary_Entry objects.
-     *
-     * @since 2.3.0
-     * @var entries
-     */
-    private $entries = array();
     /**
      * Sets restriction rules for fields.
      *
@@ -3092,9 +2644,9 @@ class GP_Translation_Set extends \GP_Thing
     {
     }
     /**
-     * Retrieves the number of waiting translations.
+     * Retrieves the number of "changes requested" translations.
      *
-     * @return int Number of waiting translations.
+     * @return int Number of "changes requested" translations.
      */
     public function changesrequested_count()
     {
@@ -3408,6 +2960,24 @@ class GP_Translation extends \GP_Thing
     {
     }
     public function set_as_current()
+    {
+    }
+    /**
+     * Sets as old the other changesrequested translations for the same original and user,
+     * setting the current one as changesrequested.
+     *
+     * @return bool|null
+     */
+    public function set_as_changesrequested() : ?bool
+    {
+    }
+    /**
+     * Sets as old the other changesrequested translations for the same original and user,
+     * setting the current one as waiting.
+     *
+     * @return bool|null
+     */
+    public function set_as_waiting() : ?bool
     {
     }
     public function reject()
@@ -3822,19 +3392,6 @@ class GP_Builtin_Translation_Warnings
     {
     }
     /**
-     * Counts the placeholders in a string.
-     *
-     * @since 1.0.0
-     * @access private
-     *
-     * @param string $string The string to search.
-     * @param string $re     Regular expressions to match placeholders.
-     * @return array An array with counts per placeholder.
-     */
-    private function _placeholders_counts($string, $re)
-    {
-    }
-    /**
      * Checks whether a translation does begin on newline.
      *
      * @since 1.0.0
@@ -3949,45 +3506,6 @@ class GP_Builtin_Translation_Warnings
     {
     }
     /**
-     * Returns the values from the href and the src
-     *
-     * @since 3.0.0
-     * @access private
-     *
-     * @param array $content The original array.
-     * @return array
-     */
-    private function get_values_from_href_src(array $content) : array
-    {
-    }
-    /**
-     * Checks if the HTML tags are in correct order
-     *
-     * Warns about HTML tags translations in incorrect order. For example:
-     * - Original: <a></a>
-     * - Translation: </a><a>
-     *
-     * @param array $original_parts     The original HTML tags.
-     * @param array $translation_parts  The translation HTML tags.
-     * @return string|true True if check is OK, otherwise warning message.
-     */
-    private function check_valid_html(array $original_parts, array $translation_parts)
-    {
-    }
-    /**
-     * Checks whether links that are not URL or placeholders are equal or not
-     *
-     * @since 3.0.0
-     * @access private
-     *
-     * @param string $original_links    The original links.
-     * @param string $translation_links The translated links.
-     * @return  array|true True if check is OK, otherwise warning message.
-     */
-    private function links_without_url_and_placeholders_are_equal(string $original_links, string $translation_links)
-    {
-    }
-    /**
      * Adds a warning for added or removed spaces at the beginning or at the end of the translation.
      *
      * @since 4.0.0
@@ -4001,6 +3519,20 @@ class GP_Builtin_Translation_Warnings
     public function warning_unexpected_start_end_space(string $original, string $translation)
     {
     }
+    /**
+     * Checks the missing uppercase in the beginning of the translations.
+     *
+     * @since 4.0.0
+     * @access public
+     *
+     * @param string $original    The source string.
+     * @param string $translation The translation.
+     *
+     * @return string|true True if check is OK, otherwise warning message.
+     */
+    public function warning_missing_uppercase_beginning(string $original, string $translation)
+    {
+    }
 }
 class GP_Locale
 {
@@ -4012,6 +3544,7 @@ class GP_Locale
     public $lang_code_iso_639_3 = \null;
     public $country_code;
     public $wp_locale;
+    // This should only be set for locales that are offically supported on translate.wordpress.org.
     public $slug;
     public $nplurals = 2;
     public $plural_expression = 'n != 1';
@@ -4020,14 +3553,6 @@ class GP_Locale
     public $facebook_locale = \null;
     public $alphabet = 'latin';
     public $word_count_type = 'words';
-    /**
-     *
-     * @since 3.0.0
-     *
-     * @var array
-     */
-    // TODO: days, months, decimals, quotes
-    private $_index_for_number;
     public function __construct($args = array())
     {
     }
@@ -4098,7 +3623,7 @@ class GP_Locales
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 4.0.0-alpha.3
+ * Version: 4.0.0-alpha.4
  * Requires at least: 4.6
  * Tested up to: 5.9
  * Requires PHP: 7.4
@@ -4123,7 +3648,7 @@ class GP_Locales
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '4.0.0-alpha.3');
+\define('GP_VERSION', '4.0.0-alpha.4');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
 \define('GP_ROUTING', \true);
@@ -4727,6 +4252,16 @@ function gp_gmt_strtotime($string)
  * @return object|null A GP_Format child object or null if not found.
  */
 function gp_get_import_file_format($selected_format, $filename)
+{
+}
+/**
+ * Gets the list of format extensions prefixed with leading delimiters "." ( eg.: '.po' ).
+ *
+ * @since 4.0.0
+ *
+ * @return array   Supported format file extensions.
+ */
+function gp_get_format_extensions()
 {
 }
 /**
