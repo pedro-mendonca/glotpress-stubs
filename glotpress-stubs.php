@@ -3544,7 +3544,7 @@ class GP_Locale
     public $lang_code_iso_639_3 = \null;
     public $country_code;
     public $wp_locale;
-    // This should only be set for locales that are offically supported on translate.wordpress.org.
+    // This should only be set for locales that are officially supported on translate.wordpress.org.
     public $slug;
     public $nplurals = 2;
     public $plural_expression = 'n != 1';
@@ -3623,7 +3623,7 @@ class GP_Locales
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 4.0.0-alpha.4
+ * Version: 4.0.0-alpha.5
  * Requires at least: 4.6
  * Tested up to: 5.9
  * Requires PHP: 7.4
@@ -3648,7 +3648,7 @@ class GP_Locales
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '4.0.0-alpha.4');
+\define('GP_VERSION', '4.0.0-alpha.5');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
 \define('GP_ROUTING', \true);
@@ -3895,7 +3895,7 @@ function gp_get_meta($object_type, $object_id, $meta_key = \null)
  *
  * @return bool|int True if meta updated, false if there is an error and the id of the inserted row otherwise.
  */
-function gp_update_meta($object_id = 0, $meta_key, $meta_value, $type, $global = \false)
+function gp_update_meta($object_id, $meta_key, $meta_value, $type, $global = \false)
 {
 }
 /**
@@ -3911,7 +3911,7 @@ function gp_update_meta($object_id = 0, $meta_key, $meta_value, $type, $global =
  *
  * @return bool
  */
-function gp_delete_meta($object_id = 0, $meta_key, $meta_value, $type, $global = \false)
+function gp_delete_meta($object_id, $meta_key, $meta_value, $type, $global = \false)
 {
 }
 /**
