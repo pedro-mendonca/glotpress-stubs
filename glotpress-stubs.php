@@ -163,6 +163,116 @@ class GP_CLI_Wipe_Permissions extends \WP_CLI_Command
     }
 }
 /**
+ * Translation errors API
+ *
+ * @package GlotPress
+ * @since 4.0.0
+ */
+/**
+ * Class used to handle translation errors.
+ *
+ * @since 4.0.0
+ */
+class GP_Translation_Errors
+{
+    /**
+     * List of callbacks.
+     *
+     * @since 4.0.0
+     * @access public
+     *
+     * @var callable[]
+     */
+    public $callbacks = array();
+    /**
+     * Adds a callback for a new error.
+     *
+     * @since 4.0.0
+     * @access public
+     *
+     * @param string   $id       Unique ID of the callback.
+     * @param callable $callback The callback.
+     */
+    public function add($id, $callback)
+    {
+    }
+    /**
+     * Removes an existing callback for an error.
+     *
+     * @since 4.0.0
+     * @access public
+     *
+     * @param string $id Unique ID of the callback.
+     */
+    public function remove($id)
+    {
+    }
+    /**
+     * Checks whether a callback exists for an ID.
+     *
+     * @since 4.0.0
+     * @access public
+     *
+     * @param string $id Unique ID of the callback.
+     * @return bool True if exists, false if not.
+     */
+    public function has($id)
+    {
+    }
+    /**
+     * Checks translations for any error.
+     *
+     * @since 4.0.0
+     * @access public
+     *
+     * @param GP_Original $gp_original  The original object.
+     * @param string[]    $translations The translations.
+     * @param GP_Locale   $locale       The locale.
+     * @return array|null Null if no issues have been found, otherwise an array
+     *                    with errors.
+     */
+    public function check($gp_original, $translations, $locale)
+    {
+    }
+}
+/**
+ * Class used to handle translation errors.
+ *
+ * @since 4.0.0
+ */
+class GP_Builtin_Translation_Errors
+{
+    /**
+     * Adds an error for adding unexpected percent signs in a sprintf-like string.
+     *
+     * This is to catch translations for originals like this:
+     *  - Original: `<a href="%s">100 percent</a>`
+     *  - Submitted translation: `<a href="%s">100%</a>`
+     *  - Proper translation: `<a href="%s">100%%</a>`
+     *
+     * @since 4.0.0
+     * @access public
+     *
+     * @param string $original    The original string.
+     * @param string $translation The translated string.
+     * @return bool|string
+     */
+    public function error_unexpected_sprintf_token($original, $translation)
+    {
+    }
+    /**
+     * Registers all methods starting with `error_` as built-in errors.
+     *
+     * @since 4.0.0
+     * @access public
+     *
+     * @param GP_Translation_Errors $translation_errors Instance of GP_Translation_Errors.
+     */
+    public function add_all($translation_errors)
+    {
+    }
+}
+/**
  * GlotPress Format base class. It is supposed to be inherited.
  */
 abstract class GP_Format
@@ -796,6 +906,22 @@ class GP
      * @var GP_Builtin_Translation_Warnings
      */
     public static $builtin_translation_warnings;
+    /**
+     * Singleton for translation errors.
+     *
+     * @since 4.0.0
+     *
+     * @var GP_Translation_Errors
+     */
+    public static $translation_errors;
+    /**
+     * Singleton for built-in translation errors.
+     *
+     * @since 4.0.0
+     *
+     * @var GP_Builtin_Translation_Errors
+     */
+    public static $builtin_translation_errors;
     /**
      * Array of notices.
      *
@@ -3463,24 +3589,6 @@ class GP_Builtin_Translation_Warnings
     {
     }
     /**
-     * Adds a warning for adding unexpected percent signs in a sprintf-like string.
-     *
-     * This is to catch translations for originals like this:
-     *  - Original: `<a href="%s">100 percent</a>`
-     *  - Submitted translation: `<a href="%s">100%</a>`
-     *  - Proper translation: `<a href="%s">100%%</a>`
-     *
-     * @since 3.0.0
-     * @access public
-     *
-     * @param string $original    The original string.
-     * @param string $translation The translated string.
-     * @return bool|string
-     */
-    public function warning_unexpected_sprintf_token($original, $translation)
-    {
-    }
-    /**
      * Registers all methods starting with `warning_` as built-in warnings.
      *
      * @param GP_Translation_Warnings $translation_warnings Instance of GP_Translation_Warnings.
@@ -3623,7 +3731,7 @@ class GP_Locales
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 4.0.0-alpha.5
+ * Version: 4.0.0-alpha.6
  * Requires at least: 4.6
  * Tested up to: 5.9
  * Requires PHP: 7.4
@@ -3648,7 +3756,7 @@ class GP_Locales
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '4.0.0-alpha.5');
+\define('GP_VERSION', '4.0.0-alpha.6');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
 \define('GP_ROUTING', \true);
