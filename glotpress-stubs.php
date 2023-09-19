@@ -3731,7 +3731,7 @@ class GP_Locales
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 4.0.0-alpha.7
+ * Version: 4.0.0-alpha.8
  * Requires at least: 4.6
  * Tested up to: 5.9
  * Requires PHP: 7.4
@@ -3756,7 +3756,7 @@ class GP_Locales
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '4.0.0-alpha.7');
+\define('GP_VERSION', '4.0.0-alpha.8');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
 \define('GP_ROUTING', \true);
@@ -3765,6 +3765,7 @@ class GP_Locales
 \define('GP_INC', 'gp-includes/');
 \define('GP_WP_REQUIRED_VERSION', '4.6');
 \define('GP_PHP_REQUIRED_VERSION', '7.4');
+\define('GP_SCRIPT_DEBUG', \true);
 /**
  * Displays an admin notice on the plugins page that GlotPress has been disabled and why..
  *
@@ -5237,6 +5238,18 @@ function references($project, $entry)
  * @param string $location        The location of this toolbar, used to make id's unique for each instance on a page.
  */
 function gp_translations_bulk_actions_toolbar($bulk_action, $can_write, $translation_set, $location = 'top')
+{
+}
+/**
+ * Determine if the current chunk should be skipped.
+ *
+ * @since 4.0.0
+ *
+ * @param string $chunk The current chunk.
+ *
+ * @return bool
+ */
+function should_skip_chunk(string $chunk)
 {
 }
 /**
