@@ -2695,11 +2695,41 @@ class GP_Translation_Set extends \GP_Thing
      */
     public $warnings_count;
     /**
+     * Number of rejected translations.
+     *
+     * @var int
+     */
+    public $rejected_count;
+    /**
+     * Number of old translations.
+     *
+     * @var int
+     */
+    public $old_count;
+    /**
      * Number of all originals.
      *
      * @var int
      */
     public $all_count;
+    /**
+     * The percent translated.
+     *
+     * @var int
+     */
+    public $percent_translated;
+    /**
+     * The English name of the locale.
+     *
+     * @var string
+     */
+    public $name_with_locale;
+    /**
+     * The WP locale.
+     *
+     * @var string
+     */
+    public $wp_locale;
     /**
      * Sets restriction rules for fields.
      *
@@ -3731,7 +3761,7 @@ class GP_Locales
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 4.0.0-alpha.9
+ * Version: 4.0.0-alpha.10
  * Requires at least: 4.6
  * Tested up to: 5.9
  * Requires PHP: 7.4
@@ -3756,7 +3786,7 @@ class GP_Locales
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '4.0.0-alpha.9');
+\define('GP_VERSION', '4.0.0-alpha.10');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
 \define('GP_ROUTING', \true);
