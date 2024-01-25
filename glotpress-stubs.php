@@ -616,6 +616,78 @@ class GP_Format_NGX extends \GP_Format
     {
     }
 }
+/**
+ * GlotPress Format PHP class
+ *
+ * @since 4.0.0
+ *
+ * @package GlotPress
+ */
+/**
+ * Format class used to support PHP file format.
+ *
+ * @since 4.0.0
+ */
+class GP_Format_PHP extends \GP_Format
+{
+    /**
+     * Name of file format, used in file format dropdowns.
+     *
+     * @since 4.0.0
+     *
+     * @var string
+     */
+    public $name = 'PHP (.l10n.php)';
+    /**
+     * File extension of the file format, used to autodetect formats and when creating the output file names.
+     *
+     * @since 4.0.0
+     *
+     * @var string
+     */
+    public $extension = 'l10n.php';
+    /**
+     * Generates a string the contains the $entries to export in the PHP file format.
+     *
+     * @since 4.0.0
+     *
+     * @param GP_Project         $project         The project the strings are being exported for, not used
+     *                                            in this format but part of the scaffold of the parent object.
+     * @param GP_Locale          $locale          The locale object the strings are being exported for. not used
+     *                                            in this format but part of the scaffold of the parent object.
+     * @param GP_Translation_Set $translation_set The locale object the strings are being
+     *                                            exported for. not used in this format but part
+     *                                            of the scaffold of the parent object.
+     * @param GP_Translation     $entries         The entries to export.
+     * @return string The exported PHP string.
+     */
+    public function print_exported_file($project, $locale, $translation_set, $entries)
+    {
+    }
+    /**
+     * Reads a set of original strings from a PHP file.
+     *
+     * @since 4.0.0
+     *
+     * @param string $file_name The name of the uploaded PHP file.
+     * @return false Always returns false, as this is not currently implemented.
+     */
+    public function read_originals_from_file($file_name)
+    {
+    }
+    /**
+     * Reads a set of translations from a PHP file.
+     *
+     * @since 4.0.0
+     *
+     * @param string     $file_name The name of the uploaded properties file.
+     * @param GP_Project $project   Unused. The project object to read the translations into.
+     * @return false Always returns false, as this is not currently implemented.
+     */
+    public function read_translations_from_file($file_name, $project = \null)
+    {
+    }
+}
 class GP_Format_PO extends \GP_Format
 {
     public $name = 'Portable Object Message Catalog (.po/.pot)';
@@ -3761,7 +3833,7 @@ class GP_Locales
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 4.0.0-alpha.11
+ * Version: 4.0.0-beta.1
  * Requires at least: 4.6
  * Tested up to: 5.9
  * Requires PHP: 7.4
@@ -3786,7 +3858,7 @@ class GP_Locales
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '4.0.0-alpha.11');
+\define('GP_VERSION', '4.0.0-beta.1');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
 \define('GP_ROUTING', \true);
