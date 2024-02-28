@@ -1202,6 +1202,14 @@ class GP_Route
     public function status_header($status)
     {
     }
+    /**
+     * Check if the current URL has trailing slash. If not, redirect to trailed slash URL.
+     *
+     * @since 4.0.0
+     */
+    public function check_uri_trailing_slash()
+    {
+    }
 }
 class GP_Router
 {
@@ -3833,7 +3841,7 @@ class GP_Locales
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 4.0.0-beta.2
+ * Version: 4.0.0-beta.3
  * Requires at least: 4.6
  * Tested up to: 6.4
  * Requires PHP: 7.4
@@ -3858,7 +3866,7 @@ class GP_Locales
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '4.0.0-beta.2');
+\define('GP_VERSION', '4.0.0-beta.3');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
 \define('GP_ROUTING', \true);
@@ -5046,7 +5054,18 @@ function gp_project_names_from_root($leaf_project)
 function gp_project_links_from_root($leaf_project)
 {
 }
-function gp_breadcrumb_project($project)
+/**
+ * Get project breadcrumb.
+ *
+ * @since 4.0.0   New $extra_items array to append items like Translation Set, Project Glossary or the current action. The last item has no link.
+ *                If project ID is '0', set base locales link to breadcrumb.
+ *
+ * @param GP_Project $project       GlotPress Project object.
+ * @param array      $extra_items   Array of additional items to add to the breadcrumb.
+ *
+ * @return string   HTML of the breadcrumb.
+ */
+function gp_breadcrumb_project($project, $extra_items = array())
 {
 }
 function gp_js_focus_on($html_id)
