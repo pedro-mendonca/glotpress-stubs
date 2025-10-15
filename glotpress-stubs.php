@@ -1,274 +1,683 @@
 <?php
 
-class GP_CLI_Add_Admin extends \WP_CLI_Command
+class GP_Locale
 {
-    /**
-     * Give the user admin rights in GlotPress
-     *
-     * ## OPTIONS
-     *
-     * <username>...
-     * : Username(s) to make an admin
-     */
-    public function __invoke($args, $assoc_args)
+    public $english_name;
+    public $native_name;
+    public $text_direction = 'ltr';
+    public $lang_code_iso_639_1 = \null;
+    public $lang_code_iso_639_2 = \null;
+    public $lang_code_iso_639_3 = \null;
+    public $country_code;
+    public $wp_locale;
+    // This should only be set for locales that are officially supported on translate.wordpress.org.
+    public $slug;
+    public $nplurals = 2;
+    public $plural_expression = 'n != 1';
+    public $google_code = \null;
+    public $preferred_sans_serif_font_family = \null;
+    public $facebook_locale = \null;
+    public $alphabet = 'latin';
+    public $word_count_type = 'words';
+    public function __construct($args = array())
     {
     }
-}
-class GP_CLI_Branch_Project extends \WP_CLI_Command
-{
-    /**
-     * Branch a project
-     *
-     * Duplicates an existing project to create a new one.
-     *
-     * ## OPTIONS
-     *
-     * <source>
-     * : Source project path to duplicate from
-     *
-     * <destination>
-     * : Destination project path to duplicate to (must exist first)
-     */
-    public function __invoke($args)
-    {
-    }
-}
-class GP_CLI_Import_Originals extends \WP_CLI_Command
-{
-    /**
-     * Import originals for a project from a file
-     *
-     * ## OPTIONS
-     *
-     * <project>
-     * : Project name
-     *
-     * <file>
-     * : File to import from
-     *
-     * [--format=<format>]
-     * : Accepted values: po, mo, android, resx, strings. Default: po
-     */
-    public function __invoke($args, $assoc_args)
-    {
-    }
-}
-class GP_CLI_Regenerate_Paths extends \WP_CLI_Command
-{
-    public function __invoke()
-    {
-    }
-}
-class GP_CLI_Remove_Multiple_Currents extends \WP_CLI_Command
-{
-    public function __invoke()
-    {
-    }
-}
-class GP_CLI_Translation_Set extends \WP_CLI_Command
-{
-    /**
-     * Get a translation set for a project.
-     *
-     * @param string $project Project path
-     * @param string $locale Locale slug
-     * @param string $set Set slug
-     * @return GP_Translation_Set|WP_Error Translation set if available, error otherwise.
-     */
-    protected function get_translation_set($project, $locale, $set = 'default')
+    public static function __set_state($state)
     {
     }
     /**
-     * Export the translation set
+     * Make deprecated properties checkable for backwards compatibility.
      *
-     * ## OPTIONS
-     *
-     * <project>
-     * : Project path
-     *
-     * <locale>
-     * : Locale to export
-     *
-     * [--set=<set>]
-     * : Translation set slug; default is "default"
-     *
-     * [--format=<format>]
-     * : Format for output (one of "po", "mo", "android", "resx", "strings"; default is "po")
-     *
-     * [--search=<search>]
-     * : Search term
-     *
-     * [--status=<status>]
-     * : Translation string status; default is "current"
-     *
-     * [--priority=<priorities>]
-     * : Original priorities, comma separated. Possible values are "hidden,low,normal,high"
+     * @param string $name Property to check if set.
+     * @return bool Whether the property is set.
      */
-    public function export($args, $assoc_args)
+    public function __isset($name)
     {
     }
     /**
-     * Import a file into the translation set
+     * Make deprecated properties readable for backwards compatibility.
      *
-     * ## OPTIONS
-     *
-     * <project>
-     * : Project path
-     *
-     * <locale>
-     * : Locale to export
-     *
-     * <file>
-     * : File to import
-     *
-     * [--set=<set>]
-     * : Translation set slug; default is "default"
-     *
-     * [--status=<status>]
-     * : Translation string status; default is "current"
+     * @param string $name Property to get.
+     * @return mixed Property.
      */
-    public function import($args, $assoc_args)
+    public function __get($name)
+    {
+    }
+    public function combined_name()
+    {
+    }
+    public function numbers_for_index($index, $how_many = 3, $test_up_to = 1000)
+    {
+    }
+    public function index_for_number($number)
     {
     }
     /**
-     * Recheck warnings for the translation set
+     * When converting the object to a string, the combined name is returned.
      *
-     * ## OPTIONS
+     * @since 3.0.0
      *
-     * <project>
-     * : Project path
-     *
-     * <locale>
-     * : Locale to export
-     *
-     * [--set=<set>]
-     * : Translation set slug; default is "default"
-     *
-     * @subcommand recheck-warnings
+     * @return string Combined name of locale.
      */
-    public function recheck_warnings($args, $assoc_args)
+    public function __toString()
     {
     }
 }
-class GP_CLI_Upgrade_Set_Permissions extends \WP_CLI_Command
+class GP_Locales
 {
-    public function __invoke()
+    public $locales = array();
+    public function __construct()
     {
     }
-}
-class GP_CLI_Wipe_Permissions extends \WP_CLI_Command
-{
-    public function __invoke()
+    public static function &instance()
+    {
+    }
+    public static function locales()
+    {
+    }
+    public static function exists($slug)
+    {
+    }
+    public static function by_slug($slug)
+    {
+    }
+    public static function by_field($field_name, $field_value)
     {
     }
 }
 /**
- * Translation errors API
+ * Base controller class
+ */
+class GP_Route
+{
+    public $api = \false;
+    public $errors = array();
+    public $notices = array();
+    var $request_running = \false;
+    var $template_path = \null;
+    var $fake_request = \false;
+    var $exited = \false;
+    var $exit_message;
+    var $redirected = \false;
+    var $redirected_to = \null;
+    var $rendered_template = \false;
+    var $loaded_template = \null;
+    var $template_output = \null;
+    var $headers = array();
+    var $class_name;
+    var $http_status;
+    var $last_method_called;
+    public function __construct()
+    {
+    }
+    /**
+     * Shows a template and exit.
+     *
+     * @param string      $message  The message to display.
+     * @param int         $status   The HTTP status code.
+     * @param string|null $title    The title of the page.
+     * @param string      $template The template to use.
+     *
+     * @return void
+     */
+    public function die_with_error(string $message, int $status = 500, ?string $title = \null, string $template = 'error')
+    {
+    }
+    public function before_request()
+    {
+    }
+    public function after_request()
+    {
+    }
+    /**
+     * Validates a thing and add its errors to the route's errors.
+     *
+     * @param object $thing a GP_Thing instance to validate
+     * @return bool whether the thing is valid
+     */
+    public function validate($thing)
+    {
+    }
+    /**
+     * Same as validate(), but redirects to $url if the thing isn't valid.
+     *
+     * Note: this method calls $this->exit_() after the redirect and the code after it won't
+     * be executed.
+     *
+     * @param object $thing a GP_Thing instance to validate
+     * @param string $url where to redirect if the thing doesn't validate
+     * @return bool whether the thing is valid
+     */
+    public function invalid_and_redirect($thing, $url = \null)
+    {
+    }
+    /**
+     * Checks whether a user is allowed to do an action.
+     *
+     * @since 2.3.0 Added the `$extra` parameter.
+     *
+     * @param string      $action      The action.
+     * @param string|null $object_type Optional. Type of an object. Default null.
+     * @param int|null    $object_id   Optional. ID of an object. Default null.
+     * @param array|null  $extra       Optional. Extra information for deciding the outcome.
+     * @return bool       The verdict.
+     */
+    public function can($action, $object_type = \null, $object_id = \null, $extra = \null)
+    {
+    }
+    /**
+     * Redirects and exits if the current user isn't allowed to do an action.
+     *
+     * @since 1.0.0
+     *
+     * @param string      $action      The action.
+     * @param string|null $object_type Optional. Type of an object. Default null.
+     * @param int|null    $object_id   Optional. ID of an object. Default null.
+     * @param string|null $url         Optional. URL to redirect to. Default: referrer or index page, if referrer is missing.
+     * @return bool Whether a redirect happened.
+     */
+    public function cannot_and_redirect($action, $object_type = \null, $object_id = \null, $url = \null)
+    {
+    }
+    /**
+     * Verifies a nonce for a route.
+     *
+     * @since 2.0.0
+     *
+     * @param string $action Context for the created nonce.
+     * @return bool False if the nonce is invalid, true if valid.
+     */
+    public function verify_nonce($action)
+    {
+    }
+    /**
+     * Verifies a nonce for a route and redirects in case the nonce is invalid.
+     *
+     * @since 2.0.0
+     *
+     * @param string      $action Context for the created nonce.
+     * @param string|null $url    The URL to redirect. Default: 'null', the referrer.
+     * @return bool False if the nonce is valid, true if the redirect has happened.
+     */
+    public function invalid_nonce_and_redirect($action, $url = \null)
+    {
+    }
+    /**
+     * Determines whether a user can perfom an action and redirects in case of a failure.
+     *
+     * @since 1.0.0
+     *
+     * @param string      $action      The action.
+     * @param string|null $object_type Optional. Type of an object. Default null.
+     * @param int|null    $object_id   Optional. ID of an object. Default null.
+     * @param string|null $message     Error message in case of a failure.
+     *                                 Default: 'You are not allowed to do that!'.
+     * @param array|null  $extra       Pass-through parameter to can().
+     * @return false
+     */
+    public function can_or_forbidden($action, $object_type = \null, $object_id = \null, $message = \null, $extra = \null)
+    {
+    }
+    public function logged_in_or_forbidden()
+    {
+    }
+    public function redirect_with_error($message, $url = \null)
+    {
+    }
+    public function redirect($url = \null)
+    {
+    }
+    /**
+     * Sets HTTP headers for content download.
+     *
+     * @param string $filename      The name of the file.
+     * @param string $last_modified Optional. Date when the file was last modified. Default: ''.
+     */
+    public function headers_for_download($filename, $last_modified = '')
+    {
+    }
+    public function set_notices_and_errors()
+    {
+    }
+    /**
+     * Loads a template.
+     *
+     * @param string      $template  Template name to load.
+     * @param array       $args      Associative array with arguements, which will be exported in the template PHP file.
+     * @param bool|string $honor_api If this is true or 'api' and the route is processing an API request
+     *                               the template name will be suffixed with .api. The actual file loaded will be template.api.php.
+     */
+    public function tmpl($template, $args = array(), $honor_api = \true)
+    {
+    }
+    public function die_with_404($args = array())
+    {
+    }
+    public function exit_($message = 0)
+    {
+    }
+    public function header($string)
+    {
+    }
+    public function status_header($status)
+    {
+    }
+    /**
+     * Check if the current URL has trailing slash. If not, redirect to trailed slash URL.
+     *
+     * @since 4.0.0
+     */
+    public function check_uri_trailing_slash()
+    {
+    }
+}
+// phpcs:ignore WordPress.Files.FileName.NotHyphenatedLowercase
+/**
+ * Routes: GP_Route_Main class
  *
  * @package GlotPress
- * @since 4.0.0
+ * @subpackage Routes
+ * @since 1.0.0
  */
 /**
- * Class used to handle translation errors.
+ * Core class used to implement the main route.
  *
- * @since 4.0.0
+ * @since 1.0.0
  */
-class GP_Translation_Errors
+class GP_Route_Main extends \GP_Route
 {
-    /**
-     * List of callbacks.
-     *
-     * @since 4.0.0
-     * @access public
-     *
-     * @var callable[]
-     */
-    public $callbacks = array();
-    /**
-     * Adds a callback for a new error.
-     *
-     * @since 4.0.0
-     * @access public
-     *
-     * @param string   $id       Unique ID of the callback.
-     * @param callable $callback The callback.
-     */
-    public function add($id, $callback)
-    {
-    }
-    /**
-     * Removes an existing callback for an error.
-     *
-     * @since 4.0.0
-     * @access public
-     *
-     * @param string $id Unique ID of the callback.
-     */
-    public function remove($id)
-    {
-    }
-    /**
-     * Checks whether a callback exists for an ID.
-     *
-     * @since 4.0.0
-     * @access public
-     *
-     * @param string $id Unique ID of the callback.
-     * @return bool True if exists, false if not.
-     */
-    public function has($id)
-    {
-    }
-    /**
-     * Checks translations for any error.
-     *
-     * @since 4.0.0
-     * @access public
-     *
-     * @param GP_Original $gp_original  The original object.
-     * @param string[]    $translations The translations.
-     * @param GP_Locale   $locale       The locale.
-     * @return array|null Null if no issues have been found, otherwise an array
-     *                    with errors.
-     */
-    public function check($gp_original, $translations, $locale)
+}
+/**
+ * Routes: GP_Route_Index class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
+/**
+ * Core class used to implement the index route.
+ *
+ * @since 1.0.0
+ */
+class GP_Route_Index extends \GP_Route_Main
+{
+    public function index()
     {
     }
 }
 /**
- * Class used to handle translation errors.
+ * Routes: GP_Route_Glossary_Entry class
  *
- * @since 4.0.0
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
  */
-class GP_Builtin_Translation_Errors
+/**
+ * Core class used to implement the glossary entry route.
+ *
+ * @since 1.0.0
+ */
+class GP_Route_Glossary_Entry extends \GP_Route_Main
 {
-    /**
-     * Adds an error for adding unexpected percent signs in a sprintf-like string.
-     *
-     * This is to catch translations for originals like this:
-     *  - Original: `<a href="%s">100 percent</a>`
-     *  - Submitted translation: `<a href="%s">100%</a>`
-     *  - Proper translation: `<a href="%s">100%%</a>`
-     *
-     * @since 4.0.0
-     * @access public
-     *
-     * @param string $original    The original string.
-     * @param string $translation The translated string.
-     * @return bool|string
-     */
-    public function error_unexpected_sprintf_token($original, $translation)
+    public function glossary_entries_get($project_path, $locale_slug, $translation_set_slug)
+    {
+    }
+    public function glossary_entry_add_post($project_path, $locale_slug, $translation_set_slug)
+    {
+    }
+    public function glossary_entries_post($project_path, $locale_slug, $translation_set_slug)
+    {
+    }
+    public function glossary_entry_delete_post()
+    {
+    }
+    public function export_glossary_entries_get($project_path, $locale_slug, $translation_set_slug)
+    {
+    }
+    public function import_glossary_entries_get($project_path, $locale_slug, $translation_set_slug)
+    {
+    }
+    public function import_glossary_entries_post($project_path, $locale_slug, $translation_set_slug)
+    {
+    }
+}
+/**
+ * Routes: GP_Route_Original class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
+/**
+ * Core class used to implement the original route.
+ *
+ * @since 1.0.0
+ */
+class GP_Route_Original extends \GP_Route_Main
+{
+    public function set_priority($original_id)
+    {
+    }
+}
+/**
+ * Routes: GP_Route_Translation_Set class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
+/**
+ * Core class used to implement the translation set route.
+ *
+ * @since 1.0.0
+ */
+class GP_Route_Translation_Set extends \GP_Route_Main
+{
+    public function new_get()
+    {
+    }
+    public function new_post()
+    {
+    }
+    public function single($set_id)
+    {
+    }
+    public function edit_get($set_id)
     {
     }
     /**
-     * Registers all methods starting with `error_` as built-in errors.
+     * Saves settings for a translation set and redirects back to the project locales page.
      *
-     * @since 4.0.0
-     * @access public
+     * @since 1.0.0
      *
-     * @param GP_Translation_Errors $translation_errors Instance of GP_Translation_Errors.
+     * @param int $set_id A translation set id to edit the settings of.
      */
-    public function add_all($translation_errors)
+    public function edit_post($set_id)
+    {
+    }
+    /**
+     * Deletes a translation set.
+     *
+     * @since 2.0.0
+     *
+     * @param int $set_id The id of the translation set to delete.
+     */
+    public function delete_post($set_id)
+    {
+    }
+    /**
+     * Displays the delete page for translations sets.
+     *
+     * @since 2.0.0
+     *
+     * @param int $set_id The id of the translation set to delete.
+     */
+    public function delete_get($set_id)
+    {
+    }
+}
+/**
+ * Routes: GP_Route_Locale class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
+/**
+ * Core class used to implement the locale route.
+ *
+ * @since 1.0.0
+ */
+class GP_Route_Locale extends \GP_Route_Main
+{
+    public function locales_get()
+    {
+    }
+    public function single($locale_slug, $current_set_slug = 'default')
+    {
+    }
+}
+/**
+ * Routes: GP_Route_Profile class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
+/**
+ * Core class used to implement the profile route.
+ *
+ * @since 1.0.0
+ */
+class GP_Route_Profile extends \GP_Route_Main
+{
+    /**
+     * Displays the profile page, requires a user to be logged in.
+     */
+    public function profile_get()
+    {
+    }
+    /**
+     * Displays the profile page for a given user.
+     *
+     * @param string $user A user nicename.
+     */
+    public function profile_view($user = '')
+    {
+    }
+}
+/**
+ * Routes: GP_Route_Settings class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 2.0.0
+ */
+/**
+ * Core class used to implement the settings route.
+ *
+ * @since 2.0.0
+ */
+class GP_Route_Settings extends \GP_Route_Main
+{
+    /**
+     * Displays the settings page, requires a user to be logged in.
+     */
+    public function settings_get()
+    {
+    }
+    /**
+     * Saves settings for a user and redirects back to the settings page.
+     *
+     * @param int $user_id Optional. A user id, if not provided the id of the currently logged in user will be used.
+     */
+    public function settings_post($user_id = \null)
+    {
+    }
+}
+/**
+ * Routes: GP_Route_Translation class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
+/**
+ * Core class used to implement the translation route.
+ *
+ * @since 1.0.0
+ */
+class GP_Route_Translation extends \GP_Route_Main
+{
+    public function import_translations_get($project_path, $locale_slug, $translation_set_slug)
+    {
+    }
+    public function import_translations_post($project_path, $locale_slug, $translation_set_slug)
+    {
+    }
+    public function export_translations_get($project_path, $locale_slug, $translation_set_slug)
+    {
+    }
+    public function translations_get($project_path, $locale_slug, $translation_set_slug)
+    {
+    }
+    public function translations_post($project_path, $locale_slug, $translation_set_slug)
+    {
+    }
+    public function bulk_post($project_path, $locale_slug, $translation_set_slug)
+    {
+    }
+    public function discard_warning($project_path, $locale_slug, $translation_set_slug)
+    {
+    }
+    public function set_status($project_path, $locale_slug, $translation_set_slug)
+    {
+    }
+    /**
+     * Get the glossary for the translation set.
+     *
+     * This also fetches contents from a potential locale glossary, as well as from a parent project.
+     *
+     * @since 2.3.0
+     *
+     * @param  GP_Translation_Set $translation_set Translation set for which to retrieve the glossary.
+     * @param  GP_Project         $project         Project for finding potential parent projects.
+     * @return GP_Glossary Extended glossary.
+     */
+    protected function get_extended_glossary($translation_set, $project)
+    {
+    }
+}
+/**
+ * Routes: GP_Route_Glossary class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
+/**
+ * Core class used to implement the glossary route.
+ *
+ * @since 1.0.0
+ */
+class GP_Route_Glossary extends \GP_Route_Main
+{
+    public function new_get()
+    {
+    }
+    public function new_post()
+    {
+    }
+    public function edit_get($glossary_id)
+    {
+    }
+    public function edit_post($glossary_id)
+    {
+    }
+    /**
+     * Displays the delete page for glossaries.
+     *
+     * @since 2.0.0
+     *
+     * @param int $glossary_id The id of the glossary to delete.
+     */
+    public function delete_get($glossary_id)
+    {
+    }
+    /**
+     * Delete a glossary.
+     *
+     * @since 2.0.0
+     *
+     * @param int $glossary_id The id of the glossary to delete.
+     */
+    public function delete_post($glossary_id)
+    {
+    }
+}
+/**
+ * Routes: GP_Route_Project class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
+/**
+ * Core class used to implement the project route.
+ *
+ * @since 1.0.0
+ */
+class GP_Route_Project extends \GP_Route_Main
+{
+    public function index()
+    {
+    }
+    public function single($project_path)
+    {
+    }
+    public function personal_options_post($project_path)
+    {
+    }
+    public function import_originals_get($project_path)
+    {
+    }
+    public function import_originals_post($project_path)
+    {
+    }
+    public function edit_get($project_path)
+    {
+    }
+    public function edit_post($project_path)
+    {
+    }
+    /**
+     * Deletes a project, including sub projects, glossaries, originals, translations sets and translations.
+     *
+     * @since 2.0.0
+     *
+     * @param int $project_path The path of the project to delete.
+     */
+    public function delete_post($project_path)
+    {
+    }
+    /**
+     * Displays the delete page for projects.
+     *
+     * @since 2.0.0
+     *
+     * @param string $project_path The path of the project to delete.
+     */
+    public function delete_get($project_path)
+    {
+    }
+    public function new_get()
+    {
+    }
+    public function new_post()
+    {
+    }
+    public function permissions_get($project_path)
+    {
+    }
+    public function permissions_post($project_path)
+    {
+    }
+    public function permissions_delete($project_path, $permission_id)
+    {
+    }
+    public function mass_create_sets_get($project_path)
+    {
+    }
+    public function mass_create_sets_post($project_path)
+    {
+    }
+    public function mass_create_sets_preview_post($project_path)
+    {
+    }
+    public function branch_project_get($project_path)
+    {
+    }
+    public function branch_project_post($project_path)
     {
     }
 }
@@ -281,8 +690,8 @@ abstract class GP_Format
     public $extension = '';
     public $alt_extensions = array();
     public $filename_pattern = '%s-%s';
-    public abstract function print_exported_file($project, $locale, $translation_set, $entries);
-    public abstract function read_originals_from_file($file_name);
+    abstract public function print_exported_file($project, $locale, $translation_set, $entries);
+    abstract public function read_originals_from_file($file_name);
     /**
      * Gets the list of supported file extensions.
      *
@@ -306,6 +715,134 @@ abstract class GP_Format
      * @return string|false Returns false if the locale object does not have any iso_639 language code, otherwise returns the shortest possible language code string.
      */
     protected function get_language_code($locale)
+    {
+    }
+}
+class GP_Format_PO extends \GP_Format
+{
+    public $name = 'Portable Object Message Catalog (.po/.pot)';
+    public $extension = 'po';
+    public $alt_extensions = array('pot');
+    public $class = 'PO';
+    public function print_exported_file($project, $locale, $translation_set, $entries)
+    {
+    }
+    public function read_translations_from_file($file_name, $project = \null)
+    {
+    }
+    public function read_originals_from_file($file_name)
+    {
+    }
+    /**
+     * Add a header to the selected format, overrideable by child classes.
+     *
+     * @since 2.1.0
+     *
+     * @param GP_Format $format The format object to set the header for.
+     * @param string    $header The header name to set.
+     * @param string    $text   The text to set the header to.
+     */
+    protected function set_header($format, $header, $text)
+    {
+    }
+    /**
+     * Add a comment before the headers for the selected format, overrideable by child classes.
+     *
+     * @since 2.1.0
+     *
+     * @param GP_Format $format The format object to set the header for.
+     * @param string    $text   The text to add to the comment.
+     */
+    protected function add_comments_before_headers($format, $text)
+    {
+    }
+}
+class GP_Format_MO extends \GP_Format_PO
+{
+    public $name = 'Machine Object Message Catalog (.mo)';
+    public $extension = 'mo';
+    public $alt_extensions = array();
+    public $class = 'MO';
+    /**
+     * Override the comments function as PO files do not use it.
+     *
+     * @since 2.1.0
+     *
+     * @param GP_Format $format The format object to set the header for.
+     * @param string    $text   The text to add to the comment.
+     */
+    protected function add_comments_before_headers($format, $text)
+    {
+    }
+}
+/**
+ * GlotPress Format NGX Translate class
+ *
+ * @since 3.0.0
+ *
+ * @package GlotPress
+ */
+/**
+ * Format class used to support NGX Translate JSON file format.
+ *
+ * @since 3.0.0
+ */
+class GP_Format_NGX extends \GP_Format
+{
+    /**
+     * Name of file format, used in file format dropdowns.
+     *
+     * @since 3.0.0
+     *
+     * @var string
+     */
+    public $name = 'NGX-Translate (.json)';
+    /**
+     * File extension of the file format, used to autodetect formats and when creating the output file names.
+     *
+     * @since 3.0.0
+     *
+     * @var string
+     */
+    public $extension = 'ngx.json';
+    /**
+     * Generates a string the contains the $entries to export in the JSON file format.
+     *
+     * @since 3.0.0
+     *
+     * @param GP_Project         $project         The project the strings are being exported for, not used
+     *                                            in this format but part of the scaffold of the parent object.
+     * @param GP_Locale          $locale          The locale object the strings are being exported for. not used
+     *                                            in this format but part of the scaffold of the parent object.
+     * @param GP_Translation_Set $translation_set The locale object the strings are being
+     *                                            exported for. not used in this format but part
+     *                                            of the scaffold of the parent object.
+     * @param GP_Translation     $entries         The entries to export.
+     * @return string The exported JSON string.
+     */
+    public function print_exported_file($project, $locale, $translation_set, $entries)
+    {
+    }
+    /**
+     * Reads a set of original strings from a JSON file.
+     *
+     * @since 3.0.0
+     *
+     * @param string $file_name The name of the uploaded JSON file.
+     * @return Translations|bool The extracted originals on success, false on failure.
+     */
+    public function read_originals_from_file($file_name)
+    {
+    }
+    /**
+     * Decode a JSON file.
+     *
+     * @since 3.0.0
+     *
+     * @param string $file_name The name of the JSON file to decode.
+     * @return decode JSON file as an array.
+     */
+    protected function decode_json_file($file_name)
     {
     }
 }
@@ -546,39 +1083,39 @@ class GP_Format_Jed1x extends \GP_Format_JSON
     }
 }
 /**
- * GlotPress Format NGX Translate class
+ * GlotPress Format Mac OSX / iOS Strings Translate class
  *
- * @since 3.0.0
+ * @since 1.0.0
  *
  * @package GlotPress
  */
 /**
- * Format class used to support NGX Translate JSON file format.
+ * Format class used to support Mac OS X / iOS Translate strings file format.
  *
- * @since 3.0.0
+ * @since 1.0.0
  */
-class GP_Format_NGX extends \GP_Format
+class GP_Format_Strings extends \GP_Format
 {
     /**
      * Name of file format, used in file format dropdowns.
      *
-     * @since 3.0.0
+     * @since 1.0.0
      *
      * @var string
      */
-    public $name = 'NGX-Translate (.json)';
+    public $name = 'Mac OS X / iOS Strings File (.strings)';
     /**
      * File extension of the file format, used to autodetect formats and when creating the output file names.
      *
-     * @since 3.0.0
+     * @since 1.0.0
      *
      * @var string
      */
-    public $extension = 'ngx.json';
+    public $extension = 'strings';
     /**
-     * Generates a string the contains the $entries to export in the JSON file format.
+     * Generates a string the contains the $entries to export in the strings file format.
      *
-     * @since 3.0.0
+     * @since 1.0.0
      *
      * @param GP_Project         $project         The project the strings are being exported for, not used
      *                                            in this format but part of the scaffold of the parent object.
@@ -588,31 +1125,20 @@ class GP_Format_NGX extends \GP_Format
      *                                            exported for. not used in this format but part
      *                                            of the scaffold of the parent object.
      * @param GP_Translation     $entries         The entries to export.
-     * @return string The exported JSON string.
+     * @return string The exported strings string.
      */
     public function print_exported_file($project, $locale, $translation_set, $entries)
     {
     }
     /**
-     * Reads a set of original strings from a JSON file.
+     * Reads a set of original strings from a strings file.
      *
-     * @since 3.0.0
+     * @since 1.0.0
      *
-     * @param string $file_name The name of the uploaded JSON file.
+     * @param string $file_name The name of the uploaded strings file.
      * @return Translations|bool The extracted originals on success, false on failure.
      */
     public function read_originals_from_file($file_name)
-    {
-    }
-    /**
-     * Decode a JSON file.
-     *
-     * @since 3.0.0
-     *
-     * @param string $file_name The name of the JSON file to decode.
-     * @return decode JSON file as an array.
-     */
-    protected function decode_json_file($file_name)
     {
     }
 }
@@ -688,60 +1214,16 @@ class GP_Format_PHP extends \GP_Format
     {
     }
 }
-class GP_Format_PO extends \GP_Format
+class GP_Format_ResX extends \GP_Format
 {
-    public $name = 'Portable Object Message Catalog (.po/.pot)';
-    public $extension = 'po';
-    public $alt_extensions = array('pot');
-    public $class = 'PO';
+    public $name = '.NET Resource (.resx)';
+    public $extension = 'resx';
+    public $alt_extensions = array('resx.xml');
+    public $exported = '';
     public function print_exported_file($project, $locale, $translation_set, $entries)
     {
     }
-    public function read_translations_from_file($file_name, $project = \null)
-    {
-    }
     public function read_originals_from_file($file_name)
-    {
-    }
-    /**
-     * Add a header to the selected format, overrideable by child classes.
-     *
-     * @since 2.1.0
-     *
-     * @param GP_Format $format The format object to set the header for.
-     * @param string    $header The header name to set.
-     * @param string    $text   The text to set the header to.
-     */
-    protected function set_header($format, $header, $text)
-    {
-    }
-    /**
-     * Add a comment before the headers for the selected format, overrideable by child classes.
-     *
-     * @since 2.1.0
-     *
-     * @param GP_Format $format The format object to set the header for.
-     * @param string    $text   The text to add to the comment.
-     */
-    protected function add_comments_before_headers($format, $text)
-    {
-    }
-}
-class GP_Format_MO extends \GP_Format_PO
-{
-    public $name = 'Machine Object Message Catalog (.mo)';
-    public $extension = 'mo';
-    public $alt_extensions = array();
-    public $class = 'MO';
-    /**
-     * Override the comments function as PO files do not use it.
-     *
-     * @since 2.1.0
-     *
-     * @param GP_Format $format The format object to set the header for.
-     * @param string    $text   The text to add to the comment.
-     */
-    protected function add_comments_before_headers($format, $text)
     {
     }
 }
@@ -796,421 +1278,6 @@ class GP_Format_Properties extends \GP_Format
     {
     }
 }
-class GP_Format_ResX extends \GP_Format
-{
-    public $name = '.NET Resource (.resx)';
-    public $extension = 'resx';
-    public $alt_extensions = array('resx.xml');
-    public $exported = '';
-    public function print_exported_file($project, $locale, $translation_set, $entries)
-    {
-    }
-    public function read_originals_from_file($file_name)
-    {
-    }
-}
-/**
- * GlotPress Format Mac OSX / iOS Strings Translate class
- *
- * @since 1.0.0
- *
- * @package GlotPress
- */
-/**
- * Format class used to support Mac OS X / iOS Translate strings file format.
- *
- * @since 1.0.0
- */
-class GP_Format_Strings extends \GP_Format
-{
-    /**
-     * Name of file format, used in file format dropdowns.
-     *
-     * @since 1.0.0
-     *
-     * @var string
-     */
-    public $name = 'Mac OS X / iOS Strings File (.strings)';
-    /**
-     * File extension of the file format, used to autodetect formats and when creating the output file names.
-     *
-     * @since 1.0.0
-     *
-     * @var string
-     */
-    public $extension = 'strings';
-    /**
-     * Generates a string the contains the $entries to export in the strings file format.
-     *
-     * @since 1.0.0
-     *
-     * @param GP_Project         $project         The project the strings are being exported for, not used
-     *                                            in this format but part of the scaffold of the parent object.
-     * @param GP_Locale          $locale          The locale object the strings are being exported for. not used
-     *                                            in this format but part of the scaffold of the parent object.
-     * @param GP_Translation_Set $translation_set The locale object the strings are being
-     *                                            exported for. not used in this format but part
-     *                                            of the scaffold of the parent object.
-     * @param GP_Translation     $entries         The entries to export.
-     * @return string The exported strings string.
-     */
-    public function print_exported_file($project, $locale, $translation_set, $entries)
-    {
-    }
-    /**
-     * Reads a set of original strings from a strings file.
-     *
-     * @since 1.0.0
-     *
-     * @param string $file_name The name of the uploaded strings file.
-     * @return Translations|bool The extracted originals on success, false on failure.
-     */
-    public function read_originals_from_file($file_name)
-    {
-    }
-}
-/**
- * GP class
- *
- * @package GlotPress
- * @since 1.0.0
- */
-/**
- * Core class used to store singleton instances.
- *
- * @since 1.0.0
- */
-class GP
-{
-    /**
-     * Model for project.
-     *
-     * @since 1.0.0
-     *
-     * @var GP_Project
-     */
-    public static $project;
-    /**
-     * Model for transalation set.
-     *
-     * @since 1.0.0
-     *
-     * @var GP_Translation_Set
-     */
-    public static $translation_set;
-    /**
-     * Model for permission.
-     *
-     * @since 1.0.0
-     *
-     * @var GP_Permission
-     */
-    public static $permission;
-    /**
-     * Model for validator permission.
-     *
-     * @since 1.0.0
-     *
-     * @var GP_Validator_Permission
-     */
-    public static $validator_permission;
-    /**
-     * Model for administrator permission.
-     *
-     * @since 1.0.0
-     *
-     * @var GP_Administrator_Permission
-     */
-    public static $administrator_permission;
-    /**
-     * Model for translation.
-     *
-     * @since 1.0.0
-     *
-     * @var GP_Translation
-     */
-    public static $translation;
-    /**
-     * Model for original.
-     *
-     * @since 1.0.0
-     *
-     * @var GP_Original
-     */
-    public static $original;
-    /**
-     * Model for glossary.
-     *
-     * @since 1.0.0
-     *
-     * @var GP_Glossary
-     */
-    public static $glossary;
-    /**
-     * Model for glossary entry.
-     *
-     * @since 1.0.0
-     *
-     * @var GP_Glossary_Entry
-     */
-    public static $glossary_entry;
-    /**
-     * Singleton for router.
-     *
-     * @since 1.0.0
-     *
-     * @var GP_Router
-     */
-    public static $router;
-    /**
-     * Singleton for translation warnings.
-     *
-     * @since 1.0.0
-     *
-     * @var GP_Translation_Warnings
-     */
-    public static $translation_warnings;
-    /**
-     * Singleton for built-in translation warnings.
-     *
-     * @since 1.0.0
-     *
-     * @var GP_Builtin_Translation_Warnings
-     */
-    public static $builtin_translation_warnings;
-    /**
-     * Singleton for translation errors.
-     *
-     * @since 4.0.0
-     *
-     * @var GP_Translation_Errors
-     */
-    public static $translation_errors;
-    /**
-     * Singleton for built-in translation errors.
-     *
-     * @since 4.0.0
-     *
-     * @var GP_Builtin_Translation_Errors
-     */
-    public static $builtin_translation_errors;
-    /**
-     * Array of notices.
-     *
-     * @since 1.0.0
-     *
-     * @var array
-     */
-    public static $redirect_notices = array();
-    /**
-     * Holds the current route.
-     *
-     * @since 1.0.0
-     *
-     * @var string|null
-     */
-    public static $current_route = \null;
-    /**
-     * Array of available formats.
-     *
-     * @since 1.0.0
-     *
-     * @var GP_Format[]
-     */
-    public static $formats;
-    /**
-     * Array of enqueued style sheets.
-     *
-     * @since 2.2.0
-     *
-     * @var array
-     */
-    public static $styles = array();
-    /**
-     * Array of enqueued scripts.
-     *
-     * @since 2.2.0
-     *
-     * @var array
-     */
-    public static $scripts = array();
-}
-/**
- * Base controller class
- */
-class GP_Route
-{
-    public $api = \false;
-    public $errors = array();
-    public $notices = array();
-    var $request_running = \false;
-    var $template_path = \null;
-    var $fake_request = \false;
-    var $exited = \false;
-    var $exit_message;
-    var $redirected = \false;
-    var $redirected_to = \null;
-    var $rendered_template = \false;
-    var $loaded_template = \null;
-    var $template_output = \null;
-    var $headers = array();
-    var $class_name;
-    var $http_status;
-    var $last_method_called;
-    public function __construct()
-    {
-    }
-    public function die_with_error($message, $status = 500)
-    {
-    }
-    public function before_request()
-    {
-    }
-    public function after_request()
-    {
-    }
-    /**
-     * Validates a thing and add its errors to the route's errors.
-     *
-     * @param object $thing a GP_Thing instance to validate
-     * @return bool whether the thing is valid
-     */
-    public function validate($thing)
-    {
-    }
-    /**
-     * Same as validate(), but redirects to $url if the thing isn't valid.
-     *
-     * Note: this method calls $this->exit_() after the redirect and the code after it won't
-     * be executed.
-     *
-     * @param object $thing a GP_Thing instance to validate
-     * @param string $url where to redirect if the thing doesn't validate
-     * @return bool whether the thing is valid
-     */
-    public function invalid_and_redirect($thing, $url = \null)
-    {
-    }
-    /**
-     * Checks whether a user is allowed to do an action.
-     *
-     * @since 2.3.0 Added the `$extra` parameter.
-     *
-     * @param string      $action      The action.
-     * @param string|null $object_type Optional. Type of an object. Default null.
-     * @param int|null    $object_id   Optional. ID of an object. Default null.
-     * @param array|null  $extra       Optional. Extra information for deciding the outcome.
-     * @return bool       The verdict.
-     */
-    public function can($action, $object_type = \null, $object_id = \null, $extra = \null)
-    {
-    }
-    /**
-     * Redirects and exits if the current user isn't allowed to do an action.
-     *
-     * @since 1.0.0
-     *
-     * @param string      $action      The action.
-     * @param string|null $object_type Optional. Type of an object. Default null.
-     * @param int|null    $object_id   Optional. ID of an object. Default null.
-     * @param string|null $url         Optional. URL to redirect to. Default: referrer or index page, if referrer is missing.
-     * @return bool Whether a redirect happened.
-     */
-    public function cannot_and_redirect($action, $object_type = \null, $object_id = \null, $url = \null)
-    {
-    }
-    /**
-     * Verifies a nonce for a route.
-     *
-     * @since 2.0.0
-     *
-     * @param string $action Context for the created nonce.
-     * @return bool False if the nonce is invalid, true if valid.
-     */
-    public function verify_nonce($action)
-    {
-    }
-    /**
-     * Verifies a nonce for a route and redirects in case the nonce is invalid.
-     *
-     * @since 2.0.0
-     *
-     * @param string      $action Context for the created nonce.
-     * @param string|null $url    The URL to redirect. Default: 'null', the referrer.
-     * @return bool False if the nonce is valid, true if the redirect has happened.
-     */
-    public function invalid_nonce_and_redirect($action, $url = \null)
-    {
-    }
-    /**
-     * Determines whether a user can perfom an action and redirects in case of a failure.
-     *
-     * @since 1.0.0
-     *
-     * @param string      $action      The action.
-     * @param string|null $object_type Optional. Type of an object. Default null.
-     * @param int|null    $object_id   Optional. ID of an object. Default null.
-     * @param string|null $message     Error message in case of a failure.
-     *                                 Default: 'You are not allowed to do that!'.
-     * @param array|null  $extra       Pass-through parameter to can().
-     * @return false
-     */
-    public function can_or_forbidden($action, $object_type = \null, $object_id = \null, $message = \null, $extra = \null)
-    {
-    }
-    public function logged_in_or_forbidden()
-    {
-    }
-    public function redirect_with_error($message, $url = \null)
-    {
-    }
-    public function redirect($url = \null)
-    {
-    }
-    /**
-     * Sets HTTP headers for content download.
-     *
-     * @param string $filename      The name of the file.
-     * @param string $last_modified Optional. Date when the file was last modified. Default: ''.
-     */
-    public function headers_for_download($filename, $last_modified = '')
-    {
-    }
-    public function set_notices_and_errors()
-    {
-    }
-    /**
-     * Loads a template.
-     *
-     * @param string      $template  Template name to load.
-     * @param array       $args      Associative array with arguements, which will be exported in the template PHP file.
-     * @param bool|string $honor_api If this is true or 'api' and the route is processing an API request
-     *                               the template name will be suffixed with .api. The actual file loaded will be template.api.php.
-     */
-    public function tmpl($template, $args = array(), $honor_api = \true)
-    {
-    }
-    public function die_with_404($args = array())
-    {
-    }
-    public function exit_($message = 0)
-    {
-    }
-    public function header($string)
-    {
-    }
-    public function status_header($status)
-    {
-    }
-    /**
-     * Check if the current URL has trailing slash. If not, redirect to trailed slash URL.
-     *
-     * @since 4.0.0
-     */
-    public function check_uri_trailing_slash()
-    {
-    }
-}
 class GP_Router
 {
     public $api_prefix = 'api';
@@ -1246,413 +1313,313 @@ class GP_Router
     {
     }
 }
-// phpcs:ignore WordPress.Files.FileName.NotHyphenatedLowercase
 /**
- * Routes: GP_Route_Main class
+ * Translation warnings API
  *
  * @package GlotPress
- * @subpackage Routes
  * @since 1.0.0
  */
 /**
- * Core class used to implement the main route.
+ * Class used to handle translation warnings.
  *
  * @since 1.0.0
  */
-class GP_Route_Main extends \GP_Route
-{
-}
-/**
- * Routes: GP_Route_Glossary_Entry class
- *
- * @package GlotPress
- * @subpackage Routes
- * @since 1.0.0
- */
-/**
- * Core class used to implement the glossary entry route.
- *
- * @since 1.0.0
- */
-class GP_Route_Glossary_Entry extends \GP_Route_Main
-{
-    public function glossary_entries_get($project_path, $locale_slug, $translation_set_slug)
-    {
-    }
-    public function glossary_entry_add_post($project_path, $locale_slug, $translation_set_slug)
-    {
-    }
-    public function glossary_entries_post($project_path, $locale_slug, $translation_set_slug)
-    {
-    }
-    public function glossary_entry_delete_post()
-    {
-    }
-    public function export_glossary_entries_get($project_path, $locale_slug, $translation_set_slug)
-    {
-    }
-    public function import_glossary_entries_get($project_path, $locale_slug, $translation_set_slug)
-    {
-    }
-    public function import_glossary_entries_post($project_path, $locale_slug, $translation_set_slug)
-    {
-    }
-}
-/**
- * Routes: GP_Route_Glossary class
- *
- * @package GlotPress
- * @subpackage Routes
- * @since 1.0.0
- */
-/**
- * Core class used to implement the glossary route.
- *
- * @since 1.0.0
- */
-class GP_Route_Glossary extends \GP_Route_Main
-{
-    public function new_get()
-    {
-    }
-    public function new_post()
-    {
-    }
-    public function edit_get($glossary_id)
-    {
-    }
-    public function edit_post($glossary_id)
-    {
-    }
-    /**
-     * Displays the delete page for glossaries.
-     *
-     * @since 2.0.0
-     *
-     * @param int $glossary_id The id of the glossary to delete.
-     */
-    public function delete_get($glossary_id)
-    {
-    }
-    /**
-     * Delete a glossary.
-     *
-     * @since 2.0.0
-     *
-     * @param int $glossary_id The id of the glossary to delete.
-     */
-    public function delete_post($glossary_id)
-    {
-    }
-}
-/**
- * Routes: GP_Route_Index class
- *
- * @package GlotPress
- * @subpackage Routes
- * @since 1.0.0
- */
-/**
- * Core class used to implement the index route.
- *
- * @since 1.0.0
- */
-class GP_Route_Index extends \GP_Route_Main
-{
-    public function index()
-    {
-    }
-}
-/**
- * Routes: GP_Route_Locale class
- *
- * @package GlotPress
- * @subpackage Routes
- * @since 1.0.0
- */
-/**
- * Core class used to implement the locale route.
- *
- * @since 1.0.0
- */
-class GP_Route_Locale extends \GP_Route_Main
-{
-    public function locales_get()
-    {
-    }
-    public function single($locale_slug, $current_set_slug = 'default')
-    {
-    }
-}
-/**
- * Routes: GP_Route_Original class
- *
- * @package GlotPress
- * @subpackage Routes
- * @since 1.0.0
- */
-/**
- * Core class used to implement the original route.
- *
- * @since 1.0.0
- */
-class GP_Route_Original extends \GP_Route_Main
-{
-    public function set_priority($original_id)
-    {
-    }
-}
-/**
- * Routes: GP_Route_Profile class
- *
- * @package GlotPress
- * @subpackage Routes
- * @since 1.0.0
- */
-/**
- * Core class used to implement the profile route.
- *
- * @since 1.0.0
- */
-class GP_Route_Profile extends \GP_Route_Main
+class GP_Translation_Warnings
 {
     /**
-     * Displays the profile page, requires a user to be logged in.
-     */
-    public function profile_get()
-    {
-    }
-    /**
-     * Displays the profile page for a given user.
-     *
-     * @param string $user A user nicename.
-     */
-    public function profile_view($user = '')
-    {
-    }
-}
-/**
- * Routes: GP_Route_Project class
- *
- * @package GlotPress
- * @subpackage Routes
- * @since 1.0.0
- */
-/**
- * Core class used to implement the project route.
- *
- * @since 1.0.0
- */
-class GP_Route_Project extends \GP_Route_Main
-{
-    public function index()
-    {
-    }
-    public function single($project_path)
-    {
-    }
-    public function personal_options_post($project_path)
-    {
-    }
-    public function import_originals_get($project_path)
-    {
-    }
-    public function import_originals_post($project_path)
-    {
-    }
-    public function edit_get($project_path)
-    {
-    }
-    public function edit_post($project_path)
-    {
-    }
-    /**
-     * Deletes a project, including sub projects, glossaries, originals, translations sets and translations.
-     *
-     * @since 2.0.0
-     *
-     * @param int $project_path The path of the project to delete.
-     */
-    public function delete_post($project_path)
-    {
-    }
-    /**
-     * Displays the delete page for projects.
-     *
-     * @since 2.0.0
-     *
-     * @param string $project_path The path of the project to delete.
-     */
-    public function delete_get($project_path)
-    {
-    }
-    public function new_get()
-    {
-    }
-    public function new_post()
-    {
-    }
-    public function permissions_get($project_path)
-    {
-    }
-    public function permissions_post($project_path)
-    {
-    }
-    public function permissions_delete($project_path, $permission_id)
-    {
-    }
-    public function mass_create_sets_get($project_path)
-    {
-    }
-    public function mass_create_sets_post($project_path)
-    {
-    }
-    public function mass_create_sets_preview_post($project_path)
-    {
-    }
-    public function branch_project_get($project_path)
-    {
-    }
-    public function branch_project_post($project_path)
-    {
-    }
-}
-/**
- * Routes: GP_Route_Settings class
- *
- * @package GlotPress
- * @subpackage Routes
- * @since 2.0.0
- */
-/**
- * Core class used to implement the settings route.
- *
- * @since 2.0.0
- */
-class GP_Route_Settings extends \GP_Route_Main
-{
-    /**
-     * Displays the settings page, requires a user to be logged in.
-     */
-    public function settings_get()
-    {
-    }
-    /**
-     * Saves settings for a user and redirects back to the settings page.
-     *
-     * @param int $user_id Optional. A user id, if not provided the id of the currently logged in user will be used.
-     */
-    public function settings_post($user_id = \null)
-    {
-    }
-}
-/**
- * Routes: GP_Route_Translation_Set class
- *
- * @package GlotPress
- * @subpackage Routes
- * @since 1.0.0
- */
-/**
- * Core class used to implement the translation set route.
- *
- * @since 1.0.0
- */
-class GP_Route_Translation_Set extends \GP_Route_Main
-{
-    public function new_get()
-    {
-    }
-    public function new_post()
-    {
-    }
-    public function single($set_id)
-    {
-    }
-    public function edit_get($set_id)
-    {
-    }
-    /**
-     * Saves settings for a translation set and redirects back to the project locales page.
+     * List of callbacks.
      *
      * @since 1.0.0
+     * @access public
      *
-     * @param int $set_id A translation set id to edit the settings of.
+     * @var callable[]
      */
-    public function edit_post($set_id)
+    public $callbacks = array();
+    /**
+     * Adds a callback for a new warning.
+     *
+     * @since 1.0.0
+     * @access public
+     *
+     * @param string   $id       Unique ID of the callback.
+     * @param callable $callback The callback.
+     */
+    public function add($id, $callback)
     {
     }
     /**
-     * Deletes a translation set.
+     * Removes an existing callback for a warning.
      *
-     * @since 2.0.0
+     * @since 1.0.0
+     * @access public
      *
-     * @param int $set_id The id of the translation set to delete.
+     * @param string $id Unique ID of the callback.
      */
-    public function delete_post($set_id)
+    public function remove($id)
     {
     }
     /**
-     * Displays the delete page for translations sets.
+     * Checks whether a callback exists for an ID.
      *
-     * @since 2.0.0
+     * @since 1.0.0
+     * @access public
      *
-     * @param int $set_id The id of the translation set to delete.
+     * @param string $id Unique ID of the callback.
+     * @return bool True if exists, false if not.
      */
-    public function delete_get($set_id)
+    public function has($id)
+    {
+    }
+    /**
+     * Checks translations for any issues/warnings.
+     *
+     * @since 1.0.0
+     * @access public
+     *
+     * @param string    $singular     The singular form of an original string.
+     * @param string    $plural       The plural form of an original string.
+     * @param string[]  $translations An array of translations for an original.
+     * @param GP_Locale $locale       The locale of the translations.
+     * @return array|null Null if no issues have been found, otherwise an array
+     *                    with warnings.
+     */
+    public function check($singular, $plural, $translations, $locale)
     {
     }
 }
 /**
- * Routes: GP_Route_Translation class
- *
- * @package GlotPress
- * @subpackage Routes
- * @since 1.0.0
- */
-/**
- * Core class used to implement the translation route.
+ * Class used to register built-in translation warnings.
  *
  * @since 1.0.0
  */
-class GP_Route_Translation extends \GP_Route_Main
+class GP_Builtin_Translation_Warnings
 {
-    public function import_translations_get($project_path, $locale_slug, $translation_set_slug)
-    {
-    }
-    public function import_translations_post($project_path, $locale_slug, $translation_set_slug)
-    {
-    }
-    public function export_translations_get($project_path, $locale_slug, $translation_set_slug)
-    {
-    }
-    public function translations_get($project_path, $locale_slug, $translation_set_slug)
-    {
-    }
-    public function translations_post($project_path, $locale_slug, $translation_set_slug)
-    {
-    }
-    public function bulk_post($project_path, $locale_slug, $translation_set_slug)
-    {
-    }
-    public function discard_warning($project_path, $locale_slug, $translation_set_slug)
-    {
-    }
-    public function set_status($project_path, $locale_slug, $translation_set_slug)
+    /**
+     * Lower bound for length checks.
+     *
+     * @since 1.0.0
+     * @access public
+     *
+     * @var float
+     */
+    public $length_lower_bound = 0.2;
+    /**
+     * Upper bound for length checks.
+     *
+     * @since 1.0.0
+     * @access public
+     *
+     * @var float
+     */
+    public $length_upper_bound = 5.0;
+    /**
+     * List of locales which are excluded from length checks.
+     *
+     * @since 1.0.0
+     * @access public
+     *
+     * @var array
+     */
+    public $length_exclude_languages = array('art-xemoji', 'ja', 'ko', 'zh', 'zh-hk', 'zh-cn', 'zh-sg', 'zh-tw');
+    /**
+     * List of domains with allowed changes to their own subdomains
+     *
+     * @since 3.0.0
+     * @access public
+     *
+     * @var array
+     */
+    public $allowed_domain_changes = array(
+        // Allow links to wordpress.org to be changed to a subdomain.
+        'wordpress.org' => '[^.]+\.wordpress\.org',
+        // Allow links to wordpress.com to be changed to a subdomain.
+        'wordpress.com' => '[^.]+\.wordpress\.com',
+        // Allow links to gravatar.org to be changed to a subdomain.
+        'en.gravatar.com' => '[^.]+\.gravatar\.com',
+        // Allow links to wikipedia.org to be changed to a subdomain.
+        'en.wikipedia.org' => '[^.]+\.wikipedia\.org',
+    );
+    /**
+     * List of languages without italics
+     *
+     * @since 3.0.0
+     * @access public
+     *
+     * @var array
+     */
+    public $languages_without_italics = array('ja', 'ko', 'zh', 'zh-hk', 'zh-cn', 'zh-sg', 'zh-tw');
+    /**
+     * Checks whether lengths of source and translation differ too much.
+     *
+     * @since 1.0.0
+     * @access public
+     *
+     * @param string    $original    The source string.
+     * @param string    $translation The translation.
+     * @param GP_Locale $locale      The locale of the translation.
+     * @return string|true True if check is OK, otherwise warning message.
+     */
+    public function warning_length($original, $translation, $locale)
     {
     }
     /**
-     * Get the glossary for the translation set.
+     * Checks whether HTML tags are missing or have been added.
      *
-     * This also fetches contents from a potential locale glossary, as well as from a parent project.
+     * @todo Validate if the HTML is in the same order in function of the language. Validate nesting of HTML is same.
      *
-     * @since 2.3.0
+     * @since 1.0.0
+     * @access public
      *
-     * @param  GP_Translation_Set $translation_set Translation set for which to retrieve the glossary.
-     * @param  GP_Project         $project         Project for finding potential parent projects.
-     * @return GP_Glossary Extended glossary.
+     * @param string    $original    The source string.
+     * @param string    $translation The translation.
+     * @param GP_Locale $locale      The locale of the translation.
+     * @return string|true True if check is OK, otherwise warning message.
      */
-    protected function get_extended_glossary($translation_set, $project)
+    public function warning_tags($original, $translation, $locale)
+    {
+    }
+    /**
+     * Checks whether PHP placeholders are missing or have been added.
+     *
+     * The default regular expression:
+     * bcdefgosuxEFGX are standard printf placeholders.
+     * % is included to allow/expect %%.
+     * l is included for wp_sprintf_l()'s custom %l format.
+     * @ is included for Swift (as used for iOS mobile app) %@ string format.
+     *
+     * @since 1.0.0
+     * @access public
+     *
+     * @param string    $original    The source string.
+     * @param string    $translation The translation.
+     * @param GP_Locale $locale      The locale of the translation.
+     * @return string|true True if check is OK, otherwise warning message.
+     */
+    public function warning_placeholders($original, $translation, $locale)
+    {
+    }
+    /**
+     * Checks whether a translation does begin on newline.
+     *
+     * @since 1.0.0
+     * @access public
+     *
+     * @param string    $original    The source string.
+     * @param string    $translation The translation.
+     * @param GP_Locale $locale      The locale of the translation.
+     * @return string|true True if check is OK, otherwise warning message.
+     */
+    public function warning_should_begin_on_newline($original, $translation, $locale)
+    {
+    }
+    /**
+     * Checks whether a translation doesn't begin on newline.
+     *
+     * @since 1.0.0
+     * @access public
+     *
+     * @param string    $original    The source string.
+     * @param string    $translation The translation.
+     * @param GP_Locale $locale      The locale of the translation.
+     * @return string|true True if check is OK, otherwise warning message.
+     */
+    public function warning_should_not_begin_on_newline($original, $translation, $locale)
+    {
+    }
+    /**
+     * Checks whether a translation does end on newline.
+     *
+     * @since 1.0.0
+     * @access public
+     *
+     * @param string    $original    The source string.
+     * @param string    $translation The translation.
+     * @param GP_Locale $locale      The locale of the translation.
+     * @return string|true True if check is OK, otherwise warning message.
+     */
+    public function warning_should_end_on_newline($original, $translation, $locale)
+    {
+    }
+    /**
+     * Checks whether a translation doesn't end on newline.
+     *
+     * @since 1.0.0
+     * @access public
+     *
+     * @param string    $original    The source string.
+     * @param string    $translation The translation.
+     * @param GP_Locale $locale      The locale of the translation.
+     * @return string|true True if check is OK, otherwise warning message.
+     */
+    public function warning_should_not_end_on_newline($original, $translation, $locale)
+    {
+    }
+    /**
+     * Adds a warning for changing plain-text URLs.
+     *
+     * This allows for the scheme to change, and for some domains to change to a subdomain.
+     *
+     * @since 3.0.0
+     * @access public
+     *
+     * @param string $original    The original string.
+     * @param string $translation The translated string.
+     * @return string|true True if check is OK, otherwise warning message.
+     */
+    public function warning_mismatching_urls($original, $translation)
+    {
+    }
+    /**
+     * Registers all methods starting with `warning_` as built-in warnings.
+     *
+     * @param GP_Translation_Warnings $translation_warnings Instance of GP_Translation_Warnings.
+     */
+    public function add_all($translation_warnings)
+    {
+    }
+    /**
+     * Adds a warning for changing placeholders.
+     *
+     * This only supports placeholders in the format of '###[A-Za-z_-]+###'.
+     *
+     * @todo Check that the number of each type of placeholders are the same in the original and in the translation
+     *
+     * @since 3.0.0
+     * @access public
+     *
+     * @param string $original    The original string.
+     * @param string $translation The translated string.
+     * @return string|true
+     */
+    public function warning_named_placeholders(string $original, string $translation)
+    {
+    }
+    /**
+     * Adds a warning for added or removed spaces at the beginning or at the end of the translation.
+     *
+     * @since 4.0.0
+     * @access public
+     *
+     * @param string $original    The original string.
+     * @param string $translation The translated string.
+     *
+     * @return string|true True if check is OK, otherwise warning message.
+     */
+    public function warning_unexpected_start_end_space(string $original, string $translation)
+    {
+    }
+    /**
+     * Checks the missing uppercase in the beginning of the translations.
+     *
+     * @since 4.0.0
+     * @access public
+     *
+     * @param string $original    The source string.
+     * @param string $translation The translation.
+     *
+     * @return string|true True if check is OK, otherwise warning message.
+     */
+    public function warning_missing_uppercase_beginning(string $original, string $translation)
     {
     }
 }
@@ -1893,8 +1860,9 @@ class GP_Thing
     /**
      * Inserts a new row
      *
-     * @param $args array associative array with fields as keys and values as values
-     * @return mixed the object corresponding to the inserted row or false on error
+     * @param array $args Associative array with fields as keys and values as values.
+     *
+     * @return mixed The object corresponding to the inserted row or false on error.
      */
     public function create($args)
     {
@@ -1902,8 +1870,8 @@ class GP_Thing
     /**
      * Inserts a record and then selects it back based on the id
      *
-     * @param $args array see create()
-     * @return mixed the selected object or false on error
+     * @param array $args See create().
+     * @return mixed the selected object or false on error.
      */
     public function create_and_select($args)
     {
@@ -1911,7 +1879,7 @@ class GP_Thing
     /**
      * Updates a single row
      *
-     * @param $data array associative array with fields as keys and updated values as values
+     * @param array $data Associative array with fields as keys and updated values as values.
      */
     public function update($data, $where = \null)
     {
@@ -2243,6 +2211,12 @@ class GP_Glossary_Entry extends \GP_Thing
     {
     }
     /**
+     * Translates the parts of speech.
+     */
+    public function translate_parts_of_speech()
+    {
+    }
+    /**
      * Sets restriction rules for fields.
      *
      * @since 1.0.0
@@ -2264,113 +2238,6 @@ class GP_Glossary_Entry extends \GP_Thing
      * @return string The last modified date on success, empty string on failure.
      */
     public function last_modified($glossary)
-    {
-    }
-}
-/**
- * Things: GP_Glossary class
- *
- * @package GlotPress
- * @subpackage Things
- * @since 1.0.0
- */
-/**
- * Core class used to implement the glossaries.
- *
- * @since 1.0.0
- */
-class GP_Glossary extends \GP_Thing
-{
-    var $table_basename = 'gp_glossaries';
-    var $field_names = array('id', 'translation_set_id', 'description');
-    var $int_fields = array('id', 'translation_set_id');
-    var $non_updatable_attributes = array('id');
-    public $id;
-    public $translation_set_id;
-    public $description;
-    /**
-     * Sets restriction rules for fields.
-     *
-     * @since 1.0.0
-     *
-     * @param GP_Validation_Rules $rules The validation rules instance.
-     */
-    public function restrict_fields($rules)
-    {
-    }
-    /**
-     * Get the path to the glossary.
-     *
-     * @return string
-     */
-    public function path()
-    {
-    }
-    /**
-     * Get the glossary by set/project.
-     * If there's no glossary for this specific project, get the nearest parent glossary
-     *
-     * @param GP_Project         $project
-     * @param GP_Translation_Set $translation_set
-     *
-     * @return GP_Glossary|bool
-     */
-    public function by_set_or_parent_project($translation_set, $project)
-    {
-    }
-    public function by_set_id($set_id)
-    {
-    }
-    /**
-     * Merges entries of a glossary with another one.
-     *
-     * @since 2.3.0
-     *
-     * @param GP_Glossary $merge The Glossary to merge into the current one.
-     * @return array Array of Glossary_Entry.
-     */
-    public function merge_with_glossary(\GP_Glossary $merge)
-    {
-    }
-    /**
-     * Retrieves entries and cache them.
-     *
-     * @since 2.3.0
-     *
-     * @return array Array of Glossary_Entry.
-     */
-    public function get_entries()
-    {
-    }
-    /**
-     * Copies glossary items from a glossary to the current one
-     * This function does not merge then, just copies unconditionally. If a translation already exists, it will be duplicated.
-     *
-     * @param int $source_glossary_id
-     *
-     * @return mixed
-     */
-    public function copy_glossary_items_from($source_glossary_id)
-    {
-    }
-    /**
-     * Deletes a glossary and all of it's entries.
-     *
-     * @since 2.0.0
-     *
-     * @return bool
-     */
-    public function delete()
-    {
-    }
-    /**
-     * Get the virtual Locale Glossary project
-     *
-     * @since 2.3.0
-     *
-     * @return GP_Project The project
-     */
-    public function get_locale_glossary_project()
     {
     }
 }
@@ -2510,32 +2377,29 @@ class GP_Original extends \GP_Thing
     }
 }
 /**
- * Things: GP_Project class
+ * Things: GP_Validator_Permission class
  *
  * @package GlotPress
  * @subpackage Things
  * @since 1.0.0
  */
 /**
- * Core class used to implement the projects.
+ * Core class used to implement the validator permissions.
  *
  * @since 1.0.0
  */
-class GP_Project extends \GP_Thing
+class GP_Validator_Permission extends \GP_Permission
 {
-    var $table_basename = 'gp_projects';
-    var $field_names = array('id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template', 'active');
-    var $int_fields = array('id', 'parent_project_id', 'active');
+    var $table_basename = 'gp_permissions';
+    var $field_names = array('id', 'user_id', 'action', 'object_type', 'object_id');
+    var $non_db_field_names = array('project_id', 'locale_slug', 'set_slug');
     var $non_updatable_attributes = array('id');
-    public $id;
-    public $name;
-    public $slug;
-    public $path;
-    public $description;
-    public $parent_project_id;
-    public $source_url_template;
-    public $active;
-    public $user_source_url_template;
+    public $object_type;
+    public $project_id;
+    public $locale_slug;
+    public $set_slug;
+    public $user;
+    public $project;
     /**
      * Sets restriction rules for fields.
      *
@@ -2546,140 +2410,24 @@ class GP_Project extends \GP_Thing
     public function restrict_fields($rules)
     {
     }
-    // Additional queries
-    public function by_path($path)
-    {
-    }
     /**
-     * Fetches the project by ID or object.
+     * Sets fields of the current GP_Thing object.
      *
-     * @since 2.3.0
-     *
-     * @param int|object $thing_or_id A project or the ID.
-     * @return GP_Project|false The project on success or false on failure.
+     * @param array $fields Fields for a GP_Thing object.
      */
-    public function get($thing_or_id)
+    public function set_fields($fields)
     {
     }
-    /**
-     * Retrieves the sub projects
-     *
-     * @return array Array of GP_Project
-     */
-    public function sub_projects()
+    public function prepare_fields_for_save($args)
     {
     }
-    public function top_level()
+    public function project_id_locale_slug_set_slug($object_id)
     {
     }
-    // Triggers
-    /**
-     * Executes after creating a project.
-     *
-     * @since 1.0.0
-     *
-     * @return bool
-     */
-    public function after_create()
+    public function object_id($project_id, $locale_slug, $set_slug = 'default')
     {
     }
-    /**
-     * Executes after saving a project.
-     *
-     * @since 1.0.0
-     * @since 3.0.0 Added the `$project_before` parameter.
-     *
-     * @param GP_Project $project_before Project before the update.
-     * @return bool
-     */
-    public function after_save($project_before)
-    {
-    }
-    /**
-     * Executes after deleting a project.
-     *
-     * @since 2.0.0
-     *
-     * @return bool
-     */
-    public function after_delete()
-    {
-    }
-    /**
-     * Normalizes an array with key-value pairs representing
-     * a GP_Project object.
-     *
-     * @since 1.0.0
-     *
-     * @param array $args Arguments for a GP_Project object.
-     * @return array Normalized arguments for a GP_Project object.
-     */
-    public function normalize_fields($args)
-    {
-    }
-    // Helpers
-    /**
-     * Updates this project's and its children's paths, according to its current slug.
-     */
-    public function update_path()
-    {
-    }
-    /**
-     * Regenerate the paths of all projects from its parents slugs
-     */
-    public function regenerate_paths($parent_project_id = \null)
-    {
-    }
-    public function source_url($file, $line)
-    {
-    }
-    public function source_url_template()
-    {
-    }
-    /**
-     * Gives an array of project objects starting from the current project
-     * then its parent, its parent and up to the root.
-     *
-     * @todo Cache the results. Invalidation is tricky, because on each project update we need to invalidate the cache
-     * for all of its children.
-     *
-     * @return array
-     */
-    public function path_to_root()
-    {
-    }
-    public function set_difference_from($other_project)
-    {
-    }
-    public function _compare_set_item($set, $this_set)
-    {
-    }
-    public function copy_sets_and_translations_from($source_project_id)
-    {
-    }
-    public function copy_originals_from($source_project_id)
-    {
-    }
-    /**
-     * Gives an array of project objects starting from the current project children
-     * then its grand children etc.
-     *
-     * @return array
-     */
-    public function inclusive_sub_projects()
-    {
-    }
-    public function duplicate_project_contents_from($source_project)
-    {
-    }
-    /**
-     * Deletes a project and all of sub projects, translations, translation sets, originals and glossaries.
-     *
-     * @since 2.0.0
-     *
-     * @return bool
-     */
-    public function delete()
+    public function by_project_id($project_id)
     {
     }
 }
@@ -3204,7 +2952,7 @@ class GP_Translation extends \GP_Thing
      *
      * @return bool|null
      */
-    public function set_as_changesrequested() : ?bool
+    public function set_as_changesrequested(): ?bool
     {
     }
     /**
@@ -3213,7 +2961,7 @@ class GP_Translation extends \GP_Thing
      *
      * @return bool|null
      */
-    public function set_as_waiting() : ?bool
+    public function set_as_waiting(): ?bool
     {
     }
     public function reject()
@@ -3290,27 +3038,26 @@ class GP_Translation extends \GP_Thing
     }
 }
 /**
- * Things: GP_Validator_Permission class
+ * Things: GP_Glossary class
  *
  * @package GlotPress
  * @subpackage Things
  * @since 1.0.0
  */
 /**
- * Core class used to implement the validator permissions.
+ * Core class used to implement the glossaries.
  *
  * @since 1.0.0
  */
-class GP_Validator_Permission extends \GP_Permission
+class GP_Glossary extends \GP_Thing
 {
-    var $table_basename = 'gp_permissions';
-    var $field_names = array('id', 'user_id', 'action', 'object_type', 'object_id');
-    var $non_db_field_names = array('project_id', 'locale_slug', 'set_slug');
+    var $table_basename = 'gp_glossaries';
+    var $field_names = array('id', 'translation_set_id', 'description');
+    var $int_fields = array('id', 'translation_set_id');
     var $non_updatable_attributes = array('id');
-    public $object_type;
-    public $project_id;
-    public $locale_slug;
-    public $set_slug;
+    public $id;
+    public $translation_set_id;
+    public $description;
     /**
      * Sets restriction rules for fields.
      *
@@ -3322,23 +3069,414 @@ class GP_Validator_Permission extends \GP_Permission
     {
     }
     /**
-     * Sets fields of the current GP_Thing object.
+     * Get the path to the glossary.
      *
-     * @param array $fields Fields for a GP_Thing object.
+     * @return string
      */
-    public function set_fields($fields)
+    public function path()
     {
     }
-    public function prepare_fields_for_save($args)
+    /**
+     * Get the glossary by set/project.
+     * If there's no glossary for this specific project, get the nearest parent glossary
+     *
+     * @param GP_Project         $project
+     * @param GP_Translation_Set $translation_set
+     *
+     * @return GP_Glossary|bool
+     */
+    public function by_set_or_parent_project($translation_set, $project)
     {
     }
-    public function project_id_locale_slug_set_slug($object_id)
+    public function by_set_id($set_id)
     {
     }
-    public function object_id($project_id, $locale_slug, $set_slug = 'default')
+    /**
+     * Merges entries of a glossary with another one.
+     *
+     * @since 2.3.0
+     *
+     * @param GP_Glossary $merge The Glossary to merge into the current one.
+     * @return array Array of Glossary_Entry.
+     */
+    public function merge_with_glossary(\GP_Glossary $merge)
     {
     }
-    public function by_project_id($project_id)
+    /**
+     * Retrieves entries and cache them.
+     *
+     * @since 2.3.0
+     *
+     * @return array Array of Glossary_Entry.
+     */
+    public function get_entries()
+    {
+    }
+    /**
+     * Copies glossary items from a glossary to the current one
+     * This function does not merge then, just copies unconditionally. If a translation already exists, it will be duplicated.
+     *
+     * @param int $source_glossary_id
+     *
+     * @return mixed
+     */
+    public function copy_glossary_items_from($source_glossary_id)
+    {
+    }
+    /**
+     * Deletes a glossary and all of it's entries.
+     *
+     * @since 2.0.0
+     *
+     * @return bool
+     */
+    public function delete()
+    {
+    }
+    /**
+     * Get the virtual Locale Glossary project
+     *
+     * @since 2.3.0
+     *
+     * @return GP_Project The project
+     */
+    public function get_locale_glossary_project()
+    {
+    }
+}
+/**
+ * Things: GP_Project class
+ *
+ * @package GlotPress
+ * @subpackage Things
+ * @since 1.0.0
+ */
+/**
+ * Core class used to implement the projects.
+ *
+ * @since 1.0.0
+ */
+class GP_Project extends \GP_Thing
+{
+    var $table_basename = 'gp_projects';
+    var $field_names = array('id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template', 'active');
+    var $int_fields = array('id', 'parent_project_id', 'active');
+    var $non_updatable_attributes = array('id');
+    public $id;
+    public $name;
+    public $slug;
+    public $path;
+    public $description;
+    public $parent_project_id;
+    public $source_url_template;
+    public $active;
+    public $user_source_url_template;
+    /**
+     * Sets restriction rules for fields.
+     *
+     * @since 1.0.0
+     *
+     * @param GP_Validation_Rules $rules The validation rules instance.
+     */
+    public function restrict_fields($rules)
+    {
+    }
+    // Additional queries
+    public function by_path($path)
+    {
+    }
+    /**
+     * Fetches the project by ID or object.
+     *
+     * @since 2.3.0
+     *
+     * @param int|object $thing_or_id A project or the ID.
+     * @return GP_Project|false The project on success or false on failure.
+     */
+    public function get($thing_or_id)
+    {
+    }
+    /**
+     * Retrieves the sub projects
+     *
+     * @return array Array of GP_Project
+     */
+    public function sub_projects()
+    {
+    }
+    public function top_level()
+    {
+    }
+    // Triggers
+    /**
+     * Executes after creating a project.
+     *
+     * @since 1.0.0
+     *
+     * @return bool
+     */
+    public function after_create()
+    {
+    }
+    /**
+     * Executes after saving a project.
+     *
+     * @since 1.0.0
+     * @since 3.0.0 Added the `$project_before` parameter.
+     *
+     * @param GP_Project $project_before Project before the update.
+     * @return bool
+     */
+    public function after_save($project_before)
+    {
+    }
+    /**
+     * Executes after deleting a project.
+     *
+     * @since 2.0.0
+     *
+     * @return bool
+     */
+    public function after_delete()
+    {
+    }
+    /**
+     * Normalizes an array with key-value pairs representing
+     * a GP_Project object.
+     *
+     * @since 1.0.0
+     *
+     * @param array $args Arguments for a GP_Project object.
+     * @return array Normalized arguments for a GP_Project object.
+     */
+    public function normalize_fields($args)
+    {
+    }
+    // Helpers
+    /**
+     * Updates this project's and its children's paths, according to its current slug.
+     */
+    public function update_path()
+    {
+    }
+    /**
+     * Regenerate the paths of all projects from its parents slugs
+     */
+    public function regenerate_paths($parent_project_id = \null)
+    {
+    }
+    public function source_url($file, $line)
+    {
+    }
+    public function source_url_template()
+    {
+    }
+    /**
+     * Gives an array of project objects starting from the current project
+     * then its parent, its parent and up to the root.
+     *
+     * @todo Cache the results. Invalidation is tricky, because on each project update we need to invalidate the cache
+     * for all of its children.
+     *
+     * @return array
+     */
+    public function path_to_root()
+    {
+    }
+    public function set_difference_from($other_project)
+    {
+    }
+    public function _compare_set_item($set, $this_set)
+    {
+    }
+    public function copy_sets_and_translations_from($source_project_id)
+    {
+    }
+    public function copy_originals_from($source_project_id)
+    {
+    }
+    /**
+     * Gives an array of project objects starting from the current project children
+     * then its grand children etc.
+     *
+     * @return array
+     */
+    public function inclusive_sub_projects()
+    {
+    }
+    public function duplicate_project_contents_from($source_project)
+    {
+    }
+    /**
+     * Deletes a project and all of sub projects, translations, translation sets, originals and glossaries.
+     *
+     * @since 2.0.0
+     *
+     * @return bool
+     */
+    public function delete()
+    {
+    }
+}
+class GP_CLI_Upgrade_Set_Permissions extends \WP_CLI_Command
+{
+    public function __invoke()
+    {
+    }
+}
+class GP_CLI_Wipe_Permissions extends \WP_CLI_Command
+{
+    public function __invoke()
+    {
+    }
+}
+class GP_CLI_Branch_Project extends \WP_CLI_Command
+{
+    /**
+     * Branch a project
+     *
+     * Duplicates an existing project to create a new one.
+     *
+     * ## OPTIONS
+     *
+     * <source>
+     * : Source project path to duplicate from
+     *
+     * <destination>
+     * : Destination project path to duplicate to (must exist first)
+     */
+    public function __invoke($args)
+    {
+    }
+}
+class GP_CLI_Remove_Multiple_Currents extends \WP_CLI_Command
+{
+    public function __invoke()
+    {
+    }
+}
+class GP_CLI_Import_Originals extends \WP_CLI_Command
+{
+    /**
+     * Import originals for a project from a file
+     *
+     * ## OPTIONS
+     *
+     * <project>
+     * : Project name
+     *
+     * <file>
+     * : File to import from
+     *
+     * [--format=<format>]
+     * : Accepted values: po, mo, android, resx, strings. Default: po
+     */
+    public function __invoke($args, $assoc_args)
+    {
+    }
+}
+class GP_CLI_Translation_Set extends \WP_CLI_Command
+{
+    /**
+     * Get a translation set for a project.
+     *
+     * @param string $project Project path
+     * @param string $locale Locale slug
+     * @param string $set Set slug
+     * @return GP_Translation_Set|WP_Error Translation set if available, error otherwise.
+     */
+    protected function get_translation_set($project, $locale, $set = 'default')
+    {
+    }
+    /**
+     * Export the translation set
+     *
+     * ## OPTIONS
+     *
+     * <project>
+     * : Project path
+     *
+     * <locale>
+     * : Locale to export
+     *
+     * [--set=<set>]
+     * : Translation set slug; default is "default"
+     *
+     * [--format=<format>]
+     * : Format for output (one of "po", "mo", "android", "resx", "strings"; default is "po")
+     *
+     * [--search=<search>]
+     * : Search term
+     *
+     * [--status=<status>]
+     * : Translation string status; default is "current"
+     *
+     * [--priority=<priorities>]
+     * : Original priorities, comma separated. Possible values are "hidden,low,normal,high"
+     */
+    public function export($args, $assoc_args)
+    {
+    }
+    /**
+     * Import a file into the translation set
+     *
+     * ## OPTIONS
+     *
+     * <project>
+     * : Project path
+     *
+     * <locale>
+     * : Locale to export
+     *
+     * <file>
+     * : File to import
+     *
+     * [--set=<set>]
+     * : Translation set slug; default is "default"
+     *
+     * [--status=<status>]
+     * : Translation string status; default is "current"
+     */
+    public function import($args, $assoc_args)
+    {
+    }
+    /**
+     * Recheck warnings for the translation set
+     *
+     * ## OPTIONS
+     *
+     * <project>
+     * : Project path
+     *
+     * <locale>
+     * : Locale to export
+     *
+     * [--set=<set>]
+     * : Translation set slug; default is "default"
+     *
+     * @subcommand recheck-warnings
+     */
+    public function recheck_warnings($args, $assoc_args)
+    {
+    }
+}
+class GP_CLI_Add_Admin extends \WP_CLI_Command
+{
+    /**
+     * Give the user admin rights in GlotPress
+     *
+     * ## OPTIONS
+     *
+     * <username>...
+     * : Username(s) to make an admin
+     */
+    public function __invoke($args, $assoc_args)
+    {
+    }
+}
+class GP_CLI_Regenerate_Paths extends \WP_CLI_Command
+{
+    public function __invoke()
     {
     }
 }
@@ -3443,31 +3581,197 @@ class GP_Validators
     }
 }
 /**
- * Translation warnings API
+ * GP class
  *
  * @package GlotPress
  * @since 1.0.0
  */
 /**
- * Class used to handle translation warnings.
+ * Core class used to store singleton instances.
  *
  * @since 1.0.0
  */
-class GP_Translation_Warnings
+class GP
+{
+    /**
+     * Model for project.
+     *
+     * @since 1.0.0
+     *
+     * @var GP_Project
+     */
+    public static $project;
+    /**
+     * Model for transalation set.
+     *
+     * @since 1.0.0
+     *
+     * @var GP_Translation_Set
+     */
+    public static $translation_set;
+    /**
+     * Model for permission.
+     *
+     * @since 1.0.0
+     *
+     * @var GP_Permission
+     */
+    public static $permission;
+    /**
+     * Model for validator permission.
+     *
+     * @since 1.0.0
+     *
+     * @var GP_Validator_Permission
+     */
+    public static $validator_permission;
+    /**
+     * Model for administrator permission.
+     *
+     * @since 1.0.0
+     *
+     * @var GP_Administrator_Permission
+     */
+    public static $administrator_permission;
+    /**
+     * Model for translation.
+     *
+     * @since 1.0.0
+     *
+     * @var GP_Translation
+     */
+    public static $translation;
+    /**
+     * Model for original.
+     *
+     * @since 1.0.0
+     *
+     * @var GP_Original
+     */
+    public static $original;
+    /**
+     * Model for glossary.
+     *
+     * @since 1.0.0
+     *
+     * @var GP_Glossary
+     */
+    public static $glossary;
+    /**
+     * Model for glossary entry.
+     *
+     * @since 1.0.0
+     *
+     * @var GP_Glossary_Entry
+     */
+    public static $glossary_entry;
+    /**
+     * Singleton for router.
+     *
+     * @since 1.0.0
+     *
+     * @var GP_Router
+     */
+    public static $router;
+    /**
+     * Singleton for translation warnings.
+     *
+     * @since 1.0.0
+     *
+     * @var GP_Translation_Warnings
+     */
+    public static $translation_warnings;
+    /**
+     * Singleton for built-in translation warnings.
+     *
+     * @since 1.0.0
+     *
+     * @var GP_Builtin_Translation_Warnings
+     */
+    public static $builtin_translation_warnings;
+    /**
+     * Singleton for translation errors.
+     *
+     * @since 4.0.0
+     *
+     * @var GP_Translation_Errors
+     */
+    public static $translation_errors;
+    /**
+     * Singleton for built-in translation errors.
+     *
+     * @since 4.0.0
+     *
+     * @var GP_Builtin_Translation_Errors
+     */
+    public static $builtin_translation_errors;
+    /**
+     * Array of notices.
+     *
+     * @since 1.0.0
+     *
+     * @var array
+     */
+    public static $redirect_notices = array();
+    /**
+     * Holds the current route.
+     *
+     * @since 1.0.0
+     *
+     * @var string|null
+     */
+    public static $current_route = \null;
+    /**
+     * Array of available formats.
+     *
+     * @since 1.0.0
+     *
+     * @var GP_Format[]
+     */
+    public static $formats;
+    /**
+     * Array of enqueued style sheets.
+     *
+     * @since 2.2.0
+     *
+     * @var array
+     */
+    public static $styles = array();
+    /**
+     * Array of enqueued scripts.
+     *
+     * @since 2.2.0
+     *
+     * @var array
+     */
+    public static $scripts = array();
+}
+/**
+ * Translation errors API
+ *
+ * @package GlotPress
+ * @since 4.0.0
+ */
+/**
+ * Class used to handle translation errors.
+ *
+ * @since 4.0.0
+ */
+class GP_Translation_Errors
 {
     /**
      * List of callbacks.
      *
-     * @since 1.0.0
+     * @since 4.0.0
      * @access public
      *
      * @var callable[]
      */
     public $callbacks = array();
     /**
-     * Adds a callback for a new warning.
+     * Adds a callback for a new error.
      *
-     * @since 1.0.0
+     * @since 4.0.0
      * @access public
      *
      * @param string   $id       Unique ID of the callback.
@@ -3477,9 +3781,9 @@ class GP_Translation_Warnings
     {
     }
     /**
-     * Removes an existing callback for a warning.
+     * Removes an existing callback for an error.
      *
-     * @since 1.0.0
+     * @since 4.0.0
      * @access public
      *
      * @param string $id Unique ID of the callback.
@@ -3490,7 +3794,7 @@ class GP_Translation_Warnings
     /**
      * Checks whether a callback exists for an ID.
      *
-     * @since 1.0.0
+     * @since 4.0.0
      * @access public
      *
      * @param string $id Unique ID of the callback.
@@ -3500,350 +3804,249 @@ class GP_Translation_Warnings
     {
     }
     /**
-     * Checks translations for any issues/warnings.
+     * Checks translations for any error.
      *
-     * @since 1.0.0
+     * @since 4.0.0
      * @access public
      *
-     * @param string    $singular     The singular form of an original string.
-     * @param string    $plural       The plural form of an original string.
-     * @param string[]  $translations An array of translations for an original.
-     * @param GP_Locale $locale       The locale of the translations.
+     * @param GP_Original $gp_original  The original object.
+     * @param string[]    $translations The translations.
+     * @param GP_Locale   $locale       The locale.
      * @return array|null Null if no issues have been found, otherwise an array
-     *                    with warnings.
+     *                    with errors.
      */
-    public function check($singular, $plural, $translations, $locale)
+    public function check($gp_original, $translations, $locale)
     {
     }
 }
 /**
- * Class used to register built-in translation warnings.
+ * Class used to handle translation errors.
+ *
+ * @since 4.0.0
+ */
+class GP_Builtin_Translation_Errors
+{
+    /**
+     * Adds an error for adding unexpected percent signs in a sprintf-like string.
+     *
+     * This is to catch translations for originals like this:
+     *  - Original: `<a href="%s">100 percent</a>`
+     *  - Submitted translation: `<a href="%s">100%</a>`
+     *  - Proper translation: `<a href="%s">100%%</a>`
+     *
+     * @since 4.0.0
+     * @access public
+     *
+     * @param string $original    The original string.
+     * @param string $translation The translated string.
+     * @return bool|string
+     */
+    public function error_unexpected_sprintf_token($original, $translation)
+    {
+    }
+    /**
+     * Registers all methods starting with `error_` as built-in errors.
+     *
+     * @since 4.0.0
+     * @access public
+     *
+     * @param GP_Translation_Errors $translation_errors Instance of GP_Translation_Errors.
+     */
+    public function add_all($translation_errors)
+    {
+    }
+}
+\define('GP_LOCALES_PATH', \GP_PATH . 'locales/');
+\define('DATE_MYSQL', 'Y-m-d H:i:s');
+\define('GP_TESTS_PATH', \GP_PATH . 't/');
+\define('GP_TMPL_PATH', \GP_PATH . 'gp-templates/');
+\define('GP_ROUTING', \false);
+/**
+ * Check to see if a term or user login has been added to the filter or one of the other filter options, if so,
+ * we don't want to match the standard filter links.
+ *
+ * Note: Don't check for the warnings filter here otherwise we won't be able to use this value during the check
+ * to see if the warnings filter link entry is the currently selected filter.
+ */
+$additional_filters = \array_key_exists('term', $filters_and_sort) || \array_key_exists('user_login', $filters_and_sort) || \array_key_exists('with_comment', $filters_and_sort) || \array_key_exists('case_sensitive', $filters_and_sort) || \array_key_exists('with_plural', $filters_and_sort) || \array_key_exists('with_context', $filters_and_sort);
+/**
+ * Filter footer links in translations.
  *
  * @since 1.0.0
+ *
+ * @param array              $footer_links    Default links.
+ * @param GP_Project         $project         The current project.
+ * @param GP_Locale          $locale          The current locale.
+ * @param GP_Translation_Set $translation_set The current translation set.
  */
-class GP_Builtin_Translation_Warnings
+$footer_links = \apply_filters('gp_translations_footer_links', $footer_links, $project, $locale, $translation_set);
+/**
+ * The user settings block
+ *
+ * A single table that contains all of the user settings, which is included as part of gp-templates/settings.php.
+ *
+ * @link http://glotpress.org
+ *
+ * @package GlotPress
+ * @since 2.0.0
+ */
+$gp_per_page = (int) \get_user_option('gp_per_page');
+/**
+ * Template for a single translation row in a translation set display
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+$user = \wp_get_current_user();
+/**
+ * Template for the preview part of a single translation row in a translation set display
+ *
+ * @package    GlotPress
+ * @subpackage Templates
+ */
+$priority_char = array('-2' => array('&times;', 'transparent', '#ccc'), '-1' => array('&darr;', 'transparent', 'blue'), '0' => array('', 'transparent', 'white'), '1' => array('&uarr;', 'transparent', 'green'));
+/**
+ * Template for the meta section of the editor row in a translation set display
+ *
+ * @package    GlotPress
+ * @subpackage Templates
+ */
+$more_links = array();
+/**
+ * Allows to modify the more links in the translation editor.
+ *
+ * @since 2.3.0
+ *
+ * @param array $more_links The links to be output.
+ * @param GP_Project $project Project object.
+ * @param GP_Locale $locale Locale object.
+ * @param GP_Translation_Set $translation_set Translation Set object.
+ * @param GP_Translation $translation Translation object.
+ */
+$more_links = \apply_filters('gp_translation_row_template_more_links', $more_links, $project, $locale, $translation_set, $translation);
+/**
+ * Template for the editor part of a single translation row in a translation set display
+ *
+ * @package    GlotPress
+ * @subpackage Templates
+ */
+/**
+ * Filter to update colspan of editor. Decrease to add an extra column
+ * with action 'gp_translation_row_editor_columns'.
+ *
+ * @since 3.0.0
+ *
+ * @param int $colspan The colspan of editor column.
+ */
+$colspan = \apply_filters('gp_translation_row_editor_colspan', $can_approve ? 5 : 4);
+/**
+ * Filter a glossary description.
+ *
+ * @since 3.0.0
+ *
+ * @param string      $description Glossary description.
+ * @param GP_Glossary $project     The current glossary.
+ */
+$glossary_description = \apply_filters('gp_glossary_description', $glossary->description, $glossary);
+/**
+ * Defines helper functions used by GlotPress.
+ *
+ * @package GlotPress
+ * @since 1.0.0
+ */
+/**
+ * Prepare an original string to be printed out in a translation row by adding encoding special
+ * characters, adding glossary entires and other markup.
+ *
+ * @param string $text A single style handle to enqueue or an array or style handles to enqueue.
+ *
+ * @return string The prepared string for output.
+ */
+function prepare_original($text)
 {
-    /**
-     * Lower bound for length checks.
-     *
-     * @since 1.0.0
-     * @access public
-     *
-     * @var float
-     */
-    public $length_lower_bound = 0.2;
-    /**
-     * Upper bound for length checks.
-     *
-     * @since 1.0.0
-     * @access public
-     *
-     * @var float
-     */
-    public $length_upper_bound = 5.0;
-    /**
-     * List of locales which are excluded from length checks.
-     *
-     * @since 1.0.0
-     * @access public
-     *
-     * @var array
-     */
-    public $length_exclude_languages = array('art-xemoji', 'ja', 'ko', 'zh', 'zh-hk', 'zh-cn', 'zh-sg', 'zh-tw');
-    /**
-     * List of domains with allowed changes to their own subdomains
-     *
-     * @since 3.0.0
-     * @access public
-     *
-     * @var array
-     */
-    public $allowed_domain_changes = array(
-        // Allow links to wordpress.org to be changed to a subdomain.
-        'wordpress.org' => '[^.]+\\.wordpress\\.org',
-        // Allow links to wordpress.com to be changed to a subdomain.
-        'wordpress.com' => '[^.]+\\.wordpress\\.com',
-        // Allow links to gravatar.org to be changed to a subdomain.
-        'en.gravatar.com' => '[^.]+\\.gravatar\\.com',
-        // Allow links to wikipedia.org to be changed to a subdomain.
-        'en.wikipedia.org' => '[^.]+\\.wikipedia\\.org',
-    );
-    /**
-     * List of languages without italics
-     *
-     * @since 3.0.0
-     * @access public
-     *
-     * @var array
-     */
-    public $languages_without_italics = array('ja', 'ko', 'zh', 'zh-hk', 'zh-cn', 'zh-sg', 'zh-tw');
-    /**
-     * Checks whether lengths of source and translation differ too much.
-     *
-     * @since 1.0.0
-     * @access public
-     *
-     * @param string    $original    The source string.
-     * @param string    $translation The translation.
-     * @param GP_Locale $locale      The locale of the translation.
-     * @return string|true True if check is OK, otherwise warning message.
-     */
-    public function warning_length($original, $translation, $locale)
-    {
-    }
-    /**
-     * Checks whether HTML tags are missing or have been added.
-     *
-     * @todo Validate if the HTML is in the same order in function of the language. Validate nesting of HTML is same.
-     *
-     * @since 1.0.0
-     * @access public
-     *
-     * @param string    $original    The source string.
-     * @param string    $translation The translation.
-     * @param GP_Locale $locale      The locale of the translation.
-     * @return string|true True if check is OK, otherwise warning message.
-     */
-    public function warning_tags($original, $translation, $locale)
-    {
-    }
-    /**
-     * Checks whether PHP placeholders are missing or have been added.
-     *
-     * The default regular expression:
-     * bcdefgosuxEFGX are standard printf placeholders.
-     * % is included to allow/expect %%.
-     * l is included for wp_sprintf_l()'s custom %l format.
-     * @ is included for Swift (as used for iOS mobile app) %@ string format.
-     *
-     * @since 1.0.0
-     * @access public
-     *
-     * @param string    $original    The source string.
-     * @param string    $translation The translation.
-     * @param GP_Locale $locale      The locale of the translation.
-     * @return string|true True if check is OK, otherwise warning message.
-     */
-    public function warning_placeholders($original, $translation, $locale)
-    {
-    }
-    /**
-     * Checks whether a translation does begin on newline.
-     *
-     * @since 1.0.0
-     * @access public
-     *
-     * @param string    $original    The source string.
-     * @param string    $translation The translation.
-     * @param GP_Locale $locale      The locale of the translation.
-     * @return string|true True if check is OK, otherwise warning message.
-     */
-    public function warning_should_begin_on_newline($original, $translation, $locale)
-    {
-    }
-    /**
-     * Checks whether a translation doesn't begin on newline.
-     *
-     * @since 1.0.0
-     * @access public
-     *
-     * @param string    $original    The source string.
-     * @param string    $translation The translation.
-     * @param GP_Locale $locale      The locale of the translation.
-     * @return string|true True if check is OK, otherwise warning message.
-     */
-    public function warning_should_not_begin_on_newline($original, $translation, $locale)
-    {
-    }
-    /**
-     * Checks whether a translation does end on newline.
-     *
-     * @since 1.0.0
-     * @access public
-     *
-     * @param string    $original    The source string.
-     * @param string    $translation The translation.
-     * @param GP_Locale $locale      The locale of the translation.
-     * @return string|true True if check is OK, otherwise warning message.
-     */
-    public function warning_should_end_on_newline($original, $translation, $locale)
-    {
-    }
-    /**
-     * Checks whether a translation doesn't end on newline.
-     *
-     * @since 1.0.0
-     * @access public
-     *
-     * @param string    $original    The source string.
-     * @param string    $translation The translation.
-     * @param GP_Locale $locale      The locale of the translation.
-     * @return string|true True if check is OK, otherwise warning message.
-     */
-    public function warning_should_not_end_on_newline($original, $translation, $locale)
-    {
-    }
-    /**
-     * Adds a warning for changing plain-text URLs.
-     *
-     * This allows for the scheme to change, and for some domains to change to a subdomain.
-     *
-     * @since 3.0.0
-     * @access public
-     *
-     * @param string $original    The original string.
-     * @param string $translation The translated string.
-     * @return string|true True if check is OK, otherwise warning message.
-     */
-    public function warning_mismatching_urls($original, $translation)
-    {
-    }
-    /**
-     * Registers all methods starting with `warning_` as built-in warnings.
-     *
-     * @param GP_Translation_Warnings $translation_warnings Instance of GP_Translation_Warnings.
-     */
-    public function add_all($translation_warnings)
-    {
-    }
-    /**
-     * Adds a warning for changing placeholders.
-     *
-     * This only supports placeholders in the format of '###[A-Za-z_-]+###'.
-     *
-     * @todo Check that the number of each type of placeholders are the same in the original and in the translation
-     *
-     * @since 3.0.0
-     * @access public
-     *
-     * @param string $original    The original string.
-     * @param string $translation The translated string.
-     * @return string|true
-     */
-    public function warning_named_placeholders(string $original, string $translation)
-    {
-    }
-    /**
-     * Adds a warning for added or removed spaces at the beginning or at the end of the translation.
-     *
-     * @since 4.0.0
-     * @access public
-     *
-     * @param string $original    The original string.
-     * @param string $translation The translated string.
-     *
-     * @return string|true True if check is OK, otherwise warning message.
-     */
-    public function warning_unexpected_start_end_space(string $original, string $translation)
-    {
-    }
-    /**
-     * Checks the missing uppercase in the beginning of the translations.
-     *
-     * @since 4.0.0
-     * @access public
-     *
-     * @param string $original    The source string.
-     * @param string $translation The translation.
-     *
-     * @return string|true True if check is OK, otherwise warning message.
-     */
-    public function warning_missing_uppercase_beginning(string $original, string $translation)
-    {
-    }
 }
-class GP_Locale
+/**
+ * Prepares a translation string to be printed out in a translation row by adding an 'extra' return/newline if
+ * it starts with one.
+ *
+ * @since 3.0.0
+ *
+ * @param string $text A single style handle to enqueue or an array or style handles to enqueue.
+ * @return string The prepared string for output.
+ */
+function gp_prepare_translation_textarea($text)
 {
-    public $english_name;
-    public $native_name;
-    public $text_direction = 'ltr';
-    public $lang_code_iso_639_1 = \null;
-    public $lang_code_iso_639_2 = \null;
-    public $lang_code_iso_639_3 = \null;
-    public $country_code;
-    public $wp_locale;
-    // This should only be set for locales that are officially supported on translate.wordpress.org.
-    public $slug;
-    public $nplurals = 2;
-    public $plural_expression = 'n != 1';
-    public $google_code = \null;
-    public $preferred_sans_serif_font_family = \null;
-    public $facebook_locale = \null;
-    public $alphabet = 'latin';
-    public $word_count_type = 'words';
-    public function __construct($args = array())
-    {
-    }
-    public static function __set_state($state)
-    {
-    }
-    /**
-     * Make deprecated properties checkable for backwards compatibility.
-     *
-     * @param string $name Property to check if set.
-     * @return bool Whether the property is set.
-     */
-    public function __isset($name)
-    {
-    }
-    /**
-     * Make deprecated properties readable for backwards compatibility.
-     *
-     * @param string $name Property to get.
-     * @return mixed Property.
-     */
-    public function __get($name)
-    {
-    }
-    public function combined_name()
-    {
-    }
-    public function numbers_for_index($index, $how_many = 3, $test_up_to = 1000)
-    {
-    }
-    public function index_for_number($number)
-    {
-    }
-    /**
-     * When converting the object to a string, the combined name is returned.
-     *
-     * @since 3.0.0
-     *
-     * @return string Combined name of locale.
-     */
-    public function __toString()
-    {
-    }
 }
-class GP_Locales
+/**
+ * Adds suffixes for use in map_glossary_entries_to_translation_originals().
+ *
+ * @param array $glossary_entries An array of glossary entries to sort.
+ *
+ * @return array The suffixed entries.
+ */
+function gp_glossary_add_suffixes($glossary_entries)
 {
-    public $locales = array();
-    public function __construct()
-    {
-    }
-    public static function &instance()
-    {
-    }
-    public static function locales()
-    {
-    }
-    public static function exists($slug)
-    {
-    }
-    public static function by_slug($slug)
-    {
-    }
-    public static function by_field($field_name, $field_value)
-    {
-    }
 }
+/**
+ * Add markup to a translation original to identify the glossary terms.
+ *
+ * @param GP_Translation $translation            A GP Translation object.
+ * @param GP_Glossary    $glossary               A GP Glossary object.
+ *
+ * @return obj The marked up translation entry.
+ */
+function map_glossary_entries_to_translation_originals($translation, $glossary)
+{
+}
+function textareas($entry, $permissions, $index = 0)
+{
+}
+function display_status($status)
+{
+}
+function references($project, $entry)
+{
+}
+/**
+ * Output the bulk actions toolbar in the translations page.
+ *
+ * @param string $bulk_action     The URL to submit the form to.
+ * @param string $can_write       Can the current user write translations to the database.
+ * @param string $translation_set The current translation set.
+ * @param string $location        The location of this toolbar, used to make id's unique for each instance on a page.
+ */
+function gp_translations_bulk_actions_toolbar($bulk_action, $can_write, $translation_set, $location = 'top')
+{
+}
+/**
+ * Determine if the current chunk should be skipped.
+ *
+ * @since 4.0.0
+ *
+ * @param string $chunk The current chunk.
+ *
+ * @return bool
+ */
+function should_skip_chunk(string $chunk)
+{
+}
+/**
+ * Filter a project description.
+ *
+ * @since 1.0.0
+ *
+ * @param string     $description Project description.
+ * @param GP_Project $project     The current project.
+ */
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+$project_description = \apply_filters('gp_project_description', $project->description, $project);
 /**
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 4.0.1
+ * Version: 4.0.2
  * Requires at least: 4.6
- * Tested up to: 6.5
+ * Tested up to: 6.8
  * Requires PHP: 7.4
  * Author: the GlotPress team
  * Author URI: https://glotpress.blog
@@ -3866,10 +4069,9 @@ class GP_Locales
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '4.0.1');
+\define('GP_VERSION', '4.0.2');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
-\define('GP_ROUTING', \true);
 \define('GP_PLUGIN_FILE', __FILE__);
 \define('GP_PATH', __DIR__ . '/');
 \define('GP_INC', 'gp-includes/');
@@ -3937,200 +4139,419 @@ function gp_deactivate_plugin($network_wide)
 {
 }
 /**
- * Filter for can_user, which tries if the user
- * has permissions on project parents
- */
-function gp_recurse_project_permissions($verdict, $args)
-{
-}
-function gp_recurse_validator_permission($verdict, $args)
-{
-}
-function gp_route_translation_set_permissions_to_validator_permissions($verdict, $args)
-{
-}
-function gp_allow_everyone_to_translate($verdict, $args)
-{
-}
-/**
- * Maps the translation check to the translation-set.
- *
- * @since 2.3.0
- *
- * @param string|bool $verdict Previous decision whether the user can do this.
- * @param array       $args    Permission details.
- * @return string|bool New decision whether the user can do this.
- */
-function gp_allow_approving_translations_with_validator_permissions($verdict, $args)
-{
-}
-/**
- * Defines default styles and scripts.
+ * Link Template Functions
  *
  * @package GlotPress
- * @since 1.0.0
+ * @subpackage Template
  */
 /**
- * Registers the GlotPress styles and loads the base style sheet.
- */
-function gp_register_default_styles()
-{
-}
-/**
- * Register the GlotPress scripts.
- */
-function gp_register_default_scripts()
-{
-}
-/**
- * Enqueue one or more styles.
- *
- * @since 2.2.0
- *
- * @param string|array $handles A single style handle to enqueue or an array or style handles to enqueue.
- */
-function gp_enqueue_styles($handles)
-{
-}
-/**
- * Enqueue one or more styles.
+ * Creates a HTML link.
  *
  * @since 1.0.0
  *
- * @param string $handle A single style handle to enqueue.
+ * @param string $url   The URL to link to.
+ * @param string $text  The text to use for the link.
+ * @param array  $attrs Optional. Additional attributes to use
+ *                      to determine the classes for the link.
+ * @return string The HTML link.
  */
-function gp_enqueue_style($handle)
+function gp_link_get($url, $text, $attrs = array())
 {
 }
 /**
- * Enqueue one or more scripts.
- *
- * @since 2.2.0
- *
- * @param string|array $handles A single script handle to enqueue or an array of enqueue handles to enqueue.
- */
-function gp_enqueue_scripts($handles)
-{
-}
-/**
- * Enqueue one or more scripts.
+ * Creates a HTML link.
  *
  * @since 1.0.0
  *
- * @param string $handle A single script handle to enqueue.
+ * @see gp_link_get()
+ *
+ * @param string $url   The URL to link to.
+ * @param string $text  The text to use for the link.
+ * @param array  $attrs Optional. Additional attributes to use
+ *                      to determine the classes for the link.
  */
-function gp_enqueue_script($handle)
+function gp_link($url, $text, $attrs = array())
 {
 }
 /**
- * Print the styles that have been enqueued.
+ * Creates a HTML link with a confirmation request.
  *
- * Only output the styles that GlotPress has registered, otherwise we'd be sending any style that the WordPress theme or plugins may have enqueued.
+ * Uses the `window.confirm()` method to display a modal dialog for confirmation.
  *
- * @since 2.2.0
+ * @since 1.0.0
+ *
+ * @param string $url   The URL to link to.
+ * @param string $text  The text to use for the link.
+ * @param array  $attrs Optional. Additional attributes to use
+ *                      to determine the classes for the link.
+ * @return string The HTML link.
  */
-function gp_print_styles()
+function gp_link_with_ays_get($url, $text, $attrs = array())
 {
 }
 /**
- * Print the scripts that have been enqueued.
+ * Creates a HTML link with a confirmation request.
  *
- * Only output the scripts that GlotPress has registered, otherwise we'd be sending any scripts that the WordPress theme or plugins may have enqueued.
+ * Uses the `window.confirm()` method to display a modal dialog for confirmation.
  *
- * @since 2.2.0
+ * @since 1.0.0
+ *
+ * @see gp_link_with_ays_get()
+ *
+ * @param string $url   The URL to link to.
+ * @param string $text  The text to use for the link.
+ * @param array  $attrs Optional. Additional attributes to use
+ *                      to determine the classes for the link.
  */
-function gp_print_scripts()
-{
-}
-function gp_cli_register()
+function gp_link_with_ays($url, $text, $attrs = array())
 {
 }
 /**
- * Install/Upgrade routines for the database.
+ * Creates a HTML link to the page of a project.
+ *
+ * @since 1.0.0
+ *
+ * @param GP_Project|string $project_or_path The project to link to.
+ * @param string            $text            The text to use for the link.
+ * @param array             $attrs           Optional. Additional attributes to use
+ *                                           to determine the classes for the link.
+ * @return string The HTML link.
+ */
+function gp_link_project_get($project_or_path, $text, $attrs = array())
+{
+}
+/**
+ * Outputs a HTML link to the page of a project.
+ *
+ * @since 1.0.0
+ *
+ * @see gp_link_project_get()
+ *
+ * @param GP_Project|string $project_or_path The project to link to.
+ * @param string            $text            The text to use for the link.
+ * @param array             $attrs           Optional. Additional attributes to use
+ *                                           to determine the classes for the link.
+ */
+function gp_link_project($project_or_path, $text, $attrs = array())
+{
+}
+/**
+ * Creates a HTML link to the edit page for projects.
+ *
+ * @since 1.0.0
+ *
+ * @param GP_Project $project The project to link to.
+ * @param string     $text    Optional. The text to use for the link. Default 'Edit'.
+ * @param array      $attrs   Optional. Additional attributes to use to determine the classes for the link.
+ * @return string The HTML link.
+ */
+function gp_link_project_edit_get($project, $text = '', $attrs = array())
+{
+}
+/**
+ * Outputs a HTML link to the edit page for projects.
+ *
+ * @since 1.0.0
+ *
+ * @see gp_link_project_edit_get()
+ *
+ * @param GP_Project $project The project to link to.
+ * @param string     $text    Optional. The text to use for the link. Default 'Edit'.
+ * @param array      $attrs   Optional. Additional attributes to use to determine the classes for the link.
+ */
+function gp_link_project_edit($project, $text = '', $attrs = array())
+{
+}
+/**
+ * Creates a HTML link to the delete page for projects.
+ *
+ * @since 1.0.0
+ *
+ * @param GP_Project $project The project to link to.
+ * @param string     $text    Optional. The text to use for the link. Default 'Delete'.
+ * @param array      $attrs   Optional. Additional attributes to use to determine the classes for the link.
+ * @return string The HTML link.
+ */
+function gp_link_project_delete_get($project, $text = '', $attrs = array())
+{
+}
+/**
+ * Outputs a HTML link to the delete page for projects.
+ *
+ * @since 1.0.0
+ *
+ * @see gp_link_project_delete_get()
+ *
+ * @param GP_Project $project The project to link to.
+ * @param string     $text    Optional. The text to use for the link.
+ * @param array      $attrs   Optional. Additional attributes to use to determine the classes for the link.
+ */
+function gp_link_project_delete($project, $text = '', $attrs = array())
+{
+}
+/**
+ * Creates a HTML link to the home page of GlotPress.
+ *
+ * @since 1.0.0
+ *
+ * @return string The HTML link.
+ */
+function gp_link_home_get()
+{
+}
+/**
+ * Outputs a HTML link to the home page of GlotPress.
+ *
+ * @since 1.0.0
+ *
+ * @see gp_link_home_get()
+ */
+function gp_link_home()
+{
+}
+/**
+ * Creates a HTML link to the delete page for translations sets.
+ *
+ * @since 1.0.0
+ *
+ * @param GP_Translation_Set $set     The translation set to link to.
+ * @param GP_Project         $project The project the translation set belongs to.
+ * @param string             $text    Optional. The text to use for the link. Default 'Edit'.
+ * @param array              $attrs   Optional. Additional attributes to use to determine the classes for the link.
+ * @return string The HTML link.
+ */
+function gp_link_set_edit_get($set, $project, $text = '', $attrs = array())
+{
+}
+/**
+ * Outputs a HTML link to the edit page for translations sets.
+ *
+ * @since 1.0.0
+ *
+ * @see gp_link_set_edit_get()
+ *
+ * @param GP_Translation_Set $set     The translation set to link to.
+ * @param GP_Project         $project The project the translation set belongs to.
+ * @param string             $text    Optional. The text to use for the link. Default 'Edit'.
+ * @param array              $attrs   Optional. Additional attributes to use to determine the classes for the link.
+ */
+function gp_link_set_edit($set, $project, $text = '', $attrs = array())
+{
+}
+/**
+ * Creates a HTML link to the delete page for translations sets.
+ *
+ * @since 2.0.0
+ *
+ * @param GP_Translation_Set $set     The translation set to link to.
+ * @param GP_Project         $project The project the translation set belongs to.
+ * @param string             $text    Optional. The text to use for the link. Default 'Delete'.
+ * @param array              $attrs   Optional. Additional attributes to use to determine the classes for the link.
+ * @return string The HTML link.
+ */
+function gp_link_set_delete_get($set, $project, $text = '', $attrs = array())
+{
+}
+/**
+ * Outputs a HTML link to the delete page for translations sets.
+ *
+ * @since 2.0.0
+ *
+ * @see gp_link_set_delete_get()
+ *
+ * @param GP_Translation_Set $set     The translation set to link to.
+ * @param GP_Project         $project The project the translation set belongs to.
+ * @param string             $text    Optional. The text to use for the link. Default 'Delete'.
+ * @param array              $attrs   Optional. Additional attributes to use to determine the classes for the link.
+ */
+function gp_link_set_delete($set, $project, $text = '', $attrs = array())
+{
+}
+/**
+ * Creates a HTML link to the edit page for glossaries.
+ *
+ * @since 1.0.0
+ *
+ * @param GP_Glossary        $glossary The glossary to link to.
+ * @param GP_Translation_Set $set      The translation set the glossary is for.
+ * @param string             $text     Optional. The text to use for the link. Default 'Edit'.
+ * @param array              $attrs    Optional. Additional attributes to use to determine the classes for the link.
+ * @return string The HTML link.
+ */
+function gp_link_glossary_edit_get($glossary, $set, $text = '', $attrs = array())
+{
+}
+/**
+ * Outputs a HTML link to the edit page for glossaries.
+ *
+ * @since 1.0.0
+ *
+ * @see gp_link_glossary_edit_get()
+ *
+ * @param GP_Glossary        $glossary The glossary to link to.
+ * @param GP_Translation_Set $set      The translation set the glossary is for.
+ * @param string             $text     Optional. The text to use for the link. Default 'Edit'.
+ * @param array              $attrs    Optional. Additional attributes to use to determine the classes for the link.
+ */
+function gp_link_glossary_edit($glossary, $set, $text = '', $attrs = array())
+{
+}
+/**
+ * Creates a HTML link to the delete page for glossaries.
+ *
+ * @since 2.0.0
+ *
+ * @param GP_Glossary        $glossary The glossary to link to.
+ * @param GP_Translation_Set $set      The translation set the glossary is for.
+ * @param string             $text     Optional. The text to use for the link. Default 'Delete'.
+ * @param array              $attrs    Optional. Additional attributes to use to determine the classes for the link.
+ * @return string The HTML link.
+ */
+function gp_link_glossary_delete_get($glossary, $set, $text = '', $attrs = array())
+{
+}
+/**
+ * Outputs a HTML link to the delete page for glossaries.
+ *
+ * @since 2.0.0
+ *
+ * @see gp_link_glossary_delete_get()
+ *
+ * @param GP_Glossary        $glossary The glossary to link to.
+ * @param GP_Translation_Set $set      The translation set the glossary is for.
+ * @param string             $text     Optional. The text to use for the link. Default 'Delete'.
+ * @param array              $attrs    Optional. Additional attributes to use to determine the classes for the link.
+ */
+function gp_link_glossary_delete($glossary, $set, $text = '', $attrs = array())
+{
+}
+/**
+ * Outputs a HTML link to a user profile page.
+ *
+ * @since 2.1.0
+ *
+ * @param WP_User $user A WP_User user object.
+ */
+function gp_link_user($user)
+{
+}
+/**
+ * Includes the database schema definitions and comments
+ */
+function gp_schema_get()
+{
+}
+/**
+ * Defines GlotPress rewrite rules and query vars.
  *
  * @package GlotPress
- * @since 1.0.0
+ * @subpackage Rewrite
  */
 /**
- * Runs the install/upgrade of the database.
+ * Generate the WP rewrite rules.
  *
  * @since 1.0.0
+ *
+ * @param string|bool $gp_base Optional. The base of all GlotPress URLs.
+ *                             Defaults to the `GP_URL_BASE` constant.
+ * @return array Rewrite rules that transform the URL structure
+ *               to a set of query vars
  */
-function gp_upgrade_db()
+function gp_generate_rewrite_rules($gp_base = \false)
 {
 }
 /**
- * Updates existing data in the database during an upgrade.
+ * Add WP rewrite rules to avoid WP thinking that GP pages are 404.
  *
  * @since 1.0.0
- *
- * @param int $db_version The current version of the database before the upgrade.
  */
-function gp_upgrade_data($db_version)
+function gp_rewrite_rules()
 {
 }
 /**
- * Functions for retrieving and manipulating metadata of various GlotPress object types.
- *
- * @package GlotPress
- * @subpackage Meta
- */
-/**
- * Sanitizes a key name to be used to store meta data in to the database.
+ * Query vars for GP rewrite rules
  *
  * @since 1.0.0
- *
- * @param string $key Metadata key.
- *
- * @return string
  */
-function gp_sanitize_meta_key($key)
+function gp_query_vars($query_vars)
 {
 }
 /**
- * Retrieves and returns a meta value from the database.
+ * GP run route
  *
  * @since 1.0.0
- *
- * @param string      $object_type The object type.
- * @param int         $object_id   ID of the object metadata is for.
- * @param string|null $meta_key    Optional. Metadata key. Default null.
- *
- * @return mixed|false Metadata or false.
  */
-function gp_get_meta($object_type, $object_id, $meta_key = \null)
+function gp_run_route()
 {
 }
 /**
- * Adds and updates meta data in the database
+ * Determine if the page requested is handled by GlotPress.
  *
  * @since 1.0.0
  *
- * @param int    $object_id  ID of the object metadata is for.
- * @param string $meta_key   Metadata key.
- * @param mixed  $meta_value The value to store.
- * @param string $type       The object type.
- * @param bool   $global     Overrides the requirement of $object_id to be a number OR not empty.
- *
- * @return bool|int True if meta updated, false if there is an error and the id of the inserted row otherwise.
+ * @return bool Whether the request is handled by GlotPress.
  */
-function gp_update_meta($object_id, $meta_key, $meta_value, $type, $global = \false)
+function is_glotpress()
 {
 }
 /**
- * Deletes meta data from the database.
+ * Sets `WP_Query->is_home` to false during GlotPress requests.
  *
  * @since 1.0.0
  *
- * @param int    $object_id  ID of the object metadata is for.
- * @param string $meta_key   Metadata key.
- * @param mixed  $meta_value The value to store.
- * @param string $type       The object type.
- * @param bool   $global     Overrides the requirement of $object_id to be a number OR not empty.
- *
- * @return bool
+ * @param WP_Query $query The WP_Query instance.
  */
-function gp_delete_meta($object_id, $meta_key, $meta_value, $type, $global = \false)
+function gp_set_is_home_false($query)
+{
+}
+/**
+ * Makes all key/value pairs in $vars global variables
+ */
+function gp_set_globals($vars)
+{
+}
+/**
+ * Initializes rewrite rules and provides the 'gp_init' action.
+ *
+ * @since 1.0.0
+ */
+function gp_init()
+{
+}
+/**
+ * Fires during the WP parse_request hook to check to see if we're on a GlotPress page, if so
+ * we can abort the main WP_Query logic as we won't need it in GlotPress.
+ * a matching page.
+ *
+ * @since 1.0.0
+ */
+function gp_parse_request()
+{
+}
+/**
+ * Prevents executing WP_Query's default queries on GlotPress requests.
+ *
+ * The following code effectively avoid running the main WP_Query queries by setting values before
+ * they are run.
+ *
+ * @link http://wordpress.stackexchange.com/a/145386/40969 Original source.
+ *
+ * @since 1.0.0
+ *
+ * @param array    $sql  The complete SQL query.
+ * @param WP_Query $wp_query The WP_Query instance (passed by reference).
+ * @return string|false False if GlotPress request, SQL query if not.
+ */
+function gp_abort_main_wp_query($sql, \WP_Query $wp_query)
+{
+}
+/**
+ * Deletes user's permissions when they are deleted from WordPress
+ * via WP's 'deleted_user' action.
+ *
+ * @since 1.0.0
+ */
+function gp_delete_user_permissions($user_id)
 {
 }
 /**
@@ -4524,72 +4945,127 @@ function gp_set_translations_import_max_memory_limit()
 {
 }
 /**
- * Defines GlotPress rewrite rules and query vars.
+ * Checks if a string is valid UTF-8.
+ *
+ * The wp_is_valid_utf8() was introduced in WordPress 6.9.0, so we need a fallback for older versions.
+ * seems_utf8() was deprecated in WordPress 6.9.0.
+ * See https://core.trac.wordpress.org/changeset/60630
+ *
+ * @since 4.1.0
+ *
+ * @param string $string The string to check.
+ * @return bool True if the string is valid UTF-8, false otherwise.
+ */
+function gp_is_valid_utf8($string)
+{
+}
+/**
+ * Defines default styles and scripts.
  *
  * @package GlotPress
- * @subpackage Rewrite
+ * @since 1.0.0
  */
 /**
- * Generate the WP rewrite rules.
- *
- * @since 1.0.0
- *
- * @param string|bool $gp_base Optional. The base of all GlotPress URLs.
- *                             Defaults to the `GP_URL_BASE` constant.
- * @return array Rewrite rules that transform the URL structure
- *               to a set of query vars
+ * Registers the GlotPress styles and loads the base style sheet.
  */
-function gp_generate_rewrite_rules($gp_base = \false)
+function gp_register_default_styles()
 {
 }
 /**
- * Add WP rewrite rules to avoid WP thinking that GP pages are 404.
- *
- * @since 1.0.0
+ * Register the GlotPress scripts.
  */
-function gp_rewrite_rules()
+function gp_register_default_scripts()
 {
 }
 /**
- * Query vars for GP rewrite rules
+ * Enqueue one or more styles.
  *
- * @since 1.0.0
+ * @since 2.2.0
+ *
+ * @param string|array $handles A single style handle to enqueue or an array or style handles to enqueue.
  */
-function gp_query_vars($query_vars)
+function gp_enqueue_styles($handles)
 {
 }
 /**
- * GP run route
- *
- * @since 1.0.0
- */
-function gp_run_route()
-{
-}
-/**
- * Determine if the page requested is handled by GlotPress.
+ * Enqueue one or more styles.
  *
  * @since 1.0.0
  *
- * @return bool Whether the request is handled by GlotPress.
+ * @param string $handle A single style handle to enqueue.
  */
-function is_glotpress()
+function gp_enqueue_style($handle)
 {
 }
 /**
- * Sets `WP_Query->is_home` to false during GlotPress requests.
+ * Enqueue one or more scripts.
+ *
+ * @since 2.2.0
+ *
+ * @param string|array $handles A single script handle to enqueue or an array of enqueue handles to enqueue.
+ */
+function gp_enqueue_scripts($handles)
+{
+}
+/**
+ * Enqueue one or more scripts.
  *
  * @since 1.0.0
  *
- * @param WP_Query $query The WP_Query instance.
+ * @param string $handle A single script handle to enqueue.
  */
-function gp_set_is_home_false($query)
+function gp_enqueue_script($handle)
 {
 }
 /**
- * Includes the database schema definitions and comments
+ * Print the styles that have been enqueued.
+ *
+ * Only output the styles that GlotPress has registered, otherwise we'd be sending any style that the WordPress theme or plugins may have enqueued.
+ *
+ * @since 2.2.0
  */
-function gp_schema_get()
+function gp_print_styles()
+{
+}
+/**
+ * Print the scripts that have been enqueued.
+ *
+ * Only output the scripts that GlotPress has registered, otherwise we'd be sending any scripts that the WordPress theme or plugins may have enqueued.
+ *
+ * @since 2.2.0
+ */
+function gp_print_scripts()
+{
+}
+/**
+ * Filter for can_user, which tries if the user
+ * has permissions on project parents
+ */
+function gp_recurse_project_permissions($verdict, $args)
+{
+}
+function gp_recurse_validator_permission($verdict, $args)
+{
+}
+function gp_route_translation_set_permissions_to_validator_permissions($verdict, $args)
+{
+}
+function gp_allow_everyone_to_translate($verdict, $args)
+{
+}
+/**
+ * Maps the translation check to the translation-set.
+ *
+ * @since 2.3.0
+ *
+ * @param string|bool $verdict Previous decision whether the user can do this.
+ * @param array       $args    Permission details.
+ * @return string|bool New decision whether the user can do this.
+ */
+function gp_allow_approving_translations_with_validator_permissions($verdict, $args)
+{
+}
+function gp_cli_register()
 {
 }
 /**
@@ -4653,353 +5129,6 @@ function gp_levenshtein($str1, $str2, $length1, $length2)
  * @return string The sanitized title.
  */
 function gp_sanitize_slug($slug)
-{
-}
-/**
- * Makes all key/value pairs in $vars global variables
- */
-function gp_set_globals($vars)
-{
-}
-/**
- * Initializes rewrite rules and provides the 'gp_init' action.
- *
- * @since 1.0.0
- */
-function gp_init()
-{
-}
-/**
- * Fires during the WP parse_request hook to check to see if we're on a GlotPress page, if so
- * we can abort the main WP_Query logic as we won't need it in GlotPress.
- * a matching page.
- *
- * @since 1.0.0
- */
-function gp_parse_request()
-{
-}
-/**
- * Prevents executing WP_Query's default queries on GlotPress requests.
- *
- * The following code effectively avoid running the main WP_Query queries by setting values before
- * they are run.
- *
- * @link http://wordpress.stackexchange.com/a/145386/40969 Original source.
- *
- * @since 1.0.0
- *
- * @param array    $sql  The complete SQL query.
- * @param WP_Query $wp_query The WP_Query instance (passed by reference).
- * @return string|false False if GlotPress request, SQL query if not.
- */
-function gp_abort_main_wp_query($sql, \WP_Query $wp_query)
-{
-}
-/**
- * Deletes user's permissions when they are deleted from WordPress
- * via WP's 'deleted_user' action.
- *
- * @since 1.0.0
- */
-function gp_delete_user_permissions($user_id)
-{
-}
-/**
- * Link Template Functions
- *
- * @package GlotPress
- * @subpackage Template
- */
-/**
- * Creates a HTML link.
- *
- * @since 1.0.0
- *
- * @param string $url   The URL to link to.
- * @param string $text  The text to use for the link.
- * @param array  $attrs Optional. Additional attributes to use
- *                      to determine the classes for the link.
- * @return string The HTML link.
- */
-function gp_link_get($url, $text, $attrs = array())
-{
-}
-/**
- * Creates a HTML link.
- *
- * @since 1.0.0
- *
- * @see gp_link_get()
- *
- * @param string $url   The URL to link to.
- * @param string $text  The text to use for the link.
- * @param array  $attrs Optional. Additional attributes to use
- *                      to determine the classes for the link.
- */
-function gp_link($url, $text, $attrs = array())
-{
-}
-/**
- * Creates a HTML link with a confirmation request.
- *
- * Uses the `window.confirm()` method to display a modal dialog for confirmation.
- *
- * @since 1.0.0
- *
- * @param string $url   The URL to link to.
- * @param string $text  The text to use for the link.
- * @param array  $attrs Optional. Additional attributes to use
- *                      to determine the classes for the link.
- * @return string The HTML link.
- */
-function gp_link_with_ays_get($url, $text, $attrs = array())
-{
-}
-/**
- * Creates a HTML link with a confirmation request.
- *
- * Uses the `window.confirm()` method to display a modal dialog for confirmation.
- *
- * @since 1.0.0
- *
- * @see gp_link_with_ays_get()
- *
- * @param string $url   The URL to link to.
- * @param string $text  The text to use for the link.
- * @param array  $attrs Optional. Additional attributes to use
- *                      to determine the classes for the link.
- */
-function gp_link_with_ays($url, $text, $attrs = array())
-{
-}
-/**
- * Creates a HTML link to the page of a project.
- *
- * @since 1.0.0
- *
- * @param GP_Project|string $project_or_path The project to link to.
- * @param string            $text            The text to use for the link.
- * @param array             $attrs           Optional. Additional attributes to use
- *                                           to determine the classes for the link.
- * @return string The HTML link.
- */
-function gp_link_project_get($project_or_path, $text, $attrs = array())
-{
-}
-/**
- * Outputs a HTML link to the page of a project.
- *
- * @since 1.0.0
- *
- * @see gp_link_project_get()
- *
- * @param GP_Project|string $project_or_path The project to link to.
- * @param string            $text            The text to use for the link.
- * @param array             $attrs           Optional. Additional attributes to use
- *                                           to determine the classes for the link.
- */
-function gp_link_project($project_or_path, $text, $attrs = array())
-{
-}
-/**
- * Creates a HTML link to the edit page for projects.
- *
- * @since 1.0.0
- *
- * @param GP_Project $project The project to link to.
- * @param string     $text    Optional. The text to use for the link. Default 'Edit'.
- * @param array      $attrs   Optional. Additional attributes to use to determine the classes for the link.
- * @return string The HTML link.
- */
-function gp_link_project_edit_get($project, $text = '', $attrs = array())
-{
-}
-/**
- * Outputs a HTML link to the edit page for projects.
- *
- * @since 1.0.0
- *
- * @see gp_link_project_edit_get()
- *
- * @param GP_Project $project The project to link to.
- * @param string     $text    Optional. The text to use for the link. Default 'Edit'.
- * @param array      $attrs   Optional. Additional attributes to use to determine the classes for the link.
- */
-function gp_link_project_edit($project, $text = '', $attrs = array())
-{
-}
-/**
- * Creates a HTML link to the delete page for projects.
- *
- * @since 1.0.0
- *
- * @param GP_Project $project The project to link to.
- * @param string     $text    Optional. The text to use for the link. Default 'Delete'.
- * @param array      $attrs   Optional. Additional attributes to use to determine the classes for the link.
- * @return string The HTML link.
- */
-function gp_link_project_delete_get($project, $text = '', $attrs = array())
-{
-}
-/**
- * Outputs a HTML link to the delete page for projects.
- *
- * @since 1.0.0
- *
- * @see gp_link_project_delete_get()
- *
- * @param GP_Project $project The project to link to.
- * @param string     $text    Optional. The text to use for the link.
- * @param array      $attrs   Optional. Additional attributes to use to determine the classes for the link.
- */
-function gp_link_project_delete($project, $text = '', $attrs = array())
-{
-}
-/**
- * Creates a HTML link to the home page of GlotPress.
- *
- * @since 1.0.0
- *
- * @return string The HTML link.
- */
-function gp_link_home_get()
-{
-}
-/**
- * Outputs a HTML link to the home page of GlotPress.
- *
- * @since 1.0.0
- *
- * @see gp_link_home_get()
- */
-function gp_link_home()
-{
-}
-/**
- * Creates a HTML link to the delete page for translations sets.
- *
- * @since 1.0.0
- *
- * @param GP_Translation_Set $set     The translation set to link to.
- * @param GP_Project         $project The project the translation set belongs to.
- * @param string             $text    Optional. The text to use for the link. Default 'Edit'.
- * @param array              $attrs   Optional. Additional attributes to use to determine the classes for the link.
- * @return string The HTML link.
- */
-function gp_link_set_edit_get($set, $project, $text = '', $attrs = array())
-{
-}
-/**
- * Outputs a HTML link to the edit page for translations sets.
- *
- * @since 1.0.0
- *
- * @see gp_link_set_edit_get()
- *
- * @param GP_Translation_Set $set     The translation set to link to.
- * @param GP_Project         $project The project the translation set belongs to.
- * @param string             $text    Optional. The text to use for the link. Default 'Edit'.
- * @param array              $attrs   Optional. Additional attributes to use to determine the classes for the link.
- */
-function gp_link_set_edit($set, $project, $text = '', $attrs = array())
-{
-}
-/**
- * Creates a HTML link to the delete page for translations sets.
- *
- * @since 2.0.0
- *
- * @param GP_Translation_Set $set     The translation set to link to.
- * @param GP_Project         $project The project the translation set belongs to.
- * @param string             $text    Optional. The text to use for the link. Default 'Delete'.
- * @param array              $attrs   Optional. Additional attributes to use to determine the classes for the link.
- * @return string The HTML link.
- */
-function gp_link_set_delete_get($set, $project, $text = '', $attrs = array())
-{
-}
-/**
- * Outputs a HTML link to the delete page for translations sets.
- *
- * @since 2.0.0
- *
- * @see gp_link_set_delete_get()
- *
- * @param GP_Translation_Set $set     The translation set to link to.
- * @param GP_Project         $project The project the translation set belongs to.
- * @param string             $text    Optional. The text to use for the link. Default 'Delete'.
- * @param array              $attrs   Optional. Additional attributes to use to determine the classes for the link.
- */
-function gp_link_set_delete($set, $project, $text = '', $attrs = array())
-{
-}
-/**
- * Creates a HTML link to the edit page for glossaries.
- *
- * @since 1.0.0
- *
- * @param GP_Glossary        $glossary The glossary to link to.
- * @param GP_Translation_Set $set      The translation set the glossary is for.
- * @param string             $text     Optional. The text to use for the link. Default 'Edit'.
- * @param array              $attrs    Optional. Additional attributes to use to determine the classes for the link.
- * @return string The HTML link.
- */
-function gp_link_glossary_edit_get($glossary, $set, $text = '', $attrs = array())
-{
-}
-/**
- * Outputs a HTML link to the edit page for glossaries.
- *
- * @since 1.0.0
- *
- * @see gp_link_glossary_edit_get()
- *
- * @param GP_Glossary        $glossary The glossary to link to.
- * @param GP_Translation_Set $set      The translation set the glossary is for.
- * @param string             $text     Optional. The text to use for the link. Default 'Edit'.
- * @param array              $attrs    Optional. Additional attributes to use to determine the classes for the link.
- */
-function gp_link_glossary_edit($glossary, $set, $text = '', $attrs = array())
-{
-}
-/**
- * Creates a HTML link to the delete page for glossaries.
- *
- * @since 2.0.0
- *
- * @param GP_Glossary        $glossary The glossary to link to.
- * @param GP_Translation_Set $set      The translation set the glossary is for.
- * @param string             $text     Optional. The text to use for the link. Default 'Delete'.
- * @param array              $attrs    Optional. Additional attributes to use to determine the classes for the link.
- * @return string The HTML link.
- */
-function gp_link_glossary_delete_get($glossary, $set, $text = '', $attrs = array())
-{
-}
-/**
- * Outputs a HTML link to the delete page for glossaries.
- *
- * @since 2.0.0
- *
- * @see gp_link_glossary_delete_get()
- *
- * @param GP_Glossary        $glossary The glossary to link to.
- * @param GP_Translation_Set $set      The translation set the glossary is for.
- * @param string             $text     Optional. The text to use for the link. Default 'Delete'.
- * @param array              $attrs    Optional. Additional attributes to use to determine the classes for the link.
- */
-function gp_link_glossary_delete($glossary, $set, $text = '', $attrs = array())
-{
-}
-/**
- * Outputs a HTML link to a user profile page.
- *
- * @since 2.1.0
- *
- * @param WP_User $user A WP_User user object.
- */
-function gp_link_user($user)
 {
 }
 function gp_tmpl_load($template, $args = array(), $template_path = \null)
@@ -5183,6 +5312,94 @@ function gp_translation_row_classes($translation)
 {
 }
 /**
+ * Install/Upgrade routines for the database.
+ *
+ * @package GlotPress
+ * @since 1.0.0
+ */
+/**
+ * Runs the install/upgrade of the database.
+ *
+ * @since 1.0.0
+ */
+function gp_upgrade_db()
+{
+}
+/**
+ * Updates existing data in the database during an upgrade.
+ *
+ * @since 1.0.0
+ *
+ * @param int $db_version The current version of the database before the upgrade.
+ */
+function gp_upgrade_data($db_version)
+{
+}
+/**
+ * Functions for retrieving and manipulating metadata of various GlotPress object types.
+ *
+ * @package GlotPress
+ * @subpackage Meta
+ */
+/**
+ * Sanitizes a key name to be used to store meta data in to the database.
+ *
+ * @since 1.0.0
+ *
+ * @param string $key Metadata key.
+ *
+ * @return string
+ */
+function gp_sanitize_meta_key($key)
+{
+}
+/**
+ * Retrieves and returns a meta value from the database.
+ *
+ * @since 1.0.0
+ *
+ * @param string      $object_type The object type.
+ * @param int         $object_id   ID of the object metadata is for.
+ * @param string|null $meta_key    Optional. Metadata key. Default null.
+ *
+ * @return mixed|false Metadata or false.
+ */
+function gp_get_meta($object_type, $object_id, $meta_key = \null)
+{
+}
+/**
+ * Adds and updates meta data in the database
+ *
+ * @since 1.0.0
+ *
+ * @param int    $object_id  ID of the object metadata is for.
+ * @param string $meta_key   Metadata key.
+ * @param mixed  $meta_value The value to store.
+ * @param string $type       The object type.
+ * @param bool   $global     Overrides the requirement of $object_id to be a number OR not empty.
+ *
+ * @return bool|int True if meta updated, false if there is an error and the id of the inserted row otherwise.
+ */
+function gp_update_meta($object_id, $meta_key, $meta_value, $type, $global = \false)
+{
+}
+/**
+ * Deletes meta data from the database.
+ *
+ * @since 1.0.0
+ *
+ * @param int    $object_id  ID of the object metadata is for.
+ * @param string $meta_key   Metadata key.
+ * @param mixed  $meta_value The value to store.
+ * @param string $type       The object type.
+ * @param bool   $global     Overrides the requirement of $object_id to be a number OR not empty.
+ *
+ * @return bool
+ */
+function gp_delete_meta($object_id, $meta_key, $meta_value, $type, $global = \false)
+{
+}
+/**
  * Functions, which deal with URLs: manipulation, generation
  */
 /**
@@ -5278,186 +5495,3 @@ function gp_url_base_path()
 function gp_plugin_url($path = '')
 {
 }
-\define('GP_LOCALES_PATH', \GP_PATH . 'locales/');
-\define('DATE_MYSQL', 'Y-m-d H:i:s');
-\define('GP_TESTS_PATH', \GP_PATH . 't/');
-\define('GP_TMPL_PATH', \GP_PATH . 'gp-templates/');
-/**
- * Filter a glossary description.
- *
- * @since 3.0.0
- *
- * @param string      $description Glossary description.
- * @param GP_Glossary $project     The current glossary.
- */
-$glossary_description = \apply_filters('gp_glossary_description', $glossary->description, $glossary);
-/**
- * Defines helper functions used by GlotPress.
- *
- * @package GlotPress
- * @since 1.0.0
- */
-/**
- * Prepare an original string to be printed out in a translation row by adding encoding special
- * characters, adding glossary entires and other markup.
- *
- * @param string $text A single style handle to enqueue or an array or style handles to enqueue.
- *
- * @return string The prepared string for output.
- */
-function prepare_original($text)
-{
-}
-/**
- * Prepares a translation string to be printed out in a translation row by adding an 'extra' return/newline if
- * it starts with one.
- *
- * @since 3.0.0
- *
- * @param string $text A single style handle to enqueue or an array or style handles to enqueue.
- * @return string The prepared string for output.
- */
-function gp_prepare_translation_textarea($text)
-{
-}
-/**
- * Adds suffixes for use in map_glossary_entries_to_translation_originals().
- *
- * @param array $glossary_entries An array of glossary entries to sort.
- *
- * @return array The suffixed entries.
- */
-function gp_glossary_add_suffixes($glossary_entries)
-{
-}
-/**
- * Add markup to a translation original to identify the glossary terms.
- *
- * @param GP_Translation $translation            A GP Translation object.
- * @param GP_Glossary    $glossary               A GP Glossary object.
- *
- * @return obj The marked up translation entry.
- */
-function map_glossary_entries_to_translation_originals($translation, $glossary)
-{
-}
-function textareas($entry, $permissions, $index = 0)
-{
-}
-function display_status($status)
-{
-}
-function references($project, $entry)
-{
-}
-/**
- * Output the bulk actions toolbar in the translations page.
- *
- * @param string $bulk_action     The URL to submit the form to.
- * @param string $can_write       Can the current user write translations to the database.
- * @param string $translation_set The current translation set.
- * @param string $location        The location of this toolbar, used to make id's unique for each instance on a page.
- */
-function gp_translations_bulk_actions_toolbar($bulk_action, $can_write, $translation_set, $location = 'top')
-{
-}
-/**
- * Determine if the current chunk should be skipped.
- *
- * @since 4.0.0
- *
- * @param string $chunk The current chunk.
- *
- * @return bool
- */
-function should_skip_chunk(string $chunk)
-{
-}
-/**
- * Filter a project description.
- *
- * @since 1.0.0
- *
- * @param string     $description Project description.
- * @param GP_Project $project     The current project.
- */
-// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-$project_description = \apply_filters('gp_project_description', $project->description, $project);
-/**
- * The user settings block
- *
- * A single table that contains all of the user settings, which is included as part of gp-templates/settings.php.
- *
- * @link http://glotpress.org
- *
- * @package GlotPress
- * @since 2.0.0
- */
-$gp_per_page = (int) \get_user_option('gp_per_page');
-/**
- * Template for the meta section of the editor row in a translation set display
- *
- * @package    GlotPress
- * @subpackage Templates
- */
-$more_links = array();
-/**
- * Allows to modify the more links in the translation editor.
- *
- * @since 2.3.0
- *
- * @param array $more_links The links to be output.
- * @param GP_Project $project Project object.
- * @param GP_Locale $locale Locale object.
- * @param GP_Translation_Set $translation_set Translation Set object.
- * @param GP_Translation $translation Translation object.
- */
-$more_links = \apply_filters('gp_translation_row_template_more_links', $more_links, $project, $locale, $translation_set, $translation);
-/**
- * Template for the editor part of a single translation row in a translation set display
- *
- * @package    GlotPress
- * @subpackage Templates
- */
-/**
- * Filter to update colspan of editor. Decrease to add an extra column
- * with action 'gp_translation_row_editor_columns'.
- *
- * @since 3.0.0
- *
- * @param int $colspan The colspan of editor column.
- */
-$colspan = \apply_filters('gp_translation_row_editor_colspan', $can_approve ? 5 : 4);
-/**
- * Template for the preview part of a single translation row in a translation set display
- *
- * @package    GlotPress
- * @subpackage Templates
- */
-$priority_char = array('-2' => array('&times;', 'transparent', '#ccc'), '-1' => array('&darr;', 'transparent', 'blue'), '0' => array('', 'transparent', 'white'), '1' => array('&uarr;', 'transparent', 'green'));
-/**
- * Template for a single translation row in a translation set display
- *
- * @package GlotPress
- * @subpackage Templates
- */
-$user = \wp_get_current_user();
-/**
- * Check to see if a term or user login has been added to the filter or one of the other filter options, if so,
- * we don't want to match the standard filter links.
- *
- * Note: Don't check for the warnings filter here otherwise we won't be able to use this value during the check
- * to see if the warnings filter link entry is the currently selected filter.
- */
-$additional_filters = \array_key_exists('term', $filters_and_sort) || \array_key_exists('user_login', $filters_and_sort) || \array_key_exists('with_comment', $filters_and_sort) || \array_key_exists('case_sensitive', $filters_and_sort) || \array_key_exists('with_plural', $filters_and_sort) || \array_key_exists('with_context', $filters_and_sort);
-/**
- * Filter footer links in translations.
- *
- * @since 1.0.0
- *
- * @param array              $footer_links    Default links.
- * @param GP_Project         $project         The current project.
- * @param GP_Locale          $locale          The current locale.
- * @param GP_Translation_Set $translation_set The current translation set.
- */
-$footer_links = \apply_filters('gp_translations_footer_links', $footer_links, $project, $locale, $translation_set);
