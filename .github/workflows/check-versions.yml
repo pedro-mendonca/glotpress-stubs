@@ -1,0 +1,21 @@
+name: Check latest versions
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+
+  check-version-glotpress:
+    name: Check latest version of GlotPress
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check the latest version of https://github.com/GlotPress/GlotPress/
+        uses: ninotosh/check-github-repo-latest-version@v1
+        with:
+          release: GlotPress/GlotPress@v4.0.2
+          github_token: ${{ secrets.GITHUB_TOKEN }}
