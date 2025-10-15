@@ -16,7 +16,7 @@
     }
   ],
   "require-dev": {
-    "php": "^7.4 || ^8.0",
+    "php": "^7.3 || ^8.0",
     "ergebnis/composer-normalize": "^2.48.2",
     "php-stubs/generator": "^0.8.5",
     "php-stubs/wordpress-stubs": "^6.8.2"
