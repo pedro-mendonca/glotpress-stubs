@@ -4044,7 +4044,7 @@ $project_description = \apply_filters('gp_project_description', $project->descri
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 4.0.2
+ * Version: 4.0.3
  * Requires at least: 4.6
  * Tested up to: 6.8
  * Requires PHP: 7.4
@@ -4069,7 +4069,7 @@ $project_description = \apply_filters('gp_project_description', $project->descri
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '4.0.2');
+\define('GP_VERSION', '4.0.3');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
 \define('GP_PLUGIN_FILE', __FILE__);
