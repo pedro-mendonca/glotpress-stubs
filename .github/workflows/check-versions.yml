@@ -17,5 +17,5 @@ jobs:
       - name: Check the latest version of https://github.com/GlotPress/GlotPress/
         uses: ninotosh/check-github-repo-latest-version@v1
         with:
-          release: GlotPress/GlotPress@4.0.2
+          release: GlotPress/GlotPress@4.0.3
           github_token: ${{ secrets.GITHUB_TOKEN }}
