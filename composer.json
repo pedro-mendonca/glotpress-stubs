@@ -15,12 +15,21 @@
       "url": "https://github.com/sponsors/pedro-mendonca"
     }
   ],
+  "require": {
+    "php": "^7.3 || ^8.0"
+  },
   "require-dev": {
-    "php": "^7.3 || ^8.0",
     "ergebnis/composer-normalize": "^2.48.2",
     "php-stubs/generator": "^0.8.5",
-    "php-stubs/wordpress-stubs": "^6.8.2"
+    "php-stubs/wordpress-stubs": "^6.8.2",
+    "glotpress/glotpress-wp": "^4.0.3"
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/GlotPress/GlotPress.git"
+    }
+  ],
   "minimum-stability": "stable",
   "config": {
     "allow-plugins": {
@@ -28,8 +37,7 @@
     }
   },
   "scripts": {
-    "generate": "generate-stubs --force source --out=glotpress-stubs.php",
-    "install-src": "git clone git@github.com:GlotPress/GlotPress.git source",
+    "generate": "generate-stubs --force vendor/glotpress/glotpress-wp --out=glotpress-stubs.php",
     "zip": [
       "composer install --no-dev",
       "composer archive --file=glotpress-stubs --format=zip",

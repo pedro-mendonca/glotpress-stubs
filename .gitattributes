@@ -3,7 +3,6 @@
 /.wordpress-org/       export-ignore
 /node_modules/         export-ignore
 /vendor/               export-ignore
-/source/               export-ignore
 
 # Exclude files from export
 /.editorconfig         export-ignore
