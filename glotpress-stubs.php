@@ -1,27 +1,127 @@
 <?php
 
+/**
+ * Represents a single locale and its properties.
+ */
 class GP_Locale
 {
+    /**
+     * Name of the locale in English.
+     *
+     * @var string
+     */
     public $english_name;
+    /**
+     * Name of the locale in its own language.
+     *
+     * @var string
+     */
     public $native_name;
+    /**
+     * Text direction of the locale, either 'ltr' or 'rtl'.
+     *
+     * @var string
+     */
     public $text_direction = 'ltr';
+    /**
+     * ISO 639-1 language code (two letters).
+     *
+     * @var string|null
+     */
     public $lang_code_iso_639_1 = \null;
+    /**
+     * ISO 639-2 language code (three letters).
+     *
+     * @var string|null
+     */
     public $lang_code_iso_639_2 = \null;
+    /**
+     * ISO 639-3 language code (three letters).
+     *
+     * @var string|null
+     */
     public $lang_code_iso_639_3 = \null;
-    public $country_code;
-    public $wp_locale;
-    // This should only be set for locales that are officially supported on translate.wordpress.org.
+    /**
+     * ISO 3166-1 country code (two letters).
+     *
+     * @var string|null
+     */
+    public $country_code = \null;
+    /**
+     * WordPress locale code.
+     *
+     * This should only be set for locales that are officially supported on translate.wordpress.org.
+     *
+     * @var string|null
+     */
+    public $wp_locale = \null;
+    /**
+     * Slug of the locale, used in URLs.
+     *
+     * @var string
+     */
     public $slug;
+    /**
+     * Number of plural forms of the locale.
+     *
+     * @var int
+     */
     public $nplurals = 2;
+    /**
+     * Gettext plural expression of the locale.
+     *
+     * @var string
+     */
     public $plural_expression = 'n != 1';
+    /**
+     * Language code used by Google Translate.
+     *
+     * @var string|null
+     */
     public $google_code = \null;
+    /**
+     * Preferred sans serif font family for the locale.
+     *
+     * @var string|null
+     */
     public $preferred_sans_serif_font_family = \null;
+    /**
+     * Locale code used by Facebook.
+     *
+     * @var string|null
+     */
     public $facebook_locale = \null;
+    /**
+     * Alphabet (script) of the locale.
+     *
+     * @since 4.0.0
+     *
+     * @var string
+     */
     public $alphabet = 'latin';
+    /**
+     * Type used for counting words, either 'words', 'characters_excluding_spaces'
+     * or 'characters_including_spaces'.
+     *
+     * @since 4.0.0
+     *
+     * @var string
+     */
     public $word_count_type = 'words';
+    /**
+     * Constructor.
+     *
+     * @param array $args Optional. Associative array of property names and their values. Default empty array.
+     */
     public function __construct($args = array())
     {
     }
+    /**
+     * Restores a locale exported by var_export().
+     *
+     * @param array $state Associative array of property names and their values.
+     * @return GP_Locale The restored locale.
+     */
     public static function __set_state($state)
     {
     }
@@ -43,12 +143,31 @@ class GP_Locale
     public function __get($name)
     {
     }
+    /**
+     * Returns the combined name of the locale.
+     *
+     * @return string Name in English and native name of the locale.
+     */
     public function combined_name()
     {
     }
+    /**
+     * Returns sample numbers which are mapped to the given plural form index.
+     *
+     * @param int $index      Index of the plural form.
+     * @param int $how_many   Optional. Maximum number of sample numbers to return. Default 3.
+     * @param int $test_up_to Optional. Highest number (exclusive) to test. Default 1000.
+     * @return int[] Sample numbers for the plural form.
+     */
     public function numbers_for_index($index, $how_many = 3, $test_up_to = 1000)
     {
     }
+    /**
+     * Returns the index of the plural form which is used for the given number.
+     *
+     * @param int $number Number to get the plural form index for.
+     * @return int Index of the plural form.
+     */
     public function index_for_number($number)
     {
     }
@@ -63,24 +182,66 @@ class GP_Locale
     {
     }
 }
+/**
+ * Registry of all locales known to GlotPress.
+ */
 class GP_Locales
 {
+    /**
+     * List of locales, keyed by their slug.
+     *
+     * @var GP_Locale[]
+     */
     public $locales = array();
+    /**
+     * Constructor.
+     *
+     * Defines all locales and populates the registry.
+     */
     public function __construct()
     {
     }
+    /**
+     * Returns the shared instance of the registry, creating it on first use.
+     *
+     * @return GP_Locales The shared instance.
+     */
     public static function &instance()
     {
     }
+    /**
+     * Returns all locales.
+     *
+     * @return GP_Locale[] List of locales, keyed by their slug.
+     */
     public static function locales()
     {
     }
+    /**
+     * Checks whether a locale with the given slug exists.
+     *
+     * @param string $slug Slug of the locale.
+     * @return bool Whether the locale exists.
+     */
     public static function exists($slug)
     {
     }
+    /**
+     * Returns the locale with the given slug.
+     *
+     * @param string $slug Slug of the locale.
+     * @return GP_Locale|null The locale, or null if it doesn't exist.
+     */
     public static function by_slug($slug)
     {
     }
+    /**
+     * Returns the first locale with the given value for the given field.
+     *
+     * @param string $field_name  Name of the GP_Locale property to compare, for example 'wp_locale'.
+     * @param mixed  $field_value Value to search for.
+     * @return GP_Locale|false The locale, or false if no locale matches.
+     */
     public static function by_field($field_name, $field_value)
     {
     }
@@ -325,6 +486,9 @@ class GP_Route_Glossary_Entry extends \GP_Route_Main
     public function glossary_entry_add_post($project_path, $locale_slug, $translation_set_slug)
     {
     }
+    public function glossary_create_post($project_path, $locale_slug, $translation_set_slug)
+    {
+    }
     public function glossary_entries_post($project_path, $locale_slug, $translation_set_slug)
     {
     }
@@ -338,6 +502,40 @@ class GP_Route_Glossary_Entry extends \GP_Route_Main
     {
     }
     public function import_glossary_entries_post($project_path, $locale_slug, $translation_set_slug)
+    {
+    }
+    /**
+     * Prevents a cell value from being interpreted as a formula by spreadsheet
+     * software.
+     *
+     * A value that begins with a formula trigger character is prefixed with a
+     * tab. fputcsv() then wraps the field in double quotes, keeping the tab
+     * inside the quoted field so the value is rendered as literal text. A tab is
+     * used rather than a leading single quote because Microsoft Excel does not
+     * preserve the latter across a save and reopen of the file.
+     *
+     * @see GP_Route_Glossary_Entry::unescape_csv_value() Reverses this on import.
+     *
+     * @param string $value Cell value.
+     * @return string Value safe to write to a CSV cell.
+     */
+    protected function escape_csv_value($value)
+    {
+    }
+    /**
+     * Reverses escape_csv_value() when a CSV file is read back in.
+     *
+     * Removes the leading tab that the export adds in front of a value that
+     * starts with a formula trigger character, so a value survives an export and
+     * a re-import unchanged. Only a tab that precedes such a character is
+     * removed; the export never prefixes any other value.
+     *
+     * @see GP_Route_Glossary_Entry::escape_csv_value()
+     *
+     * @param string $value Cell value read from the CSV file.
+     * @return string Value with an export-added tab prefix removed.
+     */
+    protected function unescape_csv_value($value)
     {
     }
 }
@@ -690,6 +888,14 @@ abstract class GP_Format
     public $extension = '';
     public $alt_extensions = array();
     public $filename_pattern = '%s-%s';
+    /**
+     * Maximum length of a single value included in a log message.
+     *
+     * @since 4.1.0
+     *
+     * @var int
+     */
+    const LOG_VALUE_MAX_LENGTH = 200;
     abstract public function print_exported_file($project, $locale, $translation_set, $entries);
     abstract public function read_originals_from_file($file_name);
     /**
@@ -700,6 +906,20 @@ abstract class GP_Format
      * @return array Supported file extensions.
      */
     public function get_file_extensions()
+    {
+    }
+    /**
+     * Prepares a value read from an uploaded file for inclusion in a log message.
+     *
+     * Whitespace is collapsed and the length is capped so that the value stays on one
+     * readable line whatever the file contained.
+     *
+     * @since 4.1.0
+     *
+     * @param string $value The value to prepare.
+     * @return string The prepared value.
+     */
+    protected function sanitize_for_log($value)
     {
     }
     public function read_translations_from_file($file_name, $project = \null)
@@ -718,6 +938,7 @@ abstract class GP_Format
     {
     }
 }
+// phpcs:disable Generic.Files.OneObjectStructurePerFile.MultipleFound
 class GP_Format_PO extends \GP_Format
 {
     public $name = 'Portable Object Message Catalog (.po/.pot)';
@@ -1314,11 +1535,25 @@ class GP_Router
     }
 }
 /**
+ * Route exit exception.
+ *
+ * @package GlotPress
+ */
+/**
+ * Exception thrown by GP_Route::exit_() while a faked request is running, so a
+ * route stops at the point where a real request would have exited instead of
+ * continuing to run the code that follows.
+ */
+class GP_Route_Exit_Exception extends \Exception
+{
+}
+/**
  * Translation warnings API
  *
  * @package GlotPress
  * @since 1.0.0
  */
+// phpcs:disable Generic.Files.OneObjectStructurePerFile.MultipleFound
 /**
  * Class used to handle translation warnings.
  *
@@ -2197,6 +2432,8 @@ class GP_Glossary_Entry extends \GP_Thing
     public $translation;
     public $date_modified;
     public $last_edited_by;
+    public $user_login;
+    public $user_display_name;
     public function __construct($fields = array())
     {
     }
@@ -2558,6 +2795,12 @@ class GP_Translation_Set extends \GP_Thing
      * @var string
      */
     public $wp_locale;
+    /**
+     * The date of the last modified translation.
+     *
+     * @var string|false
+     */
+    public $last_modified;
     /**
      * Sets restriction rules for fields.
      *
@@ -3069,6 +3312,17 @@ class GP_Glossary extends \GP_Thing
     {
     }
     /**
+     * Normalizes an array with key-value pairs representing a glossary.
+     *
+     * @since 4.1.0
+     *
+     * @param array $args Arguments for a glossary.
+     * @return array Normalized arguments for a glossary.
+     */
+    public function normalize_fields($args)
+    {
+    }
+    /**
      * Get the path to the glossary.
      *
      * @return string
@@ -3486,6 +3740,7 @@ class GP_CLI_Regenerate_Paths extends \WP_CLI_Command
  * @package GlotPress
  * @since 1.0.0
  */
+// phpcs:disable Generic.Files.OneObjectStructurePerFile.MultipleFound
 /**
  * Core class to handle validation of translations.
  *
@@ -3752,6 +4007,7 @@ class GP
  * @package GlotPress
  * @since 4.0.0
  */
+// phpcs:disable Generic.Files.OneObjectStructurePerFile.MultipleFound
 /**
  * Class used to handle translation errors.
  *
@@ -3862,93 +4118,6 @@ class GP_Builtin_Translation_Errors
 \define('GP_TMPL_PATH', \GP_PATH . 'gp-templates/');
 \define('GP_ROUTING', \false);
 /**
- * Check to see if a term or user login has been added to the filter or one of the other filter options, if so,
- * we don't want to match the standard filter links.
- *
- * Note: Don't check for the warnings filter here otherwise we won't be able to use this value during the check
- * to see if the warnings filter link entry is the currently selected filter.
- */
-$additional_filters = \array_key_exists('term', $filters_and_sort) || \array_key_exists('user_login', $filters_and_sort) || \array_key_exists('with_comment', $filters_and_sort) || \array_key_exists('case_sensitive', $filters_and_sort) || \array_key_exists('with_plural', $filters_and_sort) || \array_key_exists('with_context', $filters_and_sort);
-/**
- * Filter footer links in translations.
- *
- * @since 1.0.0
- *
- * @param array              $footer_links    Default links.
- * @param GP_Project         $project         The current project.
- * @param GP_Locale          $locale          The current locale.
- * @param GP_Translation_Set $translation_set The current translation set.
- */
-$footer_links = \apply_filters('gp_translations_footer_links', $footer_links, $project, $locale, $translation_set);
-/**
- * The user settings block
- *
- * A single table that contains all of the user settings, which is included as part of gp-templates/settings.php.
- *
- * @link http://glotpress.org
- *
- * @package GlotPress
- * @since 2.0.0
- */
-$gp_per_page = (int) \get_user_option('gp_per_page');
-/**
- * Template for a single translation row in a translation set display
- *
- * @package GlotPress
- * @subpackage Templates
- */
-$user = \wp_get_current_user();
-/**
- * Template for the preview part of a single translation row in a translation set display
- *
- * @package    GlotPress
- * @subpackage Templates
- */
-$priority_char = array('-2' => array('&times;', 'transparent', '#ccc'), '-1' => array('&darr;', 'transparent', 'blue'), '0' => array('', 'transparent', 'white'), '1' => array('&uarr;', 'transparent', 'green'));
-/**
- * Template for the meta section of the editor row in a translation set display
- *
- * @package    GlotPress
- * @subpackage Templates
- */
-$more_links = array();
-/**
- * Allows to modify the more links in the translation editor.
- *
- * @since 2.3.0
- *
- * @param array $more_links The links to be output.
- * @param GP_Project $project Project object.
- * @param GP_Locale $locale Locale object.
- * @param GP_Translation_Set $translation_set Translation Set object.
- * @param GP_Translation $translation Translation object.
- */
-$more_links = \apply_filters('gp_translation_row_template_more_links', $more_links, $project, $locale, $translation_set, $translation);
-/**
- * Template for the editor part of a single translation row in a translation set display
- *
- * @package    GlotPress
- * @subpackage Templates
- */
-/**
- * Filter to update colspan of editor. Decrease to add an extra column
- * with action 'gp_translation_row_editor_columns'.
- *
- * @since 3.0.0
- *
- * @param int $colspan The colspan of editor column.
- */
-$colspan = \apply_filters('gp_translation_row_editor_colspan', $can_approve ? 5 : 4);
-/**
- * Filter a glossary description.
- *
- * @since 3.0.0
- *
- * @param string      $description Glossary description.
- * @param GP_Glossary $project     The current glossary.
- */
-$glossary_description = \apply_filters('gp_glossary_description', $glossary->description, $glossary);
-/**
  * Defines helper functions used by GlotPress.
  *
  * @package GlotPress
@@ -4031,22 +4200,11 @@ function should_skip_chunk(string $chunk)
 {
 }
 /**
- * Filter a project description.
- *
- * @since 1.0.0
- *
- * @param string     $description Project description.
- * @param GP_Project $project     The current project.
- */
-// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-$project_description = \apply_filters('gp_project_description', $project->description, $project);
-/**
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 4.0.3
+ * Version: 4.1.0
  * Requires at least: 4.6
- * Tested up to: 6.8
  * Requires PHP: 7.4
  * Author: the GlotPress team
  * Author URI: https://glotpress.blog
@@ -4069,7 +4227,7 @@ $project_description = \apply_filters('gp_project_description', $project->descri
  *
  * @package GlotPress
  */
-\define('GP_VERSION', '4.0.3');
+\define('GP_VERSION', '4.1.0');
 \define('GP_DB_VERSION', '980');
 \define('GP_CACHE_VERSION', '3.0');
 \define('GP_PLUGIN_FILE', __FILE__);
@@ -4957,6 +5115,20 @@ function gp_set_translations_import_max_memory_limit()
  * @return bool True if the string is valid UTF-8, false otherwise.
  */
 function gp_is_valid_utf8($string)
+{
+}
+/**
+ * Determines whether the current user may create the locale glossary for a locale and set slug.
+ *
+ * A locale glossary lives on the virtual locale project (id 0), so it is authorized
+ * the same way its translations are: with the `approve` permission on the set, which
+ * covers GlotPress administrators and the locale's approvers.
+ *
+ * @param string $locale_slug The locale slug. E.g. "de".
+ * @param string $set_slug    The translation set slug. E.g. "default".
+ * @return bool Whether the current user may create the locale glossary.
+ */
+function gp_can_create_locale_glossary($locale_slug, $set_slug)
 {
 }
 /**
