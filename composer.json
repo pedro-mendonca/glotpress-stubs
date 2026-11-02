@@ -16,10 +16,10 @@
     }
   ],
   "require": {
-    "php": "^7.3 || ^8.0"
+    "php": "^7.4 || ^8.0"
   },
   "require-dev": {
-    "ergebnis/composer-normalize": "^2.52.0",
+    "ergebnis/composer-normalize": "^2.56.0",
     "glotpress/glotpress-wp": "^4.1.0",
     "php-stubs/generator": "^0.9.0",
     "php-stubs/wordpress-stubs": "^7.1.2"
