@@ -21,7 +21,7 @@
   "require-dev": {
     "ergebnis/composer-normalize": "^2.52.0",
     "glotpress/glotpress-wp": "^4.1.0",
-    "php-stubs/generator": "^0.8.6",
+    "php-stubs/generator": "^0.9.0",
     "php-stubs/wordpress-stubs": "^6.9.4"
   },
   "repositories": [
